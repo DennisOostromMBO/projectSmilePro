@@ -7,6 +7,17 @@
     <title>Account Overzicht</title>
 </head>
 <body>
-    Mehdi is NIGGER en terrorist
+    <a href="{{ url('/') }}">Terug naar Home</a>
+
+    <h1>Accounts</h1>
+
+   <!-- Hier de PHP code voor de tabel te laten zien. -->
+
+
+    
+
+
+
+
 </body>
 </html>
