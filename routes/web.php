@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PraktijkmanagerController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,5 +20,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/patient', [PatientController::class, 'index'])->name('patient.index');
+
+// Middleware Praktijkmanager
+Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
 
 require __DIR__ . '/auth.php';
