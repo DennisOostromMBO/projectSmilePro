@@ -12,14 +12,14 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
+DROP DATABASE if exists smilepro;
+CREATE DATABASE IF NOT EXISTS smilepro;
+USE smilepro;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `smilepro`
---
 
 -- --------------------------------------------------------
 
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Tabelstructuur voor tabel `cache`
 --
 
-DROP TABLE IF EXISTS `cache`;
+
 CREATE TABLE IF NOT EXISTS `cache` (
   `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `cache` (
 -- Tabelstructuur voor tabel `cache_locks`
 --
 
-DROP TABLE IF EXISTS `cache_locks`;
+
 CREATE TABLE IF NOT EXISTS `cache_locks` (
   `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `cache_locks` (
 -- Tabelstructuur voor tabel `failed_jobs`
 --
 
-DROP TABLE IF EXISTS `failed_jobs`;
+
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
 -- Tabelstructuur voor tabel `jobs`
 --
 
-DROP TABLE IF EXISTS `jobs`;
+
 CREATE TABLE IF NOT EXISTS `jobs` (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `jobs` (
 -- Tabelstructuur voor tabel `job_batches`
 --
 
-DROP TABLE IF EXISTS `job_batches`;
+
 CREATE TABLE IF NOT EXISTS `job_batches` (
   `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `job_batches` (
 -- Tabelstructuur voor tabel `migrations`
 --
 
-DROP TABLE IF EXISTS `migrations`;
+
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -122,10 +122,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
 -- Gegevens worden geëxporteerd voor tabel `migrations`
---
-
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '0001_01_01_000000_create_users_table', 1),
 (2, '0001_01_01_000001_create_cache_table', 1),
@@ -151,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
 -- Tabelstructuur voor tabel `sessions`
 --
 
-DROP TABLE IF EXISTS `sessions`;
+
 CREATE TABLE IF NOT EXISTS `sessions` (
   `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint UNSIGNED DEFAULT NULL,
@@ -164,10 +161,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
 -- Gegevens worden geëxporteerd voor tabel `sessions`
---
-
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
 ('vnBGP09QOu40YAt2YO2yl1YHRdLQYxtVyQTrSKX7', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiM2FDb3BjNVUycFNjTVdNY3BqOHdGNE9tWU9WR0R2eWNpbFliVEdaQSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1732005842);
 
@@ -177,7 +171,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 -- Tabelstructuur voor tabel `users`
 --
 
-DROP TABLE IF EXISTS `users`;
+
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -190,6 +184,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
