@@ -26,9 +26,4 @@ class Afsprakenbeheer extends Model
     {
         return $this->belongsTo(Patient::class, 'PatiëntId');
     }
-
-    public function employee()
-    {
-        return $this->belongsTo(Employee::class, 'MedewerkerId');
-    }
 }

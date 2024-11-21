@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Contact;
 use App\Models\Medewerker;
 use App\Models\Persoon;
 use App\Models\User;
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
             PatientSeeder::class,
             PersoonSeeder::class,
             RolSeeder::class,
+            ContactSeeder::class,
         ]);
     }
 }
