@@ -22,6 +22,6 @@ class Persoon extends Model
 
     public function patient()
     {
-        return $this->hasOne(Patient::class, 'PersoonId', 'Id');
+        return $this->belongsTo(Patient::class, 'PersoonId', 'Id');
     }
 }

@@ -16,10 +16,8 @@ class PraktijkmanagerController extends Controller
 
     public function medewerkers()
     {
-        // Get medewerkers table
         $medewerkers = DB::table('medewerkers')->get();
-
-        // dd($medewerkers);
+        // $medewerkers = [];
 
         return view(
             "praktijkmanager.medewerkers",
