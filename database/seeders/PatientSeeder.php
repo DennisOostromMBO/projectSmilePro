@@ -25,5 +25,8 @@ class PatientSeeder extends Seeder
             'Nummer' => 'P002',
             'MedischDossier' => 'Allergieën: Pinda, Vorige behandelingen: Chirurgie 2022',
         ]);
+        
     }
 }
+
+
