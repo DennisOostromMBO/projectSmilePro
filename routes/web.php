@@ -6,6 +6,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PraktijkmanagerController;
 use App\Http\Controllers\AccountOverzichtController;
 use App\Http\Controllers\BeschikbaarheidController;
+use App\Http\Controllers\CommunicatieController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,4 +29,6 @@ Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->n
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
 
 Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index'])->name('beschikbaarheid.index');
+
+Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Communicatie.index');
 require __DIR__ . '/auth.php';
