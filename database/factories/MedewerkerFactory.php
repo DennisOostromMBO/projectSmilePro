@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Persoon;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,8 +19,7 @@ class MedewerkerFactory extends Factory
     public function definition(): array
     {
         return [
-            // PersoonId belongs to User
-            "PersoonId" => User::inRandomOrder()->first()->id,
+            "PersoonId" => Persoon::query()->inRandomOrder()->value('id'),
             "Nummer" => $this->faker->word(),
             "Medewerkertype" => $this->faker->word(),
             "Specialisatie" => $this->faker->word(),

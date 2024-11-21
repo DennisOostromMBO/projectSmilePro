@@ -12,9 +12,15 @@ class Patient extends Model
     protected $table = 'patienten';
 
     protected $fillable = [
+        'PersoonId',
         'Nummer',
         'MedischDossier',
     ];
 
     public $timestamps = false;
+
+    public function persoon()
+    {
+        return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
+    }
 }
