@@ -33,7 +33,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if (count($medewerkers) <= 0 || $medewerkers == null)
+                @if (count($medewerkers) <= 0 || $medewerkers == null || $medewerkers->isEmpty())
                     <td colspan="50" class="pt-4 text-lg font-semibold text-center text-black/50">Er zijn geen
                         medewerkers
                         beschikbaar om weer te geven.
