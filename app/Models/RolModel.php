@@ -15,4 +15,5 @@ class RolModel extends Model
         'Naam',
         'Comments',
     ];
+    public $timestamps = false;
 }
