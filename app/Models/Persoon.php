@@ -20,8 +20,13 @@ class Persoon extends Model
 
     public $timestamps = false;
 
-    public function patient()
-    {
-        return $this->belongsTo(Patient::class, 'PersoonId', 'Id');
-    }
+    // public function patient()
+    // {
+    //     return $this->belongsTo(Patient::class, 'PersoonId', 'Id');
+    // }
+
+    // public function medewerkers()
+    // {
+    //     return $this->belongsTo(Medewerker::class, 'PersoonId', 'Id');
+    // }
 }
