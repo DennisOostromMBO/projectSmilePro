@@ -30,6 +30,16 @@
                 </tr>
             </thead>
             <tbody>
+                @if (count($medewerkers) <= 0 || $medewerkers == null)
+                    <td colspan="11" class="pt-4 text-lg font-semibold text-center text-black/50">Er zijn geen
+                        medewerkers
+                        beschikbaar
+                        om weer
+                        te
+                        geven.
+                    @else
+                @endif
+
                 @foreach ($medewerkers as $medewerker)
                     <tr class="border-b hover:bg-gray-100">
                         <td>{{ $medewerker->Id }}</td>
