@@ -19,13 +19,13 @@ class PraktijkmanagerController extends Controller
         // Get medewerkers table
         $medewerkers = DB::table('medewerkers')->get();
 
-        dd($medewerkers);
+        // dd($medewerkers);
 
-        // return view(
-        //     "praktijkmanager.medewerkers",
-        //     [
-        //         "medewerkers" => $medewerkers
-        //     ]
-        // );
+        return view(
+            "praktijkmanager.medewerkers",
+            [
+                "medewerkers" => $medewerkers
+            ]
+        );
     }
 }
