@@ -19,7 +19,6 @@ class MedewerkerFactory extends Factory
     public function definition(): array
     {
         return [
-            // PersoonId belongs to Persoon
             "PersoonId" => Persoon::query()->inRandomOrder()->value('id'),
             "Nummer" => $this->faker->word(),
             "Medewerkertype" => $this->faker->word(),

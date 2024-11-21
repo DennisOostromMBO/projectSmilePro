@@ -34,13 +34,9 @@
             </thead>
             <tbody>
                 @if (count($medewerkers) <= 0 || $medewerkers == null)
-                    <td colspan="11" class="pt-4 text-lg font-semibold text-center text-black/50">Er zijn geen
+                    <td colspan="50" class="pt-4 text-lg font-semibold text-center text-black/50">Er zijn geen
                         medewerkers
-                        beschikbaar
-                        om weer
-                        te
-                        geven.
-                    @else
+                        beschikbaar om weer te geven.
                 @endif
 
                 @foreach ($medewerkers as $medewerker)
