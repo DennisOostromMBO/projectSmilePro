@@ -10,14 +10,17 @@
 </head>
 
 <body>
-    <div class="p-6 mx-auto bg-white rounded-lg shadow-lg max-w-7xl">
+    <div class="w-full p-6 mx-auto">
 
         <h1 class="mb-6 text-3xl font-semibold text-gray-800">Medewerkers</h1>
         <table class="w-full min-w-full overflow-x-scroll bg-white border-collapse table-auto">
             <thead>
                 <tr class="text-left bg-gray-200">
                     <th>Id</th>
-                    <th>PersoonId</th>
+                    <th>Voornaam</th>
+                    <th>Tussenvoegsel</th>
+                    <th>Achternaam</th>
+                    <th>Geboortedatum</th>
                     <th>Nummer</th>
                     <th>Medewerkertype</th>
                     <th>Specialisatie</th>
@@ -43,7 +46,10 @@
                 @foreach ($medewerkers as $medewerker)
                     <tr class="border-b hover:bg-gray-100">
                         <td>{{ $medewerker->Id }}</td>
-                        <td>{{ $medewerker->PersoonId }}</td>
+                        <td>{{ $medewerker->persoon->Voornaam }}</td>
+                        <td>{{ $medewerker->persoon->Tussenvoegsel }}</td>
+                        <td>{{ $medewerker->persoon->Achternaam }}</td>
+                        <td>{{ $medewerker->persoon->Geboortedatum }}</td>
                         <td>{{ $medewerker->Nummer }}</td>
                         <td>{{ $medewerker->Medewerkertype }}</td>
                         <td>{{ $medewerker->Specialisatie }}</td>

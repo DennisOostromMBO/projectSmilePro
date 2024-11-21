@@ -9,6 +9,8 @@ class Medewerker extends Model
 {
     use HasFactory;
 
+    protected $table = 'medewerkers';
+
     protected $fillable = [
         "PersoonId",
         "Nummer",
@@ -19,8 +21,8 @@ class Medewerker extends Model
 
     public $timestamps = false;
 
-    public function user()
+    public function persoon()
     {
-        return $this->belongsTo(User::class, "PersoonId", "Id");
+        return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
     }
 }
