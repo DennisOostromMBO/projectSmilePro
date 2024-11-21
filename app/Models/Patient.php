@@ -26,6 +26,6 @@ class Patient extends Model
 
     public function contact()
     {
-        return $this->hasOne(Contact::class, 'PatientId'); 
+        return $this->hasOne(Contact::class, 'PatientId', 'Id'); 
     }
 }

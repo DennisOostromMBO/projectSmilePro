@@ -20,7 +20,10 @@
             <th>Geboortedatum</th>
             <th>Straatnaam</th>
             <th>Huisnummer</th>
-            <th>Mobiel</th>
+            <th>Toevoeging</th>
+            <th>Postcode</th>
+            <th>Straat</th>
+            <th>Mobielnummer</th>
             <th>Email</th>
             <th>Nummer</th>
             <th>Medisch Dossier</th>
@@ -33,10 +36,13 @@
                 <td>{{ $patient->persoon->Tussenvoegsel }}</td>
                 <td>{{ $patient->persoon->Achternaam }}</td>
                 <td>{{ $patient->persoon->Geboortedatum }}</td>
-                <td>{{ $patient->contact ? $patient->contact->Straatnaam : 'Geen contactgegevens' }}</td>
-                <td>{{ $patient->contact ? $patient->contact->Huisnummer : 'Geen contactgegevens' }}</td>
-                <td>{{ $patient->contact ? $patient->contact->Mobiel : 'Geen contactgegevens' }}</td>
-                <td>{{ $patient->contact ? $patient->contact->Email : 'Geen contactgegevens' }}</td>
+                <td>{{ $patient->contact->Straatnaam }}</td>
+                <td>{{ $patient->contact->Huisnummer }}</td>
+                <td>{{ $patient->contact->Toevoeging }}</td>
+                <td>{{ $patient->contact->Postcode }}</td>
+                <td>{{ $patient->contact->Plaats }}</td>
+                <td>{{ $patient->contact->Mobiel }}</td>
+                <td>{{ $patient->contact->Email }}</td>
                 <td>{{ $patient->Nummer }}</td>
                 <td>{{ $patient->MedischDossier }}</td>   
             </tr>
