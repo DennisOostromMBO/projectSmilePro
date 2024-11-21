@@ -10,16 +10,16 @@ class PersoonSeeder extends Seeder
     public function run()
     {
         Persoon::create([
-            'Voornaam' => 'John',
+            'Voornaam' => 'Pieter',
             'Tussenvoegsel' => 'van',
-            'Achternaam' => 'Doe',
+            'Achternaam' => 'Loen',
             'Geboortedatum' => '1990-01-01',
         ]);
 
         Persoon::create([
-            'Voornaam' => 'Jane',
+            'Voornaam' => 'Thomas',
             'Tussenvoegsel' => null,
-            'Achternaam' => 'Smith',
+            'Achternaam' => 'Kranenburg',
             'Geboortedatum' => '1985-05-15',
         ]);
     }
