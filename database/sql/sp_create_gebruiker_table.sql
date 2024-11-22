@@ -4,16 +4,16 @@ CREATE PROCEDURE create_gebruiker_table()
 BEGIN
     CREATE TABLE IF NOT EXISTS gebruiker (
         Id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        PersoonId BIGINT UNSIGNED NOT NULL,
+        PersoonId INT UNSIGNED NOT NULL,
         Gebruikersnaam VARCHAR(255) NOT NULL,
         Wachtwoord VARCHAR(255) NOT NULL,
-        Isingelogd BIT NOT NULL,
-        Ingelogd  BIT NOT NULL,
-        Uitgelogd BIT NOT NULL,
-        IsActive BIT DEFAULT 1,
+        Isingelogd BIT DEFAULT 0 NOT NULL,
+        Ingelogd BIT DEFAULT 0 NOT NULL,
+        Uitgelogd BIT DEFAULT 0 NOT NULL,
+        IsActive BIT DEFAULT 1 NOT NULL,
         Comments VARCHAR(255) NULL,
         CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (PersoonId) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (PersoonId) REFERENCES personen(id) ON DELETE CASCADE ON UPDATE CASCADE
     ) ENGINE=InnoDB;
 END;
