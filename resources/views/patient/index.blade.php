@@ -16,11 +16,7 @@
         <tr>
             <th>Volledige naam</th>
             <th>Geboortedatum</th>
-            <th>Straatnaam</th>
-            <th>Huisnummer</th>
-            <th>Toevoeging</th>
-            <th>Postcode</th>
-            <th>Straat</th>
+            <th>Volledig adres</th>
             <th>Mobielnummer</th>
             <th>Email</th>
             <th>Nummer</th>
@@ -32,11 +28,7 @@
             <tr>
                 <td>{{ $patient->persoon->VolledigeNaam }}</td>
                 <td>{{ $patient->persoon->Geboortedatum }}</td>
-                <td>{{ $patient->contact->Straatnaam }}</td>
-                <td>{{ $patient->contact->Huisnummer }}</td>
-                <td>{{ $patient->contact->Toevoeging }}</td>
-                <td>{{ $patient->contact->Postcode }}</td>
-                <td>{{ $patient->contact->Plaats }}</td>
+                <td>{{ $patient->contact->VolledigAdres }}</td>
                 <td>{{ $patient->contact->Mobiel }}</td>
                 <td>{{ $patient->contact->Email }}</td>
                 <td>{{ $patient->Nummer }}</td>
