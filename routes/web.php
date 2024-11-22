@@ -6,6 +6,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PraktijkmanagerController;
 use App\Http\Controllers\AccountOverzichtController;
 use App\Http\Controllers\FactuurController;
+use App\Http\Controllers\EmailController;
 
 Route::get('/', function () {
     return view('welcome');
