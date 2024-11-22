@@ -17,7 +17,7 @@
             <thead>
                 <tr class="text-left bg-gray-200">
                     <th>Id</th>
-                    <th>Voornaam</th>
+                    <th>Volledige Naam</th>
                     <th>Tussenvoegsel</th>
                     <th>Achternaam</th>
                     <th>Geboortedatum</th>
@@ -42,10 +42,7 @@
                 @foreach ($medewerkers as $medewerker)
                     <tr class="border-b hover:bg-gray-100">
                         <td>{{ $medewerker->Id }}</td>
-                        <td>{{ $medewerker->persoon->Voornaam }}</td>
-                        <td>{{ $medewerker->persoon->Tussenvoegsel }}</td>
-                        <td>{{ $medewerker->persoon->Achternaam }}</td>
-                        <td>{{ $medewerker->persoon->Geboortedatum }}</td>
+                        <td>{{ $medewerker->persoon->VolledigeNaam }}</td>
                         <td>{{ $medewerker->Nummer }}</td>
                         <td>{{ $medewerker->Medewerkertype }}</td>
                         <td>{{ $medewerker->Specialisatie }}</td>
