@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/patient', [PatientController::class, 'index'])->name('patient.index');
-Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');
+Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index']);
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
