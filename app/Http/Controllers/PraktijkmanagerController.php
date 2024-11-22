@@ -17,8 +17,8 @@ class PraktijkmanagerController extends Controller
 
     public function medewerkers()
     {
-        $medewerkers = Medewerker::with('persoon')->get();
-        // $medewerkers = [];
+        // $medewerkers = Medewerker::with('persoon')->get();
+        $medewerkers = [];
 
         return view(
             "praktijkmanager.medewerkers",
