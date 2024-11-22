@@ -10,14 +10,14 @@
 </head>
 
 <body>
-    <div class="w-full p-6 mx-auto">
+    <div class="p-6 mx-auto bg-white rounded-lg shadow-lg max-w-7xl">
 
         <h1 class="mb-6 text-3xl font-semibold text-gray-800">Medewerkers</h1>
         <table class="w-full min-w-full overflow-x-scroll bg-white border-collapse table-auto">
             <thead>
                 <tr class="text-left bg-gray-200">
                     <th>Id</th>
-                    <th>Voornaam</th>
+                    <th>Volledige Naam</th>
                     <th>Tussenvoegsel</th>
                     <th>Achternaam</th>
                     <th>Geboortedatum</th>
@@ -33,12 +33,6 @@
                 </tr>
             </thead>
             <tbody>
-                @if (count($medewerkers) <= 0 || $medewerkers == null || $medewerkers->isEmpty())
-                    <td colspan="50" class="pt-4 text-lg font-semibold text-center text-black/50">Er zijn geen
-                        medewerkers
-                        beschikbaar om weer te geven.
-                @endif
-
                 @foreach ($medewerkers as $medewerker)
                     <tr class="border-b hover:bg-gray-100">
                         <td>{{ $medewerker->Id }}</td>

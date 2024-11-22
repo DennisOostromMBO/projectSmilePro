@@ -20,9 +20,13 @@ class PraktijkmanagerController extends Controller
         $medewerkers = Medewerker::with('persoon')->get();
         // $medewerkers = [];
 
+        // dd($medewerkers);
+
         return view(
             "praktijkmanager.medewerkers",
-            compact("medewerkers")
+            [
+                "medewerkers" => $medewerkers
+            ]
         );
     }
 }
