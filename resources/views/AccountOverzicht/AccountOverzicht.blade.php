@@ -11,13 +11,35 @@
 
     <h1>Accounts</h1>
 
-   <!-- Hier de PHP code voor de tabel te laten zien. -->
-
-
-    
-
-
-
-
+    @if($gebruikers->isEmpty())
+        <h3>Er zijn geen accounts beschikbaar om weer te geven.</h3>
+    @else
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Gebruikersnaam</th>
+                    <th>Is Active</th>
+                    <th>Is Ingelogd</th>
+                    <th>Ingelogd</th>
+                    <th>Uitgelogd</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($gebruikers as $gebruiker)
+                    <tr>
+                        <td>{{ $gebruiker->id }}</td>
+                        <td>{{ $gebruiker->Gebruikersnaam }}</td>
+                        <td>{{ $gebruiker->IsActive }}</td>
+                        <td>{{ $gebruiker->Isingelogd }}</td>
+                        <td>{{ $gebruiker->Ingelogd }}</td>
+                        <td>{{ $gebruiker->Uitgelogd }}</td>
+                        <td>{{ $gebruiker->Comments }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
 </body>
 </html>

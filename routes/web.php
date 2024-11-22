@@ -5,8 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PraktijkmanagerController;
 use App\Http\Controllers\AccountOverzichtController;
-use App\Http\Controllers\BeschikbaarheidController;
-use App\Http\Controllers\CommunicatieController;
+use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\EmailController;
 
 Route::get('/', function () {
@@ -24,7 +23,16 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/patient', [PatientController::class, 'index'])->name('patient.index');
+<<<<<<< HEAD
 Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');
+<<<<<<< HEAD
+=======
+
+Route::resource('factuur', FactuurController::class);
+>>>>>>> 8a1db8de1f1d0724edefe25f4fb8e90f0e456255
+=======
+Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index']);
+>>>>>>> b46f02adbb277a9e3abb32704a8427d8fd8d4ab7
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
