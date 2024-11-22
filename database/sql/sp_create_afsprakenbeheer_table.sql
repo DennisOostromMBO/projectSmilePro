@@ -3,9 +3,9 @@ DROP PROCEDURE IF EXISTS create_afsprakenbeheer_table;
 CREATE PROCEDURE create_afsprakenbeheer_table()
 BEGIN
     CREATE TABLE IF NOT EXISTS afsprakenbeheer (
-        Id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        PatientId BIGINT UNSIGNED NOT NULL,
-        MedewerkerId BIGINT UNSIGNED NOT NULL,
+        Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        PatientId INT UNSIGNED NOT NULL,
+        MedewerkerId INT UNSIGNED NOT NULL,
         Datum DATE NOT NULL,
         Tijd TIME NOT NULL,
         Status ENUM('Bevestigd', 'Geannuleerd') NOT NULL,

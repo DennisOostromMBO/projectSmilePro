@@ -7,6 +7,7 @@ use App\Http\Controllers\PraktijkmanagerController;
 use App\Http\Controllers\AccountOverzichtController;
 use App\Http\Controllers\BeschikbaarheidController;
 use App\Http\Controllers\CommunicatieController;
+use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\EmailController;
 
 Route::get('/', function () {
@@ -24,7 +25,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/patient', [PatientController::class, 'index'])->name('patient.index');
-Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index']);
+
+Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');

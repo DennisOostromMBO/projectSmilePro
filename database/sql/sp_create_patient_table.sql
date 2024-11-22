@@ -5,7 +5,7 @@ BEGIN
         ,PersoonId INT UNSIGNED NOT NULL
         ,Nummer VARCHAR(255) NOT NULL                
         ,MedischDossier TEXT NULL  
-        ,IsActive BIT DEFAULT 1
+        ,IsActive BIT NOT NULL DEFAULT 1
         ,Comments VARCHAR(255) NULL
         ,CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ,UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             PersoonSeeder::class,
             RolSeeder::class,
             ContactSeeder::class,
+            EmailSeeder::class,
         ]);
     }
 }
