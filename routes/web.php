@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PraktijkmanagerController;
 use App\Http\Controllers\AccountOverzichtController;
+use App\Http\Controllers\FactuurController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,6 +23,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/patient', [PatientController::class, 'index'])->name('patient.index');
 Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');
+
+Route::resource('factuur', FactuurController::class);
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
