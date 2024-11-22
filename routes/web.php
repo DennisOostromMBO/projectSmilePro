@@ -7,6 +7,7 @@ use App\Http\Controllers\PraktijkmanagerController;
 use App\Http\Controllers\AccountOverzichtController;
 use App\Http\Controllers\BeschikbaarheidController;
 use App\Http\Controllers\CommunicatieController;
+use App\Http\Controllers\EmailController;
 
 Route::get('/', function () {
     return view('welcome');
