@@ -31,4 +31,7 @@ Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'm
 Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index'])->name('beschikbaarheid.index');
 
 Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Communicatie.index');
+
+Route::get('/emails', [EmailController::class, 'index']);
+Route::post('/emails', [EmailController::class, 'store']);
 require __DIR__ . '/auth.php';
