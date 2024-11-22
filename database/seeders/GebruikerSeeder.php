@@ -29,7 +29,7 @@ class GebruikerSeeder extends Seeder
                 'IsActive' => 1,
                 'Isingelogd' => 0,
                 'Ingelogd' => 0,
-                'Uitgelogd' => 0,
+                'Uitgelogd' => 1,
                 'Comments' => 'First user',
             ],
             [
@@ -39,7 +39,7 @@ class GebruikerSeeder extends Seeder
                 'IsActive' => 1,
                 'Isingelogd' => 0,
                 'Ingelogd' => 0,
-                'Uitgelogd' => 0,
+                'Uitgelogd' => 1,
                 'Comments' => 'Second user',
             ],
             [
@@ -49,7 +49,7 @@ class GebruikerSeeder extends Seeder
                 'IsActive' => 1,
                 'Isingelogd' => 0,
                 'Ingelogd' => 0,
-                'Uitgelogd' => 0,
+                'Uitgelogd' => 1,
                 'Comments' => 'Third user',
             ],
             [
@@ -59,7 +59,7 @@ class GebruikerSeeder extends Seeder
                 'IsActive' => 1,
                 'Isingelogd' => 0,
                 'Ingelogd' => 0,
-                'Uitgelogd' => 0,
+                'Uitgelogd' => 1,
                 'Comments' => 'Fourth user',
             ],
         ]);
