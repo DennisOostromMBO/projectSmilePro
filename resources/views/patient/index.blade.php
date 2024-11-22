@@ -14,9 +14,7 @@
    <table border="1">
     <thead>
         <tr>
-            <th>Voornaam</th>
-            <th>Tussenvoegsel</th>
-            <th>Achternaam</th>
+            <th>Volledige naam</th>
             <th>Geboortedatum</th>
             <th>Straatnaam</th>
             <th>Huisnummer</th>
@@ -32,9 +30,7 @@
     <tbody>
         @foreach($patients as $patient)
             <tr>
-                <td>{{ $patient->persoon->Voornaam }}</td>
-                <td>{{ $patient->persoon->Tussenvoegsel }}</td>
-                <td>{{ $patient->persoon->Achternaam }}</td>
+                <td>{{ $patient->persoon->VolledigeNaam }}</td>
                 <td>{{ $patient->persoon->Geboortedatum }}</td>
                 <td>{{ $patient->contact->Straatnaam }}</td>
                 <td>{{ $patient->contact->Huisnummer }}</td>
