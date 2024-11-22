@@ -24,6 +24,6 @@ class Contact extends Model
 
     public function patient()
     {
-        return $this->belongsTo(Patient::class, 'PatientId'); 
+        return $this->belongsTo(Patient::class, 'PatientId',  'Id'); 
     }
 }
