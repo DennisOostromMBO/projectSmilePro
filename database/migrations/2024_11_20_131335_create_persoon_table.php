@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('personen');
+        Schema::dropIfExists('persoon');
         DB::statement('DROP PROCEDURE IF EXISTS create_persoon_table');
     }
 };

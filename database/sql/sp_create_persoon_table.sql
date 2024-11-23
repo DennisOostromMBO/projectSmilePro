@@ -1,6 +1,6 @@
 CREATE PROCEDURE IF NOT EXISTS create_persoon_table()
 BEGIN
-    CREATE TABLE IF NOT EXISTS personen (
+    CREATE TABLE IF NOT EXISTS persoon (
         Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         Voornaam VARCHAR(100) NOT NULL,
         Tussenvoegsel VARCHAR(50) NULL,

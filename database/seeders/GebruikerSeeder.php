@@ -14,16 +14,16 @@ class GebruikerSeeder extends Seeder
     public function run(): void
     {
         // Haal de bestaande PersoonId waarden op uit de personen tabel
-        $personen = DB::table('personen')->pluck('id')->toArray();
+        $persoon = DB::table('persoon')->pluck('id')->toArray();
 
         // Zorg ervoor dat er genoeg personen zijn om de gebruikers te maken
-        if (count($personen) < 4) {
+        if (count($persoon) < 4) {
             throw new \Exception('Niet genoeg personen in de tabel om gebruikers te maken.');
         }
 
         DB::table('gebruiker')->insert([
             [
-                'PersoonId' => $personen[0], // Gebruik de eerste id
+                'PersoonId' => $persoon[0], // Gebruik de eerste id
                 'Gebruikersnaam' => 'johndoe',
                 'Wachtwoord' => Hash::make('password123'),
                 'IsActive' => 1,
@@ -33,7 +33,7 @@ class GebruikerSeeder extends Seeder
                 'Comments' => 'First user',
             ],
             [
-                'PersoonId' => $personen[1], // Gebruik de tweede id
+                'PersoonId' => $persoon[1], // Gebruik de tweede id
                 'Gebruikersnaam' => 'janesmith',
                 'Wachtwoord' => Hash::make('password123'),
                 'IsActive' => 1,
@@ -43,7 +43,7 @@ class GebruikerSeeder extends Seeder
                 'Comments' => 'Second user',
             ],
             [
-                'PersoonId' => $personen[2], // Gebruik de derde id
+                'PersoonId' => $persoon[2], // Gebruik de derde id
                 'Gebruikersnaam' => 'alicewit',
                 'Wachtwoord' => Hash::make('password123'),
                 'IsActive' => 1,
@@ -53,7 +53,7 @@ class GebruikerSeeder extends Seeder
                 'Comments' => 'Third user',
             ],
             [
-                'PersoonId' => $personen[3], // Gebruik de vierde id
+                'PersoonId' => $persoon[3], // Gebruik de vierde id
                 'Gebruikersnaam' => 'bobjohnson',
                 'Wachtwoord' => Hash::make('password123'),
                 'IsActive' => 1,

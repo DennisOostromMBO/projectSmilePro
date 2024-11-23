@@ -1,6 +1,6 @@
 CREATE PROCEDURE IF NOT EXISTS create_patient_table()
 BEGIN
-    CREATE TABLE IF NOT EXISTS patienten (
+    CREATE TABLE IF NOT EXISTS patient (
         Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
         ,PersoonId INT UNSIGNED NOT NULL
         ,Nummer VARCHAR(255) NOT NULL                
