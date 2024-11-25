@@ -12,20 +12,21 @@ class Beschikbaarheid extends Model
     protected $table = 'beschikbaarheid';
 
     protected $fillable = [
-        'medewerkerId',
+        'medewerkerId', // Zorg dat deze naam overeenkomt met de databasekolom
         'datumVanaf',
         'datumTotMet',
         'tijdVanaf',
         'tijdTotMet',
         'status',
         'isActief',
-        'opmerking'
+        'opmerking',
     ];
 
     public $timestamps = false;
 
+    // Relatie naar Medewerker
     public function medewerker()
     {
-        return $this->belongsTo(Medewerker::class, 'medewerkerId', 'Id');
+        return $this->belongsTo(Medewerker::class, 'medewerkerId', 'Id'); // Consistente foreign key naam
     }
 }
