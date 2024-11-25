@@ -9,5 +9,23 @@ class Beschikbaarheid extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['datum', 'tijd', 'beschikbaar'];
+    protected $table = 'beschikbaarheid';
+
+    protected $fillable = [
+        'medewerkerId',
+        'datumVanaf',
+        'datumTotMet',
+        'tijdVanaf',
+        'tijdTotMet',
+        'status',
+        'isActief',
+        'opmerking'
+    ];
+
+    public $timestamps = false;
+
+    public function medewerker()
+    {
+        return $this->belongsTo(Medewerker::class, 'medewerkerId', 'Id');
+    }
 }

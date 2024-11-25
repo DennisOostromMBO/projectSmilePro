@@ -31,13 +31,11 @@ Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->n
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
 
-Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index'])->name('beschikbaarheid.index');
-
 Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Communicatie.index');
 
 Route::get('/emails', [EmailController::class, 'index']);
 Route::post('/emails', [EmailController::class, 'store']);
 
-
+Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index']);
 Route::post('/get-beschikbaarheden', [BeschikbaarheidController::class, 'getBeschikbaarheden']);
 require __DIR__ . '/auth.php';
