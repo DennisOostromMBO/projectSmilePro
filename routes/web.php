@@ -37,4 +37,7 @@ Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Com
 
 Route::get('/emails', [EmailController::class, 'index']);
 Route::post('/emails', [EmailController::class, 'store']);
+
+
+Route::post('/get-beschikbaarheden', [BeschikbaarheidController::class, 'getBeschikbaarheden']);
 require __DIR__ . '/auth.php';

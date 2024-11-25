@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             RolSeeder::class,
             ContactSeeder::class,
             EmailSeeder::class,
+            BeschikbaarheidSeeder::class,
         ]);
     }
 }
