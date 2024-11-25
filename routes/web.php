@@ -9,6 +9,7 @@ use App\Http\Controllers\BeschikbaarheidController;
 use App\Http\Controllers\CommunicatieController;
 use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\AfsprakenController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,4 +39,9 @@ Route::post('/emails', [EmailController::class, 'store']);
 
 Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index']);
 Route::post('/get-beschikbaarheden', [BeschikbaarheidController::class, 'getBeschikbaarheden']);
+
+
+Route::resource('afspraken', AfsprakenController::class);
 require __DIR__ . '/auth.php';
+
+

@@ -32,6 +32,9 @@
                         <a class="nav-link me-5" href="{{ url('/beschikbaarheid') }}">Beschikbaarheid</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link me-5" href="{{ url('/afspraken') }}">Afspraken</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a> <!-- Extra margin -->
                     </li>
                     <li class="nav-item">
