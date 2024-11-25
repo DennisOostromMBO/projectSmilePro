@@ -15,7 +15,8 @@ class BeschikbaarheidController extends Controller
     public function getBeschikbaarheden(Request $request)
     {
         $date = $request->input('date');
-        $beschikbaarheden = Beschikbaarheid::whereDate('datum', $date)->get();
+        $beschikbaarheden = Beschikbaarheid::whereDate('DatumVanaf', $date)->get();
+        
         return response()->json($beschikbaarheden);
     }
 }
