@@ -25,7 +25,7 @@ class GebruikerSeeder extends Seeder
             [
                 'PersoonId' => $persoon[0], // Gebruik de eerste id
                 'Gebruikersnaam' => 'johndoe',
-                'Wachtwoord' => Hash::make('password123'),
+                'Wachtwoord' => 'Monkey123',
                 'IsActive' => 1,
                 'Isingelogd' => 0,
                 'Ingelogd' => 0,
@@ -35,7 +35,7 @@ class GebruikerSeeder extends Seeder
             [
                 'PersoonId' => $persoon[1], // Gebruik de tweede id
                 'Gebruikersnaam' => 'janesmith',
-                'Wachtwoord' => Hash::make('password123'),
+                'Wachtwoord' => 'Frikandel123',
                 'IsActive' => 1,
                 'Isingelogd' => 0,
                 'Ingelogd' => 0,
@@ -45,7 +45,7 @@ class GebruikerSeeder extends Seeder
             [
                 'PersoonId' => $persoon[2], // Gebruik de derde id
                 'Gebruikersnaam' => 'alicewit',
-                'Wachtwoord' => Hash::make('password123'),
+                'Wachtwoord' => 'koala123',
                 'IsActive' => 1,
                 'Isingelogd' => 0,
                 'Ingelogd' => 0,
@@ -55,7 +55,7 @@ class GebruikerSeeder extends Seeder
             [
                 'PersoonId' => $persoon[3], // Gebruik de vierde id
                 'Gebruikersnaam' => 'bobjohnson',
-                'Wachtwoord' => Hash::make('password123'),
+                'Wachtwoord' => 'IKBENBOB',
                 'IsActive' => 1,
                 'Isingelogd' => 0,
                 'Ingelogd' => 0,

@@ -19,6 +19,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Gebruikersnaam</th>
+                    <th>Wachtwoord</th>
                     <th>Is Active</th>
                     <th>Is Ingelogd</th>
                     <th>Ingelogd</th>
@@ -31,6 +32,7 @@
                     <tr>
                         <td>{{ $gebruiker->id }}</td>
                         <td>{{ $gebruiker->Gebruikersnaam }}</td>
+                        <td>{{ $gebruiker->Wachtwoord }}</td>
                         <td>{{ $gebruiker->IsActive }}</td>
                         <td>{{ $gebruiker->Isingelogd }}</td>
                         <td>{{ $gebruiker->Ingelogd }}</td>
