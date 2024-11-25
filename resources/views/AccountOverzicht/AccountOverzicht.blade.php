@@ -5,43 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Account Overzicht</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <a href="{{ url('/') }}">Terug naar Home</a>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
 
-    <h1>Accounts</h1>
+        <h1 class="text-2xl font-bold mb-6">Accounts</h1>
 
-    @if($gebruikers->isEmpty())
-        <h3>Er zijn geen accounts beschikbaar om weer te geven.</h3>
-    @else
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Gebruikersnaam</th>
-                    <th>Wachtwoord</th>
-                    <th>Is Active</th>
-                    <th>Is Ingelogd</th>
-                    <th>Ingelogd</th>
-                    <th>Uitgelogd</th>
-                    <th>Comments</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($gebruikers as $gebruiker)
+        @if($gebruikers->isEmpty())
+            <h3 class="text-red-500">Er zijn geen accounts beschikbaar om weer te geven.</h3>
+        @else
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead>
                     <tr>
-                        <td>{{ $gebruiker->id }}</td>
-                        <td>{{ $gebruiker->Gebruikersnaam }}</td>
-                        <td>{{ $gebruiker->Wachtwoord }}</td>
-                        <td>{{ $gebruiker->IsActive }}</td>
-                        <td>{{ $gebruiker->Isingelogd }}</td>
-                        <td>{{ $gebruiker->Ingelogd }}</td>
-                        <td>{{ $gebruiker->Uitgelogd }}</td>
-                        <td>{{ $gebruiker->Comments }}</td>
+                        <th class="py-2 px-4 border-b">ID</th>
+                        <th class="py-2 px-4 border-b">Gebruikersnaam</th>
+                        <th class="py-2 px-4 border-b">Wachtwoord</th>
+                        <th class="py-2 px-4 border-b">Is Active</th>
+                        <th class="py-2 px-4 border-b">Is Ingelogd</th>
+                        <th class="py-2 px-4 border-b">Ingelogd</th>
+                        <th class="py-2 px-4 border-b">Uitgelogd</th>
+                        <th class="py-2 px-4 border-b">Comments</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
+                </thead>
+                <tbody>
+                    @foreach($gebruikers as $gebruiker)
+                        <tr>
+                            <td class="py-2 px-4 border-b">{{ $gebruiker->Id }}</td>
+                            <td class="py-2 px-4 border-b">{{ $gebruiker->Gebruikersnaam }}</td>
+                            <td class="py-2 px-4 border-b">{{ $gebruiker->Wachtwoord }}</td>
+                            <td class="py-2 px-4 border-b">{{ $gebruiker->IsActive }}</td>
+                            <td class="py-2 px-4 border-b">{{ $gebruiker->Isingelogd }}</td>
+                            <td class="py-2 px-4 border-b">{{ $gebruiker->Ingelogd }}</td>
+                            <td class="py-2 px-4 border-b">{{ $gebruiker->Uitgelogd }}</td>
+                            <td class="py-2 px-4 border-b">{{ $gebruiker->Comments }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+    </div>
 </body>
 </html>
