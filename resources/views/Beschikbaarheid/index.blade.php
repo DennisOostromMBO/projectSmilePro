@@ -116,20 +116,28 @@
 
                     <div class="mb-4">
                         <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide">Beschikbaarheden</label>
-                        <ul class="list-disc pl-5">
-                            <template x-for="event in eventsForSelectedDate" :key="event.medewerker_id">
-                                <li class="text-gray-700 mb-1">
-                                    <strong>Medewerker ID:</strong> <span x-text="event.medewerker_id"></span><br>
-                                    <strong>Datum Vanaf:</strong> <span x-text="event.datum_vanaf"></span><br>
-                                    <strong>Datum Tot Met:</strong> <span x-text="event.datum_tot_met"></span><br>
-                                    <strong>Tijd Vanaf:</strong> <span x-text="event.tijd_vanaf"></span><br>
-                                    <strong>Tijd Tot Met:</strong> <span x-text="event.tijd_tot_met"></span><br>
-                                    <strong>Status:</strong> <span x-text="event.status"></span><br>
-                                    <strong>Is Actief:</strong> <span x-text="event.is_actief"></span><br>
-                                    <strong>Opmerking:</strong> <span x-text="event.opmerking"></span>
-                                </li>
-                            </template>
-                        </ul>
+                        <table class="min-w-full bg-white">
+                            <thead>
+                                <tr>
+                                    <th class="py-2 px-4 border-b">Datum Vanaf</th>
+                                    <th class="py-2 px-4 border-b">Datum Tot Met</th>
+                                    <th class="py-2 px-4 border-b">Tijd Vanaf</th>
+                                    <th class="py-2 px-4 border-b">Tijd Tot Met</th>
+                                    <th class="py-2 px-4 border-b">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="event in eventsForSelectedDate" ">
+                                    <tr>
+                                        <td class="py-2 px-4 border-b"><span x-text="event.DatumVanaf"></span></td>
+                                        <td class="py-2 px-4 border-b"><span x-text="event.DatumTotMet"></span></td>
+                                        <td class="py-2 px-4 border-b"><span x-text="event.TijdVanaf"></span></td>
+                                        <td class="py-2 px-4 border-b"><span x-text="event.TijdTotMet"></span></td>
+                                        <td class="py-2 px-4 border-b"><span x-text="event.Status"></span></td
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="mt-8 text-right">
@@ -244,14 +252,14 @@
                     .then(data => {
                         console.log("Received data:", data); // Debugging
                         this.eventsForSelectedDate = data.map(beschikbaarheid => ({
-                            medewerker_id: beschikbaarheid.medewerker_id,
-                            datum_vanaf: beschikbaarheid.datum_vanaf,
-                            datum_tot_met: beschikbaarheid.datum_tot_met,
-                            tijd_vanaf: beschikbaarheid.tijd_vanaf,
-                            tijd_tot_met: beschikbaarheid.tijd_tot_met,
-                            status: beschikbaarheid.status,
-                            is_actief: beschikbaarheid.is_actief,
-                            opmerking: beschikbaarheid.opmerking
+                            MedewerkerId: beschikbaarheid.MedewerkerId,
+                            DatumVanaf: beschikbaarheid.DatumVanaf,
+                            DatumTotMet: beschikbaarheid.DatumTotMet,
+                            TijdVanaf: beschikbaarheid.TijdVanaf,
+                            TijdTotMet: beschikbaarheid.TijdTotMet,
+                            Status: beschikbaarheid.Status,
+                            IsActief: beschikbaarheid.IsActief,
+                            Opmerking: beschikbaarheid.Opmerking
                         }));
                         console.log("Processed eventsForSelectedDate:", this.eventsForSelectedDate); // Debugging
                     })
