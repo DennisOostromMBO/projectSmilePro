@@ -22,4 +22,9 @@ class GebruikerModel extends Model
         'IsActive',
         'Comments',
     ];
+
+    public function persoon()
+    {
+        return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
+    }
 }
