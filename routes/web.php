@@ -10,6 +10,7 @@ use App\Http\Controllers\CommunicatieController;
 use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\AfsprakenController;
+use App\Http\Controllers\AboutUsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,6 +50,8 @@ Route::resource('afspraken', AfsprakenController::class);
 Route::post('/afspraken', [AfspraakController::class, 'store'])->name('afspraken.store');
 Route::post('/save-afspraak', [AfspraakController::class, 'store']);
 
+
+Route::get('/aboutus', [AboutUsController::class, 'index'])->name('aboutus.index');
 require __DIR__ . '/auth.php';
 
 
