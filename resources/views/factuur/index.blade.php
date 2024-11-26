@@ -39,21 +39,13 @@
             <tr>
                 <th>ID</th>
                 <th>Klant ID</th>
-                <th>Beschrijving</th>
-                <th>Vervaldatum</th>
-                <th>BTW</th>
-                <th>Totaal Bedrag</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($factuur as $factuur)
                 <tr>
-                    <td>{{ $factuur->id }}</td>
+                    <td><a href="{{ route('factuur.show', $factuur->id) }}">{{ $factuur->id }}</a></td>
                     <td>{{ $factuur->klant_id }}</td>
-                    <td>{{ $factuur->beschrijving }}</td>
-                    <td>{{ $factuur->vervaldatum }}</td>
-                    <td>{{ $factuur->btw }}</td>
-                    <td>{{ $factuur->totaal_bedrag }}</td>
                 </tr>
             @endforeach
         </tbody>
