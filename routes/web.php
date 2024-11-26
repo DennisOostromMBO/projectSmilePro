@@ -46,6 +46,9 @@ Route::post('/get-beschikbaarheden', [BeschikbaarheidController::class, 'getBesc
 
 
 Route::resource('afspraken', AfsprakenController::class);
+Route::post('/afspraken', [AfspraakController::class, 'store'])->name('afspraken.store');
+Route::post('/save-afspraak', [AfspraakController::class, 'store']);
+
 require __DIR__ . '/auth.php';
 
 
