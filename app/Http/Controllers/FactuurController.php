@@ -35,9 +35,10 @@ class FactuurController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Factuur $factuur)
+    public function show($id)
     {
-        //
+        $factuur = Factuur::findOrFail($id);
+        return view('factuur.details', compact('factuur'));
     }
 
     /**
