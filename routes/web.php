@@ -47,8 +47,8 @@ Route::post('/get-beschikbaarheden', [BeschikbaarheidController::class, 'getBesc
 
 
 Route::resource('afspraken', AfsprakenController::class);
-Route::post('/afspraken', [AfspraakController::class, 'store'])->name('afspraken.store');
-Route::post('/save-afspraak', [AfspraakController::class, 'store']);
+Route::post('/afspraken', [AfsprakenController::class, 'store'])->name('afspraken.store');
+Route::post('/save-afspraak', [AfsprakenController::class, 'store']);
 
 
 Route::get('/aboutus', [AboutUsController::class, 'index'])->name('aboutus.index');
