@@ -50,5 +50,7 @@
             @endforeach
         </tbody>
     </table>
+
+    <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
 </body>
 </html>

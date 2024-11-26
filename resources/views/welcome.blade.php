@@ -29,7 +29,10 @@
                         <a class="nav-link" href="{{ route('Communicatie.index') }}">Communicatie</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-5" href="{{ url('/beschikbaarheid') }}">Beschikbaarheid</a>
+                        <a class="nav-link" href="{{ route('factuur.index') }}">Factuur</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/beschikbaarheid') }}">Beschikbaarheid</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link me-5" href="{{ url('/afspraken') }}">Afspraken</a>
@@ -52,7 +55,7 @@
     </nav>
 
     <!-- Voeg hier optioneel andere content toe -->
-    
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             EmailSeeder::class,
             BeschikbaarheidSeeder::class,
+            FactuurSeeder::class,
         ]);
     }
 }
