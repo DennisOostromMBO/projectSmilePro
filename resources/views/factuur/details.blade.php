@@ -61,7 +61,7 @@
             <td>{{ $factuur->totaal_bedrag }}</td>
         </tr>
     </table>
-    <a href="{{ route('factuur.index') }}">Back to Overview</a>
+    <a href="{{ route('factuur.index') }}">Terug naar het overzicht</a><br>
     <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
 </body>
 </html>

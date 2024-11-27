@@ -33,6 +33,16 @@
     </style>
 </head>
 <body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var factuurIsEmpty = @json($factuur->isEmpty());
+            if (factuurIsEmpty) {
+                setTimeout(function() {
+                    window.location.href = "{{ url('/') }}";
+                }, 4000);
+            }
+        });
+    </script>
     <h1>Factuur Overzicht</h1>
     <table>
         <thead>
@@ -54,11 +64,4 @@
     <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
 </body>
 </html>
-@if ($factuur->isEmpty())
-    <p>Momenteel geen facturen beschikbaar</p>
-    <script>
-        setTimeout(function() {
-            window.location.href = "{{ url('/') }}";
-        }, 4000);
-    </script>
-@endif
+
