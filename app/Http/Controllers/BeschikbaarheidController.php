@@ -9,7 +9,8 @@ class BeschikbaarheidController extends Controller
 {
     public function index()
     {
-        return view('beschikbaarheid.index');
+        $beschikbaarheden = Beschikbaarheid::all();
+        return view('beschikbaarheid.index', ['beschikbaarheden' => $beschikbaarheden]);
     }
 
     public function getBeschikbaarheden(Request $request)
