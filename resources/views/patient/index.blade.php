@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Overzicht Patiënten</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    @if ($patients->isEmpty())
+        <meta http-equiv="refresh" content="4; url={{ url('/') }}">
+    @endif
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-12 rounded-lg shadow-lg w-full max-w-6xl">
