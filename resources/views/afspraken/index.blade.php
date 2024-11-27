@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -63,101 +63,129 @@
             </div>
         </div>
 
-       <!-- Modal aangepast om tijdslots te tonen -->
-<div x-show="openEventModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full" @click.away="closeEventModal()">
-        <h2 class="text-xl font-bold mb-4">Afspraak maken</h2>
-        <p class="text-gray-600 mb-4" x-text="event_date"></p>
+        <!-- Modal aangepast om tijdslots te tonen -->
+        <div x-show="openEventModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full" @click.away="closeEventModal()">
+                <h2 class="text-xl font-bold mb-4">Afspraak maken</h2>
+                <p class="text-gray-600 mb-4" x-text="event_date"></p>
 
-        <!-- Dropdown voor tijdslots -->
-        <select class="w-full p-2 border rounded" x-model="selectedTime">
-            <template x-for="time in timeSlots">
-                <option x-text="time"></option>
-            </template>
-        </select>
+                <!-- Dropdown voor tijdslots -->
+                <select class="w-full p-2 border rounded" x-model="selectedTime">
+                    <template x-if="timeSlots.length > 0">
+                        <template x-for="time in timeSlots">
+                            <option :value="time" x-text="time" :disabled="isTimeSlotBooked(time)"></option>
+                        </template>
+                    </template>
+                    <template x-if="timeSlots.length === 0">
+                        <option disabled>No available times</option>
+                    </template>
+                </select>
 
-        <div x-show="errorMessage" class="text-red-500 mt-4" x-text="errorMessage"></div>
-        <button @click="saveAppointment()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">Opslaan</button>
-        <button @click="closeEventModal()" class="mt-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 w-full">Sluiten</button>
-    </div>
-</div>
+                <div x-show="errorMessage" class="text-red-500 mt-4" x-text="errorMessage"></div>
+                <button @click="saveAppointment()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">Opslaan</button>
+                <button @click="closeEventModal()" class="mt-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 w-full">Sluiten</button>
+            </div>
+        </div>
+
+        <script>
+            const MONTH_NAMES = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
+            const DAYS = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
+        
+            function app() {
+                return {
+                    month: new Date().getMonth(),
+                    year: new Date().getFullYear(),
+                    no_of_days: [],
+                    blankdays: [],
+                    openEventModal: false,
+                    event_date: '',
+                    errorMessage: '',
+                    timeSlots: [],
+                    selectedTime: '',
+                    bookedSlots: [], // Array om de volgeboekte tijdsloten op te slaan
+        
+                    initDate() {
+                        this.getNoOfDays();
+                    },
+        
+                    prevMonth() {
+                        if (this.month > 0) {
+                            this.month--;
+                            this.getNoOfDays();
+                        }
+                    },
+        
+                    nextMonth() {
+                        if (this.month < 11) {
+                            this.month++;
+                            this.getNoOfDays();
+                        }
+                    },
+        
+                    getNoOfDays() {
+                        let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+                        let dayOfWeek = new Date(this.year, this.month).getDay();
+                        this.blankdays = Array.from({ length: dayOfWeek }, (_, i) => i + 1);
+                        this.no_of_days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+                    },
+        
+                    generateTimeSlots() {
+                        this.timeSlots = [];
+                        let startHour = 8; // Starttijd (08:00)
+                        let endHour = 17; // Eindtijd (17:00)
+                        for (let hour = startHour; hour < endHour; hour++) {
+                            this.timeSlots.push(`${hour}:00`);
+                            this.timeSlots.push(`${hour}:30`);
+                        }
+                    },
+        
+                    isTimeSlotBooked(time) {
+                        return this.bookedSlots.includes(time);
+                    },
 
 
-<script>
-    const MONTH_NAMES = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
-    const DAYS = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
-
-    function app() {
-    return {
-        month: new Date().getMonth(),
-        year: new Date().getFullYear(),
-        no_of_days: [],
-        blankdays: [],
-        openEventModal: false,
-        event_date: '',
-        errorMessage: '',
-        timeSlots: [],
-        selectedTime: '',
-        existingAppointments: [], // Array om bestaande afspraken te simuleren
-
-        initDate() {
-            this.getNoOfDays();
-        },
-
-        prevMonth() {
-            if (this.month > 0) {
-                this.month--;
-                this.getNoOfDays();
+                    
+        
+                    showEventModal(date) {
+                        this.event_date = `${this.year}-${this.month + 1}-${date}`;
+                        this.generateTimeSlots(); // Genereer tijdsloten voor de gekozen datum
+                        const dayOfWeek = new Date(this.year, this.month, date).getDay();
+                        if (dayOfWeek === 0 || dayOfWeek === 6) { // Weekend (Zondag = 0, Zaterdag = 6)
+                            this.timeSlots = []; // Geen tijdsloten beschikbaar
+                            this.errorMessage = 'Geen afspraken beschikbaar in het weekend.';
+                        } else {
+                            this.errorMessage = ''; // Reset de foutmelding als het geen weekend is
+                        }
+                        this.openEventModal = true;
+                    },
+        
+                    closeEventModal() {
+                        this.openEventModal = false;
+                        this.errorMessage = ''; // Reset de foutmelding bij sluiten van het modal
+                    },
+        
+                    saveAppointment() {
+                        const dayOfWeek = new Date(this.event_date).getDay();
+                        if (dayOfWeek === 0 || dayOfWeek === 6) { // Weekend (Zondag = 0, Zaterdag = 6)
+                            this.errorMessage = 'Geen afspraken beschikbaar in het weekend.'; // Toon specifieke weekendfout
+                            return;
+                        }
+        
+                        if (!this.selectedTime) {
+                            this.errorMessage = 'Selecteer een tijdstip.';
+                            return;
+                        }
+                        if (this.isTimeSlotBooked(this.selectedTime)) {
+                            this.errorMessage = 'Deze tijd is al volgeboekt, kies een ander tijdslot.';
+                            return;
+                        }
+                        this.bookedSlots.push(this.selectedTime); // Tijdslot markeren als volgeboekt
+                        alert(`Afspraak gepland op ${this.event_date} om ${this.selectedTime}`);
+                        this.closeEventModal();
+                    }
+                };
             }
-        },
-
-        nextMonth() {
-            if (this.month < 11) {
-                this.month++;
-                this.getNoOfDays();
-            }
-        },
-
-        getNoOfDays() {
-            let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
-            let dayOfWeek = new Date(this.year, this.month).getDay();
-            this.blankdays = Array.from({ length: dayOfWeek }, (_, i) => i + 1);
-            this.no_of_days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-        },
-
-        generateTimeSlots() {
-            this.timeSlots = [];
-            let startHour = 8; // Starttijd (08:00)
-            let endHour = 17; // Eindtijd (17:00)
-            for (let hour = startHour; hour < endHour; hour++) {
-                this.timeSlots.push(`${hour}:00`);
-                this.timeSlots.push(`${hour}:30`);
-            }
-        },
-
-        showEventModal(date) {
-            this.event_date = `${this.year}-${this.month + 1}-${date}`;
-            this.generateTimeSlots();
-            this.openEventModal = true;
-        },
-
-        closeEventModal() {
-            this.openEventModal = false;
-            this.errorMessage = '';
-        },
-
-        saveAppointment() {
-            if (!this.selectedTime) {
-                this.errorMessage = 'Selecteer een tijdstip.';
-                return;
-            }
-            alert(`Afspraak gepland op ${this.event_date} om ${this.selectedTime}`);
-            this.closeEventModal();
-        }
-    };
-}
-
-</script>
+        </script>
+        
 </body>
 </html>
-    

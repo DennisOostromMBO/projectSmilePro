@@ -9,10 +9,20 @@ class AfsprakenController extends Controller
 {
     // Overzicht van alle afspraken
     public function index()
-    {
+{
+    try {
+        // Probeer alle afspraken op te halen
         $afspraken = Afspraak::all();
         return view('afspraken.index', compact('afspraken'));
+    } catch (\Exception $e) {
+        // Als er een fout optreedt, log deze fout en geef een foutmelding weer
+        \Log::error('Fout bij het ophalen van afspraken: ' . $e->getMessage());
+        
+        // Je kunt de gebruiker doorverwijzen naar een andere pagina of een foutmelding tonen
+        return redirect()->route('home')->with('error', 'Er is een probleem met het ophalen van de afspraken.');
     }
+}
+
 
     // Formulier voor nieuwe afspraak
     public function create()
