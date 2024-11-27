@@ -9,12 +9,15 @@ class RolModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'rol'; // Zorg ervoor dat de tabelnaam correct is
+    // Specificeer de tabelnaam
+    protected $table = 'rol';
 
+    // Specificeer de velden die massaal toewijsbaar zijn
     protected $fillable = [
         'Naam',
         'Comments',
     ];
 
+    // Geef aan dat de tabel geen timestamps heeft
     public $timestamps = false;
 }

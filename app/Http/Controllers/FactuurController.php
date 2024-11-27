@@ -13,7 +13,8 @@ class FactuurController extends Controller
     public function index()
     {
         $factuur = Factuur::all();
-        return view('factuur.index', compact('factuur'));
+        $message = $factuur->isEmpty() ? 'Momenteel geen factuur beschikbaar.' : null;
+        return view('factuur.index', compact('factuur'))->with('message', $message);
     }
 
     /**
@@ -37,8 +38,12 @@ class FactuurController extends Controller
      */
     public function show($id)
     {
-        $factuur = Factuur::findOrFail($id);
-        return view('factuur.details', compact('factuur'));
+        try {
+            $factuur = Factuur::findOrFail($id);
+            return view('factuur.details', compact('factuur'));
+        } catch (\Exception $e) {
+            return redirect()->route('factuur.index')->with('error', 'Factuur not found.');
+        }
     }
 
     /**
