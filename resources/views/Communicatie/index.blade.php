@@ -6,6 +6,7 @@
     <title>Mailbox</title>
 </head>
 <body>
+    <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
     <div class="mailbox">
         <h1>Mailbox</h1>
         <p id="no-emails-message" style="display: none; text-align: center; color: gray;">

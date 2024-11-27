@@ -10,7 +10,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
-    <div class="container mx-auto mt-8" x-data="app()">
+  <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
+  <div class="container mx-auto mt-8" x-data="app()">
         <h1 class="text-2xl font-bold mb-4">Beschikbaarheid</h1>
         <div x-init="[initDate(), getNoOfDays()]" x-cloak>
             <div class="bg-white rounded-lg shadow overflow-hidden">
