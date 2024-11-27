@@ -10,7 +10,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
-    <div class="container mx-auto mt-8" x-data="app()">
+  <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
+  <div class="container mx-auto mt-8" x-data="app()">
         <h1 class="text-2xl font-bold mb-4">Beschikbaarheid</h1>
         <div x-init="[initDate(), getNoOfDays()]" x-cloak>
             <div class="bg-white rounded-lg shadow overflow-hidden">
@@ -140,6 +141,11 @@
                         </table>
                     </div>
 
+                    <div x-show="openEventModal">
+                        <!-- Andere inhoud van de modal -->
+                        <div x-text="noAvailabilityMessage" class="text-red-500"></div>
+                    </div>
+
                     <div class="mt-8 text-right">
                         <button type="button" class="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-lg shadow-sm mr-2" @click="closeEventModal()">
                             Sluiten
@@ -166,8 +172,8 @@
                 eventsForSelectedDate: [],
                 event_date: '',
                 event_theme: 'blue',
-
                 openEventModal: false,
+                noAvailabilityMessage: '', // Nieuwe eigenschap toegevoegd
 
                 initDate() {
                     let today = new Date();
@@ -188,12 +194,14 @@
                     this.openEventModal = true;
                     this.event_date = new Date(this.year, this.month, date).toDateString();
                     console.log("Selected date:", this.event_date); // Debugging
-                    const formattedDate = new Date(this.year, this.month, date).toISOString().split('T')[0];
+                    const formattedDate = new Date(this.year, this.month, date)
+                    .toLocaleDateString('en-CA'); // Formatteert de datum als yyyy-mm-dd
                     this.loadBeschikbaarheden(formattedDate);
                 },
 
                 closeEventModal() {
                     this.openEventModal = false;
+                    this.noAvailabilityMessage = ''; // Reset de melding bij het sluiten van de modal
                 },
 
                 addEvent() {
@@ -262,6 +270,11 @@
                             Opmerking: beschikbaarheid.Opmerking
                         }));
                         console.log("Processed eventsForSelectedDate:", this.eventsForSelectedDate); // Debugging
+                        if (this.eventsForSelectedDate.length === 0) {
+                            this.noAvailabilityMessage = 'er zijn momenteel geen beschikbaarheden mogelijk op deze datum';
+                        } else {
+                            this.noAvailabilityMessage = '';
+                        }
                     })
                     .catch(error => {
                         console.error("Error loading beschikbaarheden:", error); // Debugging
