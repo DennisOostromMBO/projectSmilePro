@@ -20,20 +20,18 @@ class AfsprakenController extends Controller
         return view('afspraken.aanmaken');
     }
 
-    // Opslaan van een nieuwe afspraak
-    public function store(Request $request)
-    {
-        $request->validate([
-            'gebruiker_id' => 'required|exists:users,id',
+    public function store(Request $request) {
+        $validated = $request->validate([
+            'gebruiker_id' => 'required',
             'datum' => 'required|date',
             'tijd' => 'required',
-            'notities' => 'nullable|string',
+            'notities' => 'nullable|string'
         ]);
-
-        Afspraak::create($request->all());
-
-        return redirect()->route('afspraken.index')->with('success', 'Afspraak succesvol aangemaakt.');
+    
+        Afspraak::create($validated);
+        return response()->json(['message' => 'Afspraak succesvol opgeslagen']);
     }
+    
 
     // Bekijken van een specifieke afspraak
     public function show($id)

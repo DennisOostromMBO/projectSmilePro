@@ -9,7 +9,7 @@ class AccountOverzichtController extends Controller
 {
     public function index()
     {
-        $gebruikers = GebruikerModel::all();
-        return view('AccountOverzicht.accountOverzicht', compact('gebruikers'));
+        $gebruikers = GebruikerModel::with('persoon')->get();
+        return view('Accountoverzicht.accountoverzicht', compact('gebruikers'));
     }
 }
