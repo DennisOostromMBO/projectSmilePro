@@ -9,8 +9,10 @@ class GebruikerModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'gebruiker'; // Zorg ervoor dat de tabelnaam correct is
+    // Specificeer de tabelnaam
+    protected $table = 'gebruiker';
 
+    // Specificeer de velden die massaal toewijsbaar zijn
     protected $fillable = [
         'Id',
         'PersoonId',
@@ -23,6 +25,11 @@ class GebruikerModel extends Model
         'Comments',
     ];
 
+    /**
+     * Definieer de relatie met de Persoon model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function persoon()
     {
         return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
