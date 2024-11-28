@@ -22,9 +22,7 @@
             <table class="min-w-full bg-white border border-gray-200">
                 <thead>
                     <tr>
-                        <th class="py-2 px-4 border-b">Id</th>
                         <th class="py-2 px-4 border-b">Volledige naam</th>
-                        <th class="py-2 px-4 border-b">Geboortedatum</th>
                         <th class="py-2 px-4 border-b">Volledig adres</th>
                         <th class="py-2 px-4 border-b">Mobielnummer</th>
                         <th class="py-2 px-4 border-b">Email</th>
@@ -35,9 +33,7 @@
                 <tbody>
                     @foreach ($patients as $patient)
                         <tr>
-                            <td class="py-2 px-4 border-b">{{ $patient->Id }}</td>
                             <td class="py-2 px-4 border-b">{{ $patient->persoon->VolledigeNaam }}</td>
-                            <td class="py-2 px-4 border-b">{{ $patient->persoon->Geboortedatum }}</td>
                             <td class="py-2 px-4 border-b">{{ $patient->contact->VolledigAdres }}</td>
                             <td class="py-2 px-4 border-b">{{ $patient->contact->Mobiel }}</td>
                             <td class="py-2 px-4 border-b">{{ $patient->contact->Email }}</td>
