@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Overzicht Patiënten</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     @if ($patients->isEmpty())
         <meta http-equiv="refresh" content="4; url={{ url('/') }}">
     @endif
@@ -20,25 +21,27 @@
             <h3 class="text-red-500">Momenteel geen patiënt gegevens beschikbaar</h3>
         @else
             <table class="min-w-full bg-white border border-gray-200">
-                <thead>
+            <thead>
                     <tr>
-                        <th class="py-2 px-4 border-b">Volledige naam</th>
-                        <th class="py-2 px-4 border-b">Volledig adres</th>
-                        <th class="py-2 px-4 border-b">Mobielnummer</th>
-                        <th class="py-2 px-4 border-b">Email</th>
-                        <th class="py-2 px-4 border-b">Nummer</th>
-                        <th class="py-2 px-4 border-b">Medisch Dossier</th>
+                        <th class="py-2 px-4 border-b text-left">Volledige naam</th>
+                        <th class="py-2 px-4 border-b text-left">Volledig adres</th>
+                        <th class="py-2 px-4 border-b text-left">Mobielnummer</th>
+                        <th class="py-2 px-4 border-b text-left">Email</th>
+                        <th class="py-2 px-4 border-b text-left">Nummer</th>
+                        <th class="py-2 px-4 border-b text-left">Medisch Dossier</th>
+                        <th class="py-2 px-4 border-b text-left">Acties</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($patients as $patient)
                         <tr>
-                            <td class="py-2 px-4 border-b">{{ $patient->persoon->VolledigeNaam }}</td>
-                            <td class="py-2 px-4 border-b">{{ $patient->contact->VolledigAdres }}</td>
-                            <td class="py-2 px-4 border-b">{{ $patient->contact->Mobiel }}</td>
-                            <td class="py-2 px-4 border-b">{{ $patient->contact->Email }}</td>
+                            <td class="py-2 px-4 border-b">{{ $patient->VolledigeNaam }}</td>
+                            <td class="py-2 px-4 border-b">{{ $patient->VolledigAdres }}</td>
+                            <td class="py-2 px-4 border-b">{{ $patient->Mobielnummer }}</td>
+                            <td class="py-2 px-4 border-b">{{ $patient->Email }}</td>
                             <td class="py-2 px-4 border-b">{{ $patient->Nummer }}</td>
                             <td class="py-2 px-4 border-b">{{ $patient->MedischDossier }}</td>
+                            <td class="py-2 px-4 border-b"><i class="bi bi-pencil"></i></td>
                         </tr>
                     @endforeach
                 </tbody>
