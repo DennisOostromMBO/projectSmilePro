@@ -17,7 +17,6 @@ class Gebruiker extends Model
     protected $table = 'gebruiker'; // Zorg ervoor dat de tabelnaam correct is
 
     protected $fillable = [
-        'PersoonId',
         'Gebruikersnaam',
         'Wachtwoord',
         'Isingelogd',

@@ -32,7 +32,6 @@
                 <table class="min-w-full bg-white border border-gray-200">
                     <thead>
                         <tr>
-                            <th class="py-2 px-4 border-b text-center">ID</th>
                             <th class="py-2 px-4 border-b text-center">Volledige Naam</th>
                             <th class="py-2 px-4 border-b text-center">Gebruikersnaam</th>
                             <th class="py-2 px-4 border-b text-center">Wachtwoord</th>
@@ -46,17 +45,30 @@
                     <tbody>
                         @foreach($gebruikers as $gebruiker)
                             <tr>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->Id }}</td>
                                 <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->persoon->VolledigeNaam }}</td>
                                 <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->Gebruikersnaam }}</td>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->Wachtwoord }}</td>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->IsActive }}</td>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->Isingelogd }}</td>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->Ingelogd }}</td>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->Uitgelogd }}</td>
+                                <td class="py-2 px-4 border-b text-center align-middle">
+                                    {{ substr($gebruiker->Wachtwoord, 0, floor(strlen($gebruiker->Wachtwoord) * 0.4)) }}{{ str_repeat('*', ceil(strlen($gebruiker->Wachtwoord) * 0.6)) }}
+                                </td>
+                                <td class="py-2 px-4 border-b text-center align-middle"><span
+                                    class="px-2 py-1 rounded-full text-xs {{ $gebruiker->IsActive ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                                    {{ $gebruiker->IsActive ? 'Actief' : 'Inactief' }}
+                                </span></td>
+                                <td class="py-2 px-4 border-b text-center align-middle"><span
+                                    class="px-2 py-1 rounded-full text-xs {{ $gebruiker->Isingelogd ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                                    {{ $gebruiker->Isingelogd ? 'IsIngelogd' : 'NietIngelogd' }}
+                                </span></td>
+                                <td class="py-2 px-4 border-b text-center align-middle"><span
+                                    class="px-2 py-1 rounded-full text-xs {{ $gebruiker->Ingelogd ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                                    {{ $gebruiker->Ingelogd ? 'Ingelogd' : 'NietIngelogd' }}
+                                </span></td>
+                                <td class="py-2 px-4 border-b text-center align-middle"><span
+                                    class="px-2 py-1 rounded-full text-xs {{ $gebruiker->Uitgelogd ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                                    {{ $gebruiker->Uitgelogd ? 'Uitgelogd' : 'Ingelogd' }}
+                                </span></td>
                                 <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->Comments }}</td>
-                            </tr>
-                        @endforeach
+                            </tr>   
+                        @endforeach 
                     </tbody>
                 </table>
             </div>
