@@ -43,4 +43,3 @@ class AfspraakSeeder extends Seeder
         ]);
     }
 }
-$this->call(AfspraakSeeder::class);
