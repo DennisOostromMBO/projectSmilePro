@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS create_contacten_table;
-CREATE PROCEDURE create_contacten_table()
-BEGIN
-    CREATE TABLE IF NOT EXISTS contact (
+CREATE TABLE IF NOT EXISTS contact (
         Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,  
         PatientId INT UNSIGNED NOT NULL,  
         Straatnaam VARCHAR(255) NOT NULL,  
@@ -17,5 +14,4 @@ BEGIN
         DatumAangemaakt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
         DatumGewijzigd TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP 
     ) ENGINE=InnoDB;
-END;
         
