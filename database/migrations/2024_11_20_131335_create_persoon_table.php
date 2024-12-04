@@ -1,10 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -13,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::statement('DROP PROCEDURE IF EXISTS create_persoon_table');
-        $sql = File::get(database_path('sql/sp_create_persoon_table.sql'));
+        // Lees de SQL uit het bestand en voer het uit om de tabel te maken
+        $sql = File::get(database_path('sql/persoon.sql'));
         DB::unprepared($sql);
-        DB::select('CALL create_persoon_table()');
     }
 
     /**
@@ -24,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('persoon');
-        DB::statement('DROP PROCEDURE IF EXISTS create_persoon_table');
+        // Verwijder de tabel als onderdeel van het rollback-proces
+        DB::statement('DROP TABLE IF EXISTS persoon');
     }
 };

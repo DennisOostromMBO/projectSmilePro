@@ -24,6 +24,7 @@
             <thead>
                     <tr>
                         <th class="py-2 px-4 border-b text-left">Volledige naam</th>
+                        <th class="py-2 px-4 border-b text-left">Leeftijdscategorie</th>
                         <th class="py-2 px-4 border-b text-left">Volledig adres</th>
                         <th class="py-2 px-4 border-b text-left">Mobielnummer</th>
                         <th class="py-2 px-4 border-b text-left">Email</th>
@@ -36,6 +37,7 @@
                     @foreach ($patients as $patient)
                         <tr>
                             <td class="py-2 px-4 border-b">{{ $patient->VolledigeNaam }}</td>
+                            <td class="py-2 px-4 border-b">{{ $patient->LeeftijdCategorie }}</td> 
                             <td class="py-2 px-4 border-b">{{ $patient->VolledigAdres }}</td>
                             <td class="py-2 px-4 border-b">{{ $patient->Mobielnummer }}</td>
                             <td class="py-2 px-4 border-b">{{ $patient->Email }}</td>
