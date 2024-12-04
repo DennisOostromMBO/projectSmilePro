@@ -17,4 +17,10 @@ class Afspraak extends Model
         'tijd',
         'notities',
     ];
+
+    // Voeg relaties toe als nodig
+    public function gebruiker()
+    {
+        return $this->belongsTo(User::class, 'gebruiker_id');
+    }
 }
