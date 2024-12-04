@@ -185,6 +185,25 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+--
+-- Tabelstructuur voor tabel `factuur`
+--
+
+CREATE TABLE IF NOT EXISTS `factuur` (
+    `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+    `klant_id` int NOT NULL,
+    `beschrijving` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `vervaldatum` date NOT NULL,
+    `btw` decimal(5,2) NOT NULL,
+    `totaal_bedrag` decimal(10,2) NOT NULL,
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
