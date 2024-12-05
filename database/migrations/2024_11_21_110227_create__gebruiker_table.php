@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         DB::statement('DROP PROCEDURE IF EXISTS create_gebruiker_table');
-        $sql = File::get(database_path('sql/sp_create_gebruiker_table.sql'));
+        $sql = File::get(database_path('sql/create_gebruiker_table.sql'));
         DB::unprepared($sql);
         DB::select('CALL create_gebruiker_table()');
     }
