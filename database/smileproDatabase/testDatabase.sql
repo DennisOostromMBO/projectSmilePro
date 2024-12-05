@@ -192,16 +192,16 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 CREATE TABLE IF NOT EXISTS `factuur` (
     `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-    `klant_id` int NOT NULL,
+    `gebruiker_id` bigint UNSIGNED NOT NULL, -- Foreign key naar gebruiker
     `beschrijving` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
     `vervaldatum` date NOT NULL,
     `btw` decimal(5,2) NOT NULL,
     `totaal_bedrag` decimal(10,2) NOT NULL,
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`gebruiker_id`) REFERENCES `gebruiker`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 
 
 COMMIT;
