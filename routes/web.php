@@ -48,8 +48,10 @@ Route::post('/get-beschikbaarheden', [BeschikbaarheidController::class, 'getBesc
 
 Route::resource('afspraken', AfsprakenController::class);
 Route::post('/afspraak', [AfspraakController::class, 'store'])->name('afspraak.store');
+Route::post('/afspraken', [AfsprakenController::class, 'store'])->name('afspraken.store');
 
 Route::post('/save-afspraak', [AfsprakenController::class, 'store']);
+Route::get('/afspraken/geboekte-slots', [AfsprakenController::class, 'getBookedSlots'])->name('afspraken.booked-slots');
 
 
 Route::get('/aboutus', [AboutUsController::class, 'index'])->name('aboutus.index');
