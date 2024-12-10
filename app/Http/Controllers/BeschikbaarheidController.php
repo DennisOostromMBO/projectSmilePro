@@ -9,15 +9,22 @@ class BeschikbaarheidController extends Controller
 {
     public function index()
     {
-        $beschikbaarheden = Beschikbaarheid::all();
-        return view('beschikbaarheid.index', ['beschikbaarheden' => $beschikbaarheden]);
+        try {
+            $beschikbaarheden = Beschikbaarheid::all();
+            return view('beschikbaarheid.index', ['beschikbaarheden' => $beschikbaarheden]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve beschikbaarheden', 'message' => $e->getMessage()], 500);
+        }
     }
 
     public function getBeschikbaarheden(Request $request)
     {
-        $date = $request->input('date');
-        $beschikbaarheden = Beschikbaarheid::whereDate('DatumVanaf', $date)->get();
-        
-        return response()->json($beschikbaarheden);
+        try {
+            $date = $request->input('date');
+            $beschikbaarheden = Beschikbaarheid::whereDate('DatumVanaf', $date)->get();
+            return response()->json($beschikbaarheden);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve beschikbaarheden', 'message' => $e->getMessage()], 500);
+        }
     }
 }

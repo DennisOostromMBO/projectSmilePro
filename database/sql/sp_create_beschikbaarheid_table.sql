@@ -4,7 +4,7 @@ CREATE PROCEDURE create_beschikbaarheid_table()
 BEGIN
     CREATE TABLE IF NOT EXISTS beschikbaarheid(
         Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        MedewerkerId INT UNSIGNED NOT NULL,
+        MedewerkerId INT UNSIGNED NOT NULL UNIQUE,
         DatumVanaf DATE NOT NULL,
         DatumTotMet DATE NOT NULL,
         TijdVanaf TIME NOT NULL,

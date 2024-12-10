@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beschikbaarheid</title>
+    <title>Agenda</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Gebruik Alpine.js versie 3 -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.5/dist/cdn.min.js" defer></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 <body>
   <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
@@ -49,9 +50,7 @@
                     <div class="flex flex-wrap" style="margin-bottom: -40px;">
                         <template x-for="(day, index) in DAYS" :key="index">    
                             <div style="width: 14.26%" class="px-2 py-2">
-                                <div
-                                    x-text="day" 
-                                    class="text-gray-600 text-sm uppercase tracking-wide font-bold text-center"></div>
+                                <div class="text-center text-gray-700" x-text="day"></div>
                             </div>
                         </template>
                     </div>
@@ -60,33 +59,26 @@
                         <template x-for="blankday in blankdays">
                             <div 
                                 style="width: 14.28%; height: 120px"
-                                class="text-center border-r border-b px-4 pt-2"    
+                                class="text-center border-r border-b px-4 pt-2" 
                             ></div>
                         </template>    
                         <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">    
                             <div style="width: 14.28%; height: 120px" class="px-4 pt-2 border-r border-b relative">
+                                <button>
+                                  
+                                    <div v-if="hasData(date)" class="absolute bottom-0 left-0 right-0 bg-yellow-500 h-10" @click="handleClick(date)">
+                                        Data available
+                                    </div>
+                                    <div v-else class="absolute bottom-0 left-0 right-0 bg-red-500 h-10">
+                                        No data
+                                    </div>
+                                </button>
                                 <div
                                     @click="showEventModal(date)"
                                     x-text="date"
                                     class="inline-flex w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
                                     :class="{'bg-blue-500 text-white': isToday(date) == true, 'text-gray-700 hover:bg-blue-200': isToday(date) == false }"    
                                 ></div>
-                                <div style="height: 80px;" class="overflow-y-auto mt-1">
-                                    <template x-for="event in events.filter(e => new Date(e.event_date).toDateString() ===  new Date(year, month, date).toDateString() )">    
-                                        <div
-                                            class="px-2 py-1 rounded-lg mt-1 overflow-hidden border"
-                                            :class="{
-                                                'border-blue-200 text-blue-800 bg-blue-100': event.event_theme === 'blue',
-                                                'border-red-200 text-red-800 bg-red-100': event.event_theme === 'red',
-                                                'border-yellow-200 text-yellow-800 bg-yellow-100': event.event_theme === 'yellow',
-                                                'border-green-200 text-green-800 bg-green-100': event.event_theme === 'green',
-                                                'border-purple-200 text-purple-800 bg-purple-100': event.event_theme === 'purple'
-                                            }"
-                                        >
-                                            <p x-text="event.event_title" class="text-sm truncate leading-tight"></p>
-                                        </div>
-                                    </template>
-                                </div>
                             </div>
                         </template>
                     </div>
@@ -115,41 +107,42 @@
                         <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" x-model="event_date" readonly>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide">Beschikbaarheden</label>
-                        <table class="min-w-full bg-white">
-                            <thead>
-                                <tr>
-                                    <th class="py-2 px-4 border-b">Datum Vanaf</th>
-                                    <th class="py-2 px-4 border-b">Datum Tot Met</th>
-                                    <th class="py-2 px-4 border-b">Tijd Vanaf</th>
-                                    <th class="py-2 px-4 border-b">Tijd Tot Met</th>
-                                    <th class="py-2 px-4 border-b">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <template x-for="event in eventsForSelectedDate" ">
+
+                        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                            <table class="min-w-full leading-normal">
+                                <thead>
                                     <tr>
-                                        <td class="py-2 px-4 border-b"><span x-text="event.DatumVanaf"></span></td>
-                                        <td class="py-2 px-4 border-b"><span x-text="event.DatumTotMet"></span></td>
-                                        <td class="py-2 px-4 border-b"><span x-text="event.TijdVanaf"></span></td>
-                                        <td class="py-2 px-4 border-b"><span x-text="event.TijdTotMet"></span></td>
-                                        <td class="py-2 px-4 border-b"><span x-text="event.Status"></span></td
+                                        <th class="py-2 px-4 border-b">Datum Vanaf</th>
+                                        <th class="py-2 px-4 border-b">Datum Tot Met</th>
+                                        <th class="py-2 px-4 border-b">Tijd Vanaf</th>
+                                        <th class="py-2 px-4 border-b">Tijd Tot Met</th>
+                                        <th class="py-2 px-4 border-b">Status</th>
                                     </tr>
-                                </template>
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    <template x-for="event in eventsForSelectedDate">
+                                        <tr>
+                                            <td class="py-2 px-4 border-b"><span x-text="event.DatumVanaf"></span></td>
+                                            <td class="py-2 px-4 border-b"><span x-text="event.DatumTotMet"></span></td>
+                                            <td class="py-2 px-4 border-b"><span x-text="event.TijdVanaf"></span></td>
+                                            <td class="py-2 px-4 border-b"><span x-text="event.TijdTotMet"></span></td>
+                                            <td class="py-2 px-4 border-b"><span x-text="event.Status"></span></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <div x-show="openEventModal">
-                        <!-- Andere inhoud van de modal -->
-                        <div x-text="noAvailabilityMessage" class="text-red-500"></div>
-                    </div>
+                        <div x-show="openEventModal">
+                            <!-- Andere inhoud van de modal -->
+                            <div x-text="noAvailabilityMessage" class="text-red-500"></div>
+                        </div>
 
-                    <div class="mt-8 text-right">
-                        <button type="button" class="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-lg shadow-sm mr-2" @click="closeEventModal()">
-                            Sluiten
-                        </button>    
+                        <div class="mt-8 text-right">
+                            <button type="button" class="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-lg shadow-sm mr-2" @click="closeEventModal()">
+                                Sluiten
+                            </button>    
+                        </div>
                     </div>
                 </div>
             </div>
@@ -279,9 +272,41 @@
                     .catch(error => {
                         console.error("Error loading beschikbaarheden:", error); // Debugging
                     });
-                }
+                },
+
+                hasData(date) {
+                    // Controleer of er data is voor de datum
+                    return this.events.some(event => new Date(event.DatumVanaf).toDateString() === new Date(this.year, this.month, date).toDateString());
+                },
+                getEventsForDate(date) {
+                    // Haal de evenementen op voor een specifieke datum
+                    return this.events.filter(event => new Date(event.DatumVanaf).toDateString() === new Date(this.year, this.month, date).toDateString());
+                },
+                handleClick(date) {
+                    // Voeg hier je logica toe voor wat er gebeurt als je op de datum klikt
+                },
             }
+            
         }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('calendar', () => ({
+                dates: @json($beschikbaarheden),
+                hasData(date) {
+                    return this.dates.some(d => d.datumVanaf === date);
+                },
+                handleClick(date) {
+                    // Handle click event
+                },
+                showEventModal(date) {
+                    // Show event modal
+                },
+                isToday(date) {
+                    const today = new Date().toISOString().split('T')[0];
+                    return date === today;
+                }
+            }));
+        });
     </script>
 </body>
 </html>
