@@ -27,6 +27,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/patient', [PatientController::class, 'index'])->name('patient.index');
+Route::get('/patient/create', [PatientController::class, 'create'])->name('patient.create');
+Route::get('/patient/edit/{id}', [PatientController::class, 'edit'])->name('patient.edit');
+Route::put('/patient/update/{id}', [PatientController::class, 'update'])->name('patient.update');
+Route::post('/patient', [PatientController::class, 'store'])->name('patient.store');
+
 
 Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');
 Route::resource('factuur', FactuurController::class);
