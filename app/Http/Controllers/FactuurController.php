@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Factuur;
@@ -7,61 +6,51 @@ use Illuminate\Http\Request;
 
 class FactuurController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $factuur = Factuur::all();
         return view('factuur.index', compact('factuur'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('factuur.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'klant_id' => 'required',
+            'beschrijving' => 'required',
+            'vervaldatum' => 'required|date',
+            'btw' => 'required|numeric',
+            'totaal_bedrag' => 'required|numeric',
+        ]);
+
+        Factuur::create($request->all());
+
+        return redirect()->route('factuur.index')->with('success', 'Factuur created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
+    public function edit($id)
     {
         $factuur = Factuur::findOrFail($id);
-        return view('factuur.details', compact('factuur'));
+        return view('factuur.edit', compact('factuur'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Factuur $factuur)
+    public function update(Request $request, $id)
     {
-        //
-    }
+        $request->validate([
+            'klant_id' => 'required',
+            'beschrijving' => 'required',
+            'vervaldatum' => 'required|date',
+            'btw' => 'required|numeric',
+            'totaal_bedrag' => 'required|numeric',
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Factuur $factuur)
-    {
-        //
-    }
+        $factuur = Factuur::findOrFail($id);
+        $factuur->update($request->all());
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Factuur $factuur)
-    {
-        //
+        return redirect()->route('factuur.index')->with('success', 'Factuur updated successfully.');
     }
 }

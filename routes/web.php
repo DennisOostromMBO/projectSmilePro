@@ -24,10 +24,11 @@ Route::middleware('auth')->group(function () {
 Route::get('/patient', [PatientController::class, 'index'])->name('patient.index');
 Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');
 
-Route::resource('factuur', FactuurController::class);
 Route::get('/factuurs', [FactuurController::class, 'index'])->name('factuur.index');
-Route::get('/factuurs/{id}', [FactuurController::class, 'show'])->name('factuur.show');
-
+Route::get('/factuurs/create', [FactuurController::class, 'create'])->name('factuur.create');
+Route::post('/factuurs', [FactuurController::class, 'store'])->name('factuur.store');
+Route::get('/factuurs/{id}/edit', [FactuurController::class, 'edit'])->name('factuur.edit');
+Route::put('/factuurs/{id}', [FactuurController::class, 'update'])->name('factuur.update');
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
