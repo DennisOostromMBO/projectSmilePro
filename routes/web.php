@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PraktijkmanagerController;
 use App\Http\Controllers\AccountOverzichtController;
@@ -12,28 +12,28 @@ use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\AfsprakenController;
 use App\Http\Controllers\AboutUsController;
-use App\Http\Controllers\Auth\RegisteredUserController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Auth routes
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('register', [RegisteredUserController::class, 'store']);
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/editgebruiker', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/editgebruiker', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/editgebruiker', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/editgebruiker', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/editgebruiker', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::get('/patient', [PatientController::class, 'index'])->name('patient.index');
@@ -42,13 +42,6 @@ Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->n
 Route::resource('factuur', FactuurController::class);
 Route::get('/factuurs', [FactuurController::class, 'index'])->name('factuur.index');
 Route::get('/factuurs/{id}', [FactuurController::class, 'show'])->name('factuur.show');
-
-// Auth routes
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-Route::post('register', [RegisteredUserController::class, 'store']);
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
@@ -66,6 +59,7 @@ Route::post('/afspraken', [AfsprakenController::class, 'store'])->name('afsprake
 Route::post('/save-afspraak', [AfsprakenController::class, 'store']);
 
 Route::get('/aboutus', [AboutUsController::class, 'index'])->name('aboutus.index');
+
 require __DIR__ . '/auth.php';
 
 

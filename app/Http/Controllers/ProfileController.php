@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -27,16 +26,11 @@ class ProfileController extends Controller
         $request->validate([
             'gebruikersnaam' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:gebruiker,email,' . Auth::id(),
-            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
         $gebruiker = Auth::user();
         $gebruiker->Gebruikersnaam = $request->gebruikersnaam;
         $gebruiker->Email = $request->email;
-
-        if ($request->filled('password')) {
-            $gebruiker->Wachtwoord = Hash::make($request->password);
-        }
 
         $gebruiker->save();
 

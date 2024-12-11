@@ -12,11 +12,11 @@
             <x-input-error :messages="$errors->get('gebruikersnaam')" class="mt-2" />
         </div>
 
-        <!-- Password -->
+        <!-- Wachtwoord -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <x-input-label for="Wachtwoord" :value="__('Wachtwoord')" />
+            <x-text-input id="Wachtwoord" class="block mt-1 w-full" type="password" name="Wachtwoord" required autocomplete="current-password" />
+            <x-input-error :messages="$errors->get('Wachtwoord')" class="mt-2" />
         </div>
 
         <!-- Remember Me -->
@@ -28,11 +28,30 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-          
+            @if (Route::has('password.request'))
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+                    {{ __('Forgot your password?') }}
+                </a>
+            @endif
 
             <x-primary-button class="ml-3">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+
+        <!-- Foutmeldingen -->
+        @if ($errors->any())
+            <div class="mt-4">
+                <div class="font-medium text-red-600">
+                    {{ __('Whoops! Something went wrong.') }}
+                </div>
+
+                <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </form>
 </x-guest-layout>

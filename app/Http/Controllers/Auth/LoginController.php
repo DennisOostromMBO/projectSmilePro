@@ -18,10 +18,10 @@ class LoginController extends Controller
     {
         $request->validate([
             'gebruikersnaam' => 'required|string',
-            'password' => 'required|string',
+            'Wachtwoord' => 'required|string',
         ]);
 
-        if (Auth::attempt(['Gebruikersnaam' => $request->gebruikersnaam, 'password' => $request->password], $request->remember)) {
+        if (Auth::attempt(['Gebruikersnaam' => $request->gebruikersnaam, 'Wachtwoord' => $request->Wachtwoord], $request->remember)) {
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');
