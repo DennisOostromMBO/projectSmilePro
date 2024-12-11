@@ -11,7 +11,36 @@
                 <div class="p-6 text-gray-900">
                     {{ __("You're logged in!") }}
                 </div>
+                @if (session('status'))
+                    <div class="p-6 text-green-500">
+                        {{ session('status') }}
+                    </div>
+                @endif
+                <div class="p-6 text-gray-900">
+                    <p><strong>Gebruikersnaam:</strong> {{ Auth::user()->Gebruikersnaam }}</p>
+                    <p><strong>Email:</strong> {{ Auth::user()->Email }}</p>
+                    <p><strong>Wachtwoord:</strong> 
+                        <span id="password" class="cursor-pointer text-blue-500" onclick="togglePassword()">Klik om te tonen</span>
+                    </p>
+                    <br>
+                    <a href="{{ route('profile.edit') }}" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Gegevens bewerken</a>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function togglePassword() {
+            const passwordSpan = document.getElementById('password');
+            const hashedPassword = '{{ Auth::user()->Wachtwoord }}';
+            const visiblePart = hashedPassword.substring(0, 3); // Eerste 3 tekens van het wachtwoord
+            const hiddenPart = '*'.repeat(hashedPassword.length - 3); // Rest van het wachtwoord verbergen
+
+            if (passwordSpan.innerText === 'Klik om te tonen') {
+                passwordSpan.innerText = visiblePart + hiddenPart;
+            } else {
+                passwordSpan.innerText = 'Klik om te tonen';
+            }
+        }
+    </script>
 </x-app-layout>

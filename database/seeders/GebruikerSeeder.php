@@ -27,6 +27,7 @@ class GebruikerSeeder extends Seeder
             [
                 'PersoonId' => $personen[0], // Gebruik de eerste id
                 'Gebruikersnaam' => 'johndoe',
+                'Email' => 'johndoe@example.com', // Voeg de email kolom toe
                 'Wachtwoord' => Hash::make('Monkey123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
@@ -37,6 +38,7 @@ class GebruikerSeeder extends Seeder
             [
                 'PersoonId' => $personen[1], // Gebruik de tweede id
                 'Gebruikersnaam' => 'janesmith',
+                'Email' => 'janesmith@example.com', // Voeg de email kolom toe
                 'Wachtwoord' => Hash::make('Frikandel123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
@@ -47,6 +49,7 @@ class GebruikerSeeder extends Seeder
             [
                 'PersoonId' => $personen[2], // Gebruik de derde id
                 'Gebruikersnaam' => 'alicejohnson',
+                'Email' => 'alicejohnson@example.com', // Voeg de email kolom toe
                 'Wachtwoord' => Hash::make('Password123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
@@ -57,6 +60,7 @@ class GebruikerSeeder extends Seeder
             [
                 'PersoonId' => $personen[3], // Gebruik de vierde id
                 'Gebruikersnaam' => 'bobwilliams',
+                'Email' => 'bobwilliams@example.com', // Voeg de email kolom toe
                 'Wachtwoord' => Hash::make('SecurePass123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,

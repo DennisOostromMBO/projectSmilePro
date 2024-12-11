@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ProfileController extends Controller
 {
@@ -16,25 +16,53 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        return view('profile.editgebruiker');
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $request->validate([
+            'gebruikersnaam' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:gebruiker,email,' . Auth::id(),
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $gebruiker = Auth::user();
+        $gebruiker->Gebruikersnaam = $request->gebruikersnaam;
+        $gebruiker->Email = $request->email;
+
+        if ($request->filled('password')) {
+            $gebruiker->Wachtwoord = Hash::make($request->password);
         }
 
-        $request->user()->save();
+        $gebruiker->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return redirect()->route('profile.edit')->with('status', 'Profiel bijgewerkt!');
+    }
+
+    /**
+     * Update the user's password.
+     */
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $gebruiker = Auth::user();
+
+        if (!Hash::check($request->current_password, $gebruiker->Wachtwoord)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect']);
+        }
+
+        $gebruiker->Wachtwoord = Hash::make($request->password);
+        $gebruiker->save();
+
+        return redirect()->route('profile.edit')->with('status', 'password-updated');
     }
 
     /**
@@ -42,19 +70,18 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+        $request->validate([
+            'password' => 'required|string',
         ]);
 
-        $user = $request->user();
+        $gebruiker = Auth::user();
 
-        Auth::logout();
+        if (!Hash::check($request->password, $gebruiker->Wachtwoord)) {
+            return back()->withErrors(['password' => 'Password is incorrect']);
+        }
 
-        $user->delete();
+        $gebruiker->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        return redirect('/')->with('status', 'account-deleted');
     }
 }
