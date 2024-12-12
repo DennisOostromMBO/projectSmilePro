@@ -91,34 +91,34 @@ class AfsprakenController extends Controller
         return view('afspraken.bewerken', compact('afspraak'));
     }
 
-    // Opslaan van wijzigingen
     public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'datum' => 'required|date',
-            'tijd' => 'required|date_format:H:i',
-            'berichten' => 'nullable|string',
+{
+    $validator = Validator::make($request->all(), [
+        'datum' => 'required|date',
+        'tijd' => 'required|date_format:H:i',
+        'berichten' => 'nullable|string',
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    $afspraak = Afspraak::findOrFail($id);
+
+    try {
+        $afspraak->update([
+            'datum' => $request->datum,
+            'tijd' => $request->tijd,
+            'berichten' => $request->berichten,
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $afspraak = Afspraak::findOrFail($id);
-
-        try {
-            $afspraak->update([
-                'datum' => $request->datum,
-                'tijd' => $request->tijd,
-                'berichten' => $request->berichten,
-            ]);
-
-            return response()->json(['message' => 'Afspraak succesvol bijgewerkt'], 200);
-        } catch (\Exception $e) {
-            \Log::error('Fout bij het bijwerken van een afspraak: ' . $e->getMessage());
-            return response()->json(['message' => 'Er is een fout opgetreden bij het bijwerken van de afspraak.'], 500);
-        }
+        return redirect()->route('afspraken.index')->with('success', 'Afspraak succesvol bijgewerkt');
+    } catch (\Exception $e) {
+        \Log::error('Fout bij het bijwerken van een afspraak: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Er is een fout opgetreden bij het bijwerken van de afspraak.');
     }
+}
+
 
     // Verwijderen van een afspraak
     public function destroy($id)
