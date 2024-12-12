@@ -44,6 +44,8 @@
             <div class="mb-4">
                 <label for="tijd" class="block text-gray-700">Tijd</label>
                 <input type="time" id="tijd" name="tijd" value="{{ $afspraak->tijd }}" class="w-full p-2 border rounded" required>
+                @if ($errors->has('tijd'))
+                @endif
             </div>
 
             <div class="mb-4">

@@ -92,32 +92,36 @@ class AfsprakenController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $validator = Validator::make($request->all(), [
-        'datum' => 'required|date',
-        'tijd' => 'required|date_format:H:i',
-        'berichten' => 'nullable|string',
-    ]);
-
-    if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
-    }
-
-    $afspraak = Afspraak::findOrFail($id);
-
-    try {
-        $afspraak->update([
-            'datum' => $request->datum,
-            'tijd' => $request->tijd,
-            'berichten' => $request->berichten,
+    {
+        $validator = Validator::make($request->all(), [
+            'datum' => 'required|date',
+            'tijd' => 'required|date_format:H:i|before_or_equal:16:30',
+            'berichten' => 'nullable|string',
         ]);
-
-        return redirect()->route('afspraken.index')->with('success', 'Afspraak succesvol bijgewerkt');
-    } catch (\Exception $e) {
-        \Log::error('Fout bij het bijwerken van een afspraak: ' . $e->getMessage());
-        return redirect()->back()->with('error', 'Er is een fout opgetreden bij het bijwerken van de afspraak.');
+        
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'De tijd moet voor of gelijk aan 16:30 zijn.');
+        }
+         
+        
+    
+        $afspraak = Afspraak::findOrFail($id);
+    
+        try {
+            $afspraak->update([
+                'datum' => $request->datum,
+                'tijd' => $request->tijd,
+                'berichten' => $request->berichten,
+            ]);
+    
+            return redirect()->route('afspraken.index')->with('success', 'Afspraak succesvol bijgewerkt');
+        } catch (\Exception $e) {
+            \Log::error('Fout bij het bijwerken van een afspraak: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Er is een fout opgetreden bij het bijwerken van de afspraak.');
+        }
     }
-}
+    
+    
 
 
     // Verwijderen van een afspraak
