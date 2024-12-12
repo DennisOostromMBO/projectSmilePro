@@ -17,7 +17,7 @@ class User extends Authenticatable
         'PersoonId',
         'Gebruikersnaam',
         'Email',
-        'Wachtwoord',
+        'password',
         'remember_token',
         'Isingelogd',
         'Ingelogd',
@@ -31,19 +31,7 @@ class User extends Authenticatable
 
     // Specificeer de kolom die als wachtwoord wordt gebruikt
     protected $hidden = [
-        'Wachtwoord',
+        'password',
         'remember_token',
     ];
-
-    // Specificeer de kolom die als wachtwoord wordt gebruikt
-    public function getAuthPassword()
-    {
-        return $this->Wachtwoord;
-    }
-
-    // Definieer de relatie met de Persoon model
-    public function persoon()
-    {
-        return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
-    }
 }

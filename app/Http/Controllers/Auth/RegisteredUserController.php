@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Carbon\Carbon;
 
 class RegisteredUserController extends Controller
 {
@@ -46,15 +47,17 @@ class RegisteredUserController extends Controller
             return redirect()->back()->withErrors(['error' => 'Geen persoon gevonden om te koppelen aan de gebruiker.']);
         }
 
+        $currentTime = Carbon::now();
+
         $user = User::create([
             'PersoonId' => $persoon->Id, // Gebruik het opgehaalde PersoonId
             'Gebruikersnaam' => $request->name,
             'Email' => $request->email,
-            'Wachtwoord' => Hash::make($request->password),
+            'password' => Hash::make($request->password),
             'IsActive' => 1,
             'Isingelogd' => 0,
-            'Ingelogd' => null,
-            'Uitgelogd' => null,
+            'Ingelogd' => $currentTime,
+            'Uitgelogd' => $currentTime,
             'Comments' => null,
             'remember_token' => Str::random(60),
         ]);
