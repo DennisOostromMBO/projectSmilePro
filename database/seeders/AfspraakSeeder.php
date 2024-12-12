@@ -15,31 +15,39 @@ class AfspraakSeeder extends Seeder
     public function run()
     {
         Afspraak::create([
-            'gebruiker_id' => 1, // Verwijs naar een gebruiker die bestaat
-            'datum' => '2024-12-05', // Voorbeeld datum
-            'tijd' => '10:00', // Voorbeeld tijd
-            'notities' => 'Controle afspraak',
+            'gebruiker_id' => 1, // Verwijzing naar bestaande gebruiker
+            'volledige_naam' => 'Jan Jansen',
+            'leeftijdsgroep' => 'volwassen',
+            'datum' => '2024-12-05',
+            'tijd' => '10:00',
+            'berichten' => 'Controle afspraak',
         ]);
 
         Afspraak::create([
-            'gebruiker_id' => 2, // Verwijs naar een gebruiker die bestaat
+            'gebruiker_id' => 2,
+            'volledige_naam' => 'Piet Pietersen',
+            'leeftijdsgroep' => 'volwassen',
             'datum' => '2024-12-06',
             'tijd' => '14:00',
-            'notities' => 'Follow-up na operatie',
+            'berichten' => 'Follow-up na operatie',
         ]);
 
         Afspraak::create([
             'gebruiker_id' => 1,
+            'volledige_naam' => 'Jan Jansen',
+            'leeftijdsgroep' => 'volwassen',
             'datum' => '2024-12-07',
             'tijd' => '09:30',
-            'notities' => 'Bloedonderzoek voor allergieën',
+            'berichten' => 'Bloedonderzoek voor allergieën',
         ]);
 
         Afspraak::create([
-            'gebruiker_id' => 3, // Verwijs naar een gebruiker die bestaat
+            'gebruiker_id' => 3,
+            'volledige_naam' => 'Marie Jacobs',
+            'leeftijdsgroep' => 'jongeren',
             'datum' => '2024-12-10',
             'tijd' => '11:00',
-            'notities' => 'Informatie sessie voor nieuwe behandelingen',
+            'berichten' => 'Informatie sessie voor nieuwe behandelingen',
         ]);
     }
 }

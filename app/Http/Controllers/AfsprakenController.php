@@ -27,40 +27,36 @@ class AfsprakenController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'gebruiker_id' => 'required|exists:gebruikers,id',
-        'datum' => 'required|date',
-        'tijd' => 'required|date_format:H:i',
-        'notities' => 'nullable|string',
-    ]);
-    
-
-    if ($validator->fails()) {
-        return response()->json(['errors' => $validator->errors()], 422);
-    }
-
-    try {
-        Afspraak::create([
-            'datum' => $request->datum,
-            'tijd' => $request->tijd,
-            'notities' => $request->notities,
+    {
+        $request->validate([
+            'gebruiker_id' => 'required|exists:gebruikers,id',
+            'datum' => 'required|date',
+            'tijd' => 'required|date_format:H:i',
+            'berichten' => 'nullable|string',
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Afspraak succesvol aangemaakt!',
-        ], 200);
-    } catch (\Exception $e) {
-        \Log::error('Fout bij het opslaan van een afspraak: ' . $e->getMessage());
-        return response()->json([
-            'success' => false,
-            'message' => 'Er is een fout opgetreden bij het opslaan van de afspraak.',
-        ], 500);
-    }
-}
+        try {
+            Afspraak::create([
+                'gebruiker_id' => $request->gebruiker_id,
+                'volledige_naam' => $request->volledige_naam, // toevoegen van de volledige naam
+                'leeftijdsgroep' => $request->leeftijdsgroep,  // toevoegen van de leeftijdsgroep
+                'datum' => $request->datum,
+                'tijd' => $request->tijd,
+                'berichten' => $request->berichten,
+            ]);
 
-    
+            return response()->json([
+                'success' => true,
+                'message' => 'Afspraak succesvol aangemaakt!',
+            ], 200);
+        } catch (\Exception $e) {
+            \Log::error('Fout bij het opslaan van een afspraak: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Er is een fout opgetreden bij het opslaan van de afspraak.',
+            ], 500);
+        }
+    }
 
     // Controleren op bestaande afspraken (AJAX)
     public function checkAvailability(Request $request)
@@ -101,7 +97,7 @@ class AfsprakenController extends Controller
         $validator = Validator::make($request->all(), [
             'datum' => 'required|date',
             'tijd' => 'required|date_format:H:i',
-            'notities' => 'nullable|string',
+            'berichten' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -111,7 +107,12 @@ class AfsprakenController extends Controller
         $afspraak = Afspraak::findOrFail($id);
 
         try {
-            $afspraak->update($request->all());
+            $afspraak->update([
+                'datum' => $request->datum,
+                'tijd' => $request->tijd,
+                'berichten' => $request->berichten,
+            ]);
+
             return response()->json(['message' => 'Afspraak succesvol bijgewerkt'], 200);
         } catch (\Exception $e) {
             \Log::error('Fout bij het bijwerken van een afspraak: ' . $e->getMessage());
@@ -120,7 +121,7 @@ class AfsprakenController extends Controller
     }
 
     // Verwijderen van een afspraak
-    public function destroy($id) 
+    public function destroy($id)
     {
         $afspraak = Afspraak::findOrFail($id);
 

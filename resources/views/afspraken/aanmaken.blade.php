@@ -8,9 +8,13 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        .selected {
+            background-color: #38a169; /* Groene achtergrond voor geselecteerde tijd */
+            border-color: #2f855a; /* Donkergroene rand */
+        }
+    </style>
 </head>
-<a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
-
 <body class="bg-gray-100">
     <div class="container mx-auto mt-8">
         <h1 class="text-2xl font-bold mb-4">Afspraken Kalender</h1>
@@ -28,7 +32,10 @@
                 </div>
                 <div class="mb-4">
                     <label for="tijd" class="block text-sm font-medium">Tijd</label>
-                    <input type="time" id="tijd" name="tijd" class="w-full border-gray-300 rounded mt-1 p-2" required>
+                    <!-- Tijdkeuze knoppen -->
+                    <div id="tijdButtons" class="grid grid-cols-4 gap-2">
+                        <!-- Dynamisch gegenereerde knoppen komen hier -->
+                    </div>
                 </div>
                 <div class="mb-4">
                     <label for="notities" class="block text-sm font-medium">Notities</label>
@@ -49,38 +56,72 @@
             var closeModalBtn = document.getElementById('closeModal');
             var afspraakForm = document.getElementById('afspraakForm');
             var datumInput = document.getElementById('datum');
+            var tijdButtons = document.getElementById('tijdButtons');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 locale: 'nl',
                 selectable: true,
                 validRange: {
-                    start: '2024-12-01', // Startdatum, je kunt dit aanpassen naar de huidige maand
-                    end: '2024-12-31'  // Einddatum
+                    start: '2024-12-01',
+                    end: '2024-12-31'
                 },
                 businessHours: {
-                    // Werkuren: 08:00 - 17:00 van maandag tot vrijdag
-                    daysOfWeek: [1, 2, 3, 4, 5], // Maandag t/m vrijdag
+                    daysOfWeek: [1, 2, 3, 4, 5],
                     startTime: '08:00',
                     endTime: '17:00'
                 },
-                weekends: false,  // Zorgt ervoor dat weekenddagen niet geselecteerd kunnen worden
+                weekends: false,
                 dateClick: function(info) {
-                    // Vul de datum in en open het modal
                     datumInput.value = info.dateStr;
+                    generateTijdButtons(info.dateStr);
                     modal.classList.remove('hidden');
                 },
-                events: '{{ route('afspraken.index') }}'  // Zorg ervoor dat je deze route hebt gedefinieerd
+                events: '{{ route('afspraken.index') }}'
             });
 
             calendar.render();
 
-            // Modal sluiten
+            function generateTijdButtons(date) {
+                // Verwijder bestaande knoppen voordat we nieuwe genereren
+                tijdButtons.innerHTML = '';
+
+                // Starttijd: 08:00, eindtijd: 17:00, elk half uur
+                var startTime = 8 * 60; // 8:00 in minuten
+                var endTime = 17 * 60;  // 17:00 in minuten
+
+                for (var time = startTime; time < endTime; time += 30) {
+                    var hours = Math.floor(time / 60);
+                    var minutes = time % 60;
+                    var timeString = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+
+                    var button = document.createElement('button');
+                    button.type = 'button';
+                    button.textContent = timeString;
+                    button.classList.add('bg-blue-500', 'text-white', 'px-4', 'py-2', 'rounded');
+                    
+                    // Voeg event listener toe voor het klikken op de knop
+                    button.onclick = function() {
+                        // Verwijder de 'selected' klasse van alle knoppen
+                        var allButtons = tijdButtons.querySelectorAll('button');
+                        allButtons.forEach(function(b) {
+                            b.classList.remove('selected');
+                        });
+
+                        // Voeg de 'selected' klasse toe aan de geklikte knop
+                        this.classList.add('selected');
+                        
+                        // Zet de tijd in het formulier
+                        document.getElementById('tijd').value = this.textContent;
+                    };
+                    tijdButtons.appendChild(button);
+                }
+            }
+
             closeModalBtn.addEventListener('click', function () {
                 modal.classList.add('hidden');
             });
 
-            // Formulier verzenden
             afspraakForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
@@ -93,8 +134,8 @@
                 })
                 .then(function (response) {
                     alert(response.data.message);
-                    modal.classList.add('hidden'); // Sluit de modal
-                    calendar.refetchEvents(); // Vernieuw de kalender
+                    modal.classList.add('hidden');
+                    calendar.refetchEvents();
                 })
                 .catch(function (error) {
                     alert('Er is een fout opgetreden. Controleer je invoer.');

@@ -27,18 +27,22 @@
             <table class="table-auto w-full bg-white shadow-md rounded">
                 <thead>
                     <tr class="bg-gray-200 text-left">
+                        <th class="px-4 py-2">Volledige Naam</th>
+                        <th class="px-4 py-2">Leeftijdsgroep</th>
                         <th class="px-4 py-2">Datum</th>
                         <th class="px-4 py-2">Tijd</th>
-                        <th class="px-4 py-2">Notities</th>
+                        <th class="px-4 py-2">Berichten</th>
                         <th class="px-4 py-2">Acties</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($afspraken as $afspraak)
                         <tr class="border-b">
+                            <td class="px-4 py-2">{{ $afspraak->volledige_naam }}</td>
+                            <td class="px-4 py-2">{{ $afspraak->leeftijdsgroep }}</td>
                             <td class="px-4 py-2">{{ $afspraak->datum }}</td>
-                            <td class="px-4 py-2">{{ $afspraak->tijd }}</td>
-                            <td class="px-4 py-2">{{ $afspraak->notities ?? '-' }}</td>
+                            <td class="px-4 py-2">{{ \Carbon\Carbon::parse($afspraak->tijd)->format('H:i') }}</td>
+                            <td class="px-4 py-2">{{ $afspraak->berichten ?? '-' }}</td>
                             <td class="px-4 py-2">
                                 <a href="{{ route('afspraken.edit', $afspraak->id) }}" class="text-blue-500 underline">Bewerken</a>
                                 <form action="{{ route('afspraken.destroy', $afspraak->id) }}" method="POST" class="inline">
