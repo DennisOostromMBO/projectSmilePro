@@ -16,17 +16,15 @@ class PraktijkmanagerController extends Controller
     }
 
     public function medewerkers()
-    {
-        // $medewerkers = Medewerker::with('persoon')->get();
-        $medewerkers = [];
+{
+    // Haal alle medewerkers op, inclusief gekoppelde persoon-data
+    $medewerkers = Medewerker::with('persoon')->get();
 
-        // dd($medewerkers);
-
-        return view(
-            "praktijkmanager.medewerkers",
-            [
-                "medewerkers" => $medewerkers
-            ]
-        );
-    }
+    return view(
+        "praktijkmanager.medewerkers",
+        [
+            "medewerkers" => $medewerkers
+        ]
+    );
+}
 }

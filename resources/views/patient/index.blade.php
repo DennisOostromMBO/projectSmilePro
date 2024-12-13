@@ -1,46 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Overzicht Patiënten</title>
-</head>
-
-<body>
-    <h1>Overzicht Patiënten</h1>
-
-    @if (count($patients) <= 0 || $patients == null || $patients->isEmpty())
-        <h3>Momenteel geen patiënt gegevens beschikbaar</h3>
-    @else
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Volledige naam</th>
-                    <th>Geboortedatum</th>
-                    <th>Volledig adres</th>
-                    <th>Mobielnummer</th>
-                    <th>Email</th>
-                    <th>Nummer</th>
-                    <th>Medisch Dossier</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($patients as $patient)
-                    <tr>
-                        <td>{{ $patient->persoon->VolledigeNaam }}</td>
-                        <td>{{ $patient->persoon->Geboortedatum }}</td>
-                        <td>{{ $patient->contact->VolledigAdres }}</td>
-                        <td>{{ $patient->contact->Mobiel }}</td>
-                        <td>{{ $patient->contact->Email }}</td>
-                        <td>{{ $patient->Nummer }}</td>
-                        <td>{{ $patient->MedischDossier }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    @if ($patients->isEmpty())
+        <meta http-equiv="refresh" content="4; url={{ url('/') }}">
     @endif
-    <a href="{{ url('/') }}">Terug naar Home</a>
-</body>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-12 rounded-lg shadow-lg w-full max-w-6xl">
+        <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
 
+        <h1 class="text-2xl font-bold mb-6">Overzicht Patiënten</h1>
+
+        @if (count($patients) <= 0 || $patients == null || $patients->isEmpty())
+            <h3 class="text-red-500">Momenteel geen patiënt gegevens beschikbaar</h3>
+        @else
+            <table class="min-w-full bg-white border border-gray-200">
+            <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b text-left">Volledige naam</th>
+                        <th class="py-2 px-4 border-b text-left">Leeftijdscategorie</th>
+                        <th class="py-2 px-4 border-b text-left">Volledig adres</th>
+                        <th class="py-2 px-4 border-b text-left">Mobielnummer</th>
+                        <th class="py-2 px-4 border-b text-left">Email</th>
+                        <th class="py-2 px-4 border-b text-left">Nummer</th>
+                        <th class="py-2 px-4 border-b text-left">Medisch Dossier</th>
+                        <th class="py-2 px-4 border-b text-left">Acties</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($patients as $patient)
+                        <tr>
+                            <td class="py-2 px-4 border-b">{{ $patient->VolledigeNaam }}</td>
+                            <td class="py-2 px-4 border-b">{{ $patient->LeeftijdCategorie }}</td> 
+                            <td class="py-2 px-4 border-b">{{ $patient->VolledigAdres }}</td>
+                            <td class="py-2 px-4 border-b">{{ $patient->Mobielnummer }}</td>
+                            <td class="py-2 px-4 border-b">{{ $patient->Email }}</td>
+                            <td class="py-2 px-4 border-b">{{ $patient->Nummer }}</td>
+                            <td class="py-2 px-4 border-b">{{ $patient->MedischDossier }}</td>
+                            <td class="py-2 px-4 border-b"><i class="bi bi-pencil"></i></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+    </div>
+</body>
 </html>

@@ -30,33 +30,47 @@
         tr:hover {
             background-color: #f1f1f1;
         }
+        .no-data {
+            color: red;
+            font-weight: bold;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var factuurIsEmpty = @json($factuur->isEmpty());
+            if (factuurIsEmpty) {
+                alert("Geen factuur beschikbaar");
+                setTimeout(function() {
+                    window.location.href = "{{ url('/') }}";
+                }, 4000);
+            }
+        });
+    </script>
     <h1>Factuur Overzicht</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Klant ID</th>
-                <th>Beschrijving</th>
-                <th>Vervaldatum</th>
-                <th>BTW</th>
-                <th>Totaal Bedrag</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($factuur as $factuur)
+    @if ($factuur->isEmpty())
+        <p class="no-data">Geen factuur beschikbaar</p>
+    @else
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ $factuur->id }}</td>
-                    <td>{{ $factuur->klant_id }}</td>
-                    <td>{{ $factuur->beschrijving }}</td>
-                    <td>{{ $factuur->vervaldatum }}</td>
-                    <td>{{ $factuur->btw }}</td>
-                    <td>{{ $factuur->totaal_bedrag }}</td>
+                    <th>ID</th>
+                    <th>Klant ID</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($factuur as $factuur)
+                    <tr>
+                        <td><a href="{{ route('factuur.show', $factuur->id) }}">{{ $factuur->id }}</a></td>
+                        <td>{{ $factuur->klant_id }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+
+    <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
 </body>
 </html>

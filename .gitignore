@@ -8,6 +8,7 @@
 /vendor
 .env
 package-lock.json
+package.json
 .env.backup
 .env.production
 .phpactor.json
