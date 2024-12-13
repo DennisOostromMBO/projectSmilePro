@@ -1,25 +1,29 @@
 <?php
+// app/Http/Controllers/FactuurController.php
 namespace App\Http\Controllers;
 
 use App\Models\Factuur;
+use App\Models\Persoon;
 use Illuminate\Http\Request;
 
 class FactuurController extends Controller
 {
     public function index()
     {
-        $factuur = Factuur::all();
-        return view('factuur.index', compact('factuur'));
+        $facturen = Factuur::with('persoon')->get();
+        return view('factuur.index', compact('facturen'));
     }
 
     public function create()
     {
-        return view('factuur.create');
+        $personen = Persoon::all();
+        return view('factuur.create', compact('personen'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'persoon_id' => 'required|exists:persoon,id',
             'klant_id' => 'required',
             'beschrijving' => 'required',
             'vervaldatum' => 'required|date',
@@ -34,13 +38,15 @@ class FactuurController extends Controller
 
     public function edit($id)
     {
-        $factuur = Factuur::findOrFail($id);
-        return view('factuur.edit', compact('factuur'));
+        $factuur = Factuur::with('persoon')->findOrFail($id);
+        $personen = Persoon::all();
+        return view('factuur.edit', compact('factuur', 'personen'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
+            'persoon_id' => 'required|exists:persoon,id',
             'klant_id' => 'required',
             'beschrijving' => 'required',
             'vervaldatum' => 'required|date',

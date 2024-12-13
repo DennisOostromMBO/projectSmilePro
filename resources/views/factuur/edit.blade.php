@@ -22,6 +22,18 @@
                 <input type="text" name="klant_id" id="klant_id" value="{{ $factuur->klant_id }}" class="w-full border-gray-300 rounded mt-1" required>
             </div>
             <div class="mb-4">
+                <label for="voornaam" class="block text-gray-700">Voornaam</label>
+                <input type="text" name="voornaam" id="voornaam" value="{{ $factuur->voornaam }}" class="w-full border-gray-300 rounded mt-1" required>
+            </div>
+            <div class="mb-4">
+                <label for="tussenvoegsel" class="block text-gray-700">Tussenvoegsel</label>
+                <input type="text" name="tussenvoegsel" id="tussenvoegsel" value="{{ $factuur->tussenvoegsel }}" class="w-full border-gray-300 rounded mt-1">
+            </div>
+            <div class="mb-4">
+                <label for="achternaam" class="block text-gray-700">Achternaam</label>
+                <input type="text" name="achternaam" id="achternaam" value="{{ $factuur->achternaam }}" class="w-full border-gray-300 rounded mt-1" required>
+            </div>
+            <div class="mb-4">
                 <label for="beschrijving" class="block text-gray-700">Beschrijving</label>
                 <textarea name="beschrijving" id="beschrijving" class="w-full border-gray-300 rounded mt-1" required>{{ $factuur->beschrijving }}</textarea>
             </div>

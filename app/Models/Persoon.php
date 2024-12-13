@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,19 +8,24 @@ class Persoon extends Model
 {
     use HasFactory;
 
-    protected $table = 'personen';
+    protected $table = 'persoon';
 
     protected $fillable = [
-        'Voornaam',
-        'Tussenvoegsel',
-        'Achternaam',
-        'Geboortedatum',
+        'voornaam',
+        'tussenvoegsel',
+        'achternaam',
+        'geboortedatum',
     ];
 
     public $timestamps = false;
 
+    public function getVolledigeNaamAttribute()
+    {
+        return trim("{$this->voornaam} {$this->tussenvoegsel} {$this->achternaam}");
+    }
+
     public function patient()
     {
-        return $this->hasOne(Patient::class, 'PersoonId', 'Id');
+        return $this->hasOne(Patient::class, 'persoon_id', 'id');
     }
 }
