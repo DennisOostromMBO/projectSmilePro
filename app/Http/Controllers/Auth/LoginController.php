@@ -20,7 +20,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'gebruikersnaam' => 'required|string',
+            'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
@@ -33,16 +33,16 @@ class LoginController extends Controller
             return redirect()->back()->with('error', 'Geen verbinding met de database.');
         }
 
-        $credentials = $request->only('gebruikersnaam', 'password');
+        $credentials = $request->only('email', 'password');
 
-        // Log de ingevoerde gebruikersnaam en wachtwoord (gehasht)
-        \Log::info('Ingevoerde gebruikersnaam: ' . $credentials['gebruikersnaam']);
+        // Log de ingevoerde email en wachtwoord (gehasht)
+        \Log::info('Ingevoerde email: ' . $credentials['email']);
         \Log::info('Ingevoerde wachtwoord (gehasht): ' . Hash::make($credentials['password']));
 
         // Log de naam van de tabel die wordt gebruikt voor de authenticatie
         \Log::info('Authenticatietabel: ' . (new User)->getTable());
 
-        if (Auth::attempt(['Gebruikersnaam' => $credentials['gebruikersnaam'], 'password' => $credentials['password']], $request->remember)) {
+        if (Auth::attempt(['Email' => $credentials['email'], 'password' => $credentials['password']], $request->remember)) {
             $request->session()->regenerate();
 
             // Haal de ingelogde gebruiker op
@@ -58,7 +58,7 @@ class LoginController extends Controller
         }
 
         throw ValidationException::withMessages([
-            'gebruikersnaam' => [trans('auth.failed')],
+            'email' => [trans('auth.failed')],
         ]);
     }
 

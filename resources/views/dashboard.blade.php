@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+   <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
@@ -17,7 +17,7 @@
                     </div>
                 @endif
                 <div class="p-6 text-gray-900">
-                    <p><strong>Gebruikersnaam:</strong> {{ Auth::user()->Gebruikersnaam }}</p>
+                    <p><strong>Volledige Naam:</strong> {{ Auth::user()->name }}</p>
                     <p><strong>Email:</strong> {{ Auth::user()->Email }}</p>
                     <p><strong>Wachtwoord:</strong> 
                         <span id="password" class="cursor-pointer text-blue-500" onclick="togglePassword()">Klik om te tonen</span>

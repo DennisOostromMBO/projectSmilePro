@@ -26,46 +26,40 @@ class GebruikerSeeder extends Seeder
         DB::table('gebruiker')->insert([
             [
                 'PersoonId' => $personen[0], // Gebruik de eerste id
-                'Gebruikersnaam' => 'johndoe',
+                'name' => 'johndoe',
                 'Email' => 'johndoe@example.com', // Voeg de email kolom toe
-                'Wachtwoord' => Hash::make('Monkey123'), // Hash het wachtwoord
+                'password' => Hash::make('Monkey123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
-                'Ingelogd' => null, // Gebruik null voor TIMESTAMP velden
-                'Uitgelogd' => null, // Gebruik null voor TIMESTAMP velden
                 'Comments' => 'First user',
             ],
             [
                 'PersoonId' => $personen[1], // Gebruik de tweede id
-                'Gebruikersnaam' => 'janesmith',
+                'name' => 'janesmith',
                 'Email' => 'janesmith@example.com', // Voeg de email kolom toe
-                'Wachtwoord' => Hash::make('Frikandel123'), // Hash het wachtwoord
+                'password' => Hash::make('Frikandel123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
-                'Ingelogd' => null, // Gebruik null voor TIMESTAMP velden
-                'Uitgelogd' => null, // Gebruik null voor TIMESTAMP velden
                 'Comments' => 'Second user',
             ],
             [
                 'PersoonId' => $personen[2], // Gebruik de derde id
-                'Gebruikersnaam' => 'alicejohnson',
+                'name' => 'alicejohnson',
                 'Email' => 'alicejohnson@example.com', // Voeg de email kolom toe
-                'Wachtwoord' => Hash::make('Password123'), // Hash het wachtwoord
+                'password' => Hash::make('Password123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
-                'Ingelogd' => null, // Gebruik null voor TIMESTAMP velden
-                'Uitgelogd' => null, // Gebruik null voor TIMESTAMP velden
+
                 'Comments' => 'Third user',
             ],
             [
                 'PersoonId' => $personen[3], // Gebruik de vierde id
-                'Gebruikersnaam' => 'bobwilliams',
+                'name' => 'bobwilliams',
                 'Email' => 'bobwilliams@example.com', // Voeg de email kolom toe
-                'Wachtwoord' => Hash::make('SecurePass123'), // Hash het wachtwoord
+                'password' => Hash::make('SecurePass123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
-                'Ingelogd' => null, // Gebruik null voor TIMESTAMP velden
-                'Uitgelogd' => null, // Gebruik null voor TIMESTAMP velden
+
                 'Comments' => 'Fourth user',
             ],
         ]);

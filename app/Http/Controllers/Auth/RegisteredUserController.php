@@ -4,55 +4,56 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Persoon;
-use App\Providers\RouteServiceProvider;
+use App\Models\PersoonModel;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Illuminate\View\View;
 use Carbon\Carbon;
 
 class RegisteredUserController extends Controller
 {
     /**
-     * Toon het registratieformulier.
-     *
-     * @return \Illuminate\View\View
+     * Display the registration view.
      */
-    public function create()
+    public function create(): View
     {
         return view('auth.register');
     }
 
     /**
-     * Verwerk een nieuwe registratieaanvraag.
+     * Handle an incoming registration request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:gebruiker',
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Haal een PersoonId op uit de persoon tabel
-        $persoon = Persoon::first(); // Pas dit aan naar je eigen logica om een PersoonId te selecteren
-
-        if (!$persoon) {
-            return redirect()->back()->withErrors(['error' => 'Geen persoon gevonden om te koppelen aan de gebruiker.']);
-        }
+        // Create a new persoon record
+        $persoon = PersoonModel::create([
+            'VolledigeNaam' => $request->name, // Store the full name
+            'Geboortedatum' => '2010-05-12', // Set the birth date to 12-5-2010
+            'IsActive' => true,
+            'Comments' => null,
+        ]);
 
         $currentTime = Carbon::now();
 
+        // Create a new user record
         $user = User::create([
-            'PersoonId' => $persoon->Id, // Gebruik het opgehaalde PersoonId
-            'Gebruikersnaam' => $request->name,
-            'Email' => $request->email,
+            'persoon_id' => $persoon->id, 
+            'rol_id' => 6, 
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
             'IsActive' => 1,
             'Isingelogd' => 0,
@@ -66,6 +67,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->route('dashboard');
     }
 }
