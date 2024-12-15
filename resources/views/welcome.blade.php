@@ -41,9 +41,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/aboutus') }}">About us</a>
                     </li>
+                    @if (Auth::check())
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a>
                     </li>
+                @endif
                     <ul class="navbar-nav ms-auto">
                         @if (Auth::check())
                             <li class="nav-item">
