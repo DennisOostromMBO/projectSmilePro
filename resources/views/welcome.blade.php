@@ -44,15 +44,28 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('profile.edit') }}">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">Register</a>
-                    </li>
+                    <ul class="navbar-nav ms-auto">
+                        @if (Auth::check())
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-bold" href="{{ route('profile.edit') }}">
+                                    <strong>{{ Auth::user()->name }}</strong>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+
+                                </form>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">Register</a>
+                            </li>
+                        @endif
+                    </ul>
                 </ul>
             </div>
         </div>
