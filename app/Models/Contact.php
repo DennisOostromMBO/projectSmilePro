@@ -10,7 +10,11 @@ class Contact extends Model
     use HasFactory;
 
     protected $table = 'contact';
+
+    protected $primaryKey = 'Id';
+    
     protected $fillable = [
+        "PatientId",
         "Straatnaam",
         "Huisnummer",
         "Toevoeging",
@@ -24,6 +28,6 @@ class Contact extends Model
 
     public function patient()
     {
-        return $this->belongsTo(Patient::class, 'PatientId',  'Id'); 
-    }
+        return $this->belongsTo(Patient::class, 'PatientId', 'Id');
+    }    
 }

@@ -12,7 +12,8 @@
     @endif
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-12 rounded-lg shadow-lg w-full max-w-6xl">
+    <div class="bg-white p-16 rounded-lg shadow-lg w-full max-w-7xl">
+
         <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
 
         <h1 class="text-2xl font-bold mb-6">Overzicht Patiënten</h1>

@@ -12,6 +12,8 @@ class Persoon extends Model
 
     protected $table = 'persoon';
 
+   protected $primaryKey = 'Id';
+
     protected $fillable = [
         'Voornaam',
         'Tussenvoegsel',
@@ -25,8 +27,9 @@ class Persoon extends Model
     // Relaties
     public function patient()
     {
-        return $this->belongsTo(Patient::class, 'PersoonId', 'Id');
+        return $this->hasMany(Patient::class, 'PersoonId', 'Id');
     }
+    
 
     public function gebruikers()
     {

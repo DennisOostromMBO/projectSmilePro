@@ -12,6 +12,8 @@ class Patient extends Model
     // Geef de naam van de database-tabel aan
     protected $table = 'patient';
 
+    protected $primaryKey = 'Id';
+
     // Velden die massaal toegewezen mogen worden
     protected $fillable = [
         'PersoonId',
@@ -29,12 +31,10 @@ class Patient extends Model
     {
         return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
     }
-
-    /**
-     * Relatie: Een patiënt heeft één contactpersoon
-     */
+    
     public function contact()
     {
         return $this->hasOne(Contact::class, 'PatientId', 'Id');
     }
+    
 }
