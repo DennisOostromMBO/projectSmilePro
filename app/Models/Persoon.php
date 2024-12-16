@@ -10,13 +10,22 @@ class Persoon extends Model
 {
     use HasFactory;
 
+    /**
+     * De tabel die aan het model is gekoppeld.
+     *
+     * @var string
+     */
     protected $table = 'persoon';
 
+    /**
+     * De attributen die massaal toegewezen kunnen worden.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'Voornaam',
-        'Tussenvoegsel',
-        'Achternaam',
-        'Geboortedatum',
+        'voornaam',
+        'achternaam',
+        'geboortedatum',
     ];
 
     public $timestamps = false;
