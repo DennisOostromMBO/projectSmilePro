@@ -50,7 +50,7 @@
                         @if (Auth::check())
                             <li class="nav-item">
                                 <a class="nav-link font-weight-bold" href="{{ route('profile.edit') }}">
-                                    <strong>{{ Auth::user()->name }}</strong>
+                                    <strong>{{ Auth::user()->VolledigeNaam }}</strong>
                                 </a>
                             </li>
                             <li class="nav-item">
