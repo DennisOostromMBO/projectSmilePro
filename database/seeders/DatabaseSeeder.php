@@ -26,13 +26,16 @@ class DatabaseSeeder extends Seeder
             PatientsSeeder::class,
             ContactSeeder::class,
             EmailSeeder::class,
-            BeschikbaarheidSeeder::class,
             FactuurSeeder::class,
+            BeschikbaarheidSeeder::class,
+            
         ]);
 
         // Maak een testgebruiker aan
         User::factory()->create([
-            'name' => 'Test User',
+            'voornaam' => 'Praktijk',
+            'tussenvoegsel' => '',
+            'achternaam' => 'Manager',
             'email' => 'test@example.com',
             'rol_id' => 1,
         ]);
