@@ -17,49 +17,19 @@ class Persoon extends Model
      */
     protected $table = 'persoon';
 
-    /**
-     * De attributen die massaal toegewezen kunnen worden.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'voornaam',
-        'achternaam',
-        'geboortedatum',
-    ];
+<<<<
 
     public $timestamps = false;
 
     // Relaties
     public function patient()
     {
-        return $this->belongsTo(Patient::class, 'PersoonId', 'Id');
+        return $this->hasMany(Patient::class, 'PersoonId', 'Id');
     }
+    
 
     public function gebruikers()
     {
         return $this->hasMany(GebruikerModel::class, 'PersoonId', 'Id');
-    }
-
-    // Accessor voor de leeftijdscategorie
-    public function getLeeftijdCategorieAttribute()
-    {
-        $leeftijd = Carbon::parse($this->Geboortedatum)->age;
-
-        if ($leeftijd <= 1) {
-            return 'Baby';
-        } elseif ($leeftijd >= 2 && $leeftijd <= 3) {
-            return 'Peuter';
-        } elseif ($leeftijd >= 4 && $leeftijd <= 6) {
-            return 'Kleuter';
-        } elseif ($leeftijd >= 7 && $leeftijd <= 12) {
-            return 'Kind';
-        } elseif ($leeftijd >= 13 && $leeftijd <= 18) {
-            return 'Tiener';
-        } elseif ($leeftijd >= 19 && $leeftijd <= 64) {
-            return 'Volwassene';
-        } else {
-            return 'Oudere';
-        }
     }
 }
