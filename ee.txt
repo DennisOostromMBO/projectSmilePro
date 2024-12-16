@@ -1,0 +1,2 @@
+use App\Http\Controllers\AccountOverzichtController;
+Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');
