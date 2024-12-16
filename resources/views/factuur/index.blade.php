@@ -24,7 +24,7 @@
                 @foreach ($facturen as $factuur)
                     <tr>
                         <td class="py-2 px-4 border-b">
-                            {{ $factuur->persoon ? $factuur->persoon->VolledigNaam : 'N/A' }}
+                            {{ $factuur->persoon ? $factuur->persoon->volledige_naam : 'N/A' }}
                         </td>
                         <td class="py-2 px-4 border-b">{{ $factuur->beschrijving }}</td>
                         <td class="py-2 px-4 border-b">{{ $factuur->vervaldatum }}</td>
