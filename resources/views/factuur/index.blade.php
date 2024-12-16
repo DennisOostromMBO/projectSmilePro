@@ -12,7 +12,6 @@
         <table class="min-w-full bg-white">
             <thead>
                 <tr>
-                    <th class="py-2 px-4 border-b">ID</th>
                     <th class="py-2 px-4 border-b">Klant Naam</th>
                     <th class="py-2 px-4 border-b">Beschrijving</th>
                     <th class="py-2 px-4 border-b">Vervaldatum</th>
@@ -24,9 +23,8 @@
             <tbody>
                 @foreach ($facturen as $factuur)
                     <tr>
-                        <td class="py-2 px-4 border-b">{{ $factuur->id }}</td>
                         <td class="py-2 px-4 border-b">
-                            {{ $factuur->persoon ? $factuur->persoon->volledige_naam : 'N/A' }}
+                            {{ $factuur->persoon ? $factuur->persoon->VolledigNaam : 'N/A' }}
                         </td>
                         <td class="py-2 px-4 border-b">{{ $factuur->beschrijving }}</td>
                         <td class="py-2 px-4 border-b">{{ $factuur->vervaldatum }}</td>
