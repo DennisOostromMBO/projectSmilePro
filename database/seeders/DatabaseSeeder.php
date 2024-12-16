@@ -10,6 +10,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Database\Factories\UserFactory;
+use App\Models\Patient;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder
             persoonSeeder::class,
             RolSeeder::class, // Zorg ervoor dat de RolSeeder eerst wordt aangeroepen
             MedewerkerSeeder::class,
-            PatientSeeder::class,
+            PatientsSeeder::class,
             ContactSeeder::class,
             EmailSeeder::class,
             BeschikbaarheidSeeder::class,

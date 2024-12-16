@@ -42,7 +42,9 @@ class RegisteredUserController extends Controller
 
         // Create a new persoon record
         $persoon = PersoonModel::create([
-            'VolledigeNaam' => $request->voornaam . ' ' . $request->tussenvoegsel . ' ' . $request->achternaam,
+            'voornaam' => $request->voornaam,
+            'tussenvoegsel' => $request->tussenvoegsel,
+            'achternaam' => $request->achternaam,
             'Geboortedatum' => '2010-05-12', // Set the birth date to 12-5-2010
             'IsActive' => true,
             'Comments' => null,

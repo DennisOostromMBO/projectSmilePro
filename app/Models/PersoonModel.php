@@ -12,7 +12,9 @@ class PersoonModel extends Model
     protected $table = 'persoon';
 
     protected $fillable = [
-        'VolledigeNaam',
+        'voornaam',
+        'tussenVoegsel',
+        'achternaam',
         'Geboortedatum',
         'IsActive',
         'Comments',

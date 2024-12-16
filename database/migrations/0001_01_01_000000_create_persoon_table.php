@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('persoon', function (Blueprint $table) {
             $table->id();
-            $table->string('VolledigeNaam', 150);
+            $table->string('voornaam', 100);
+            $table->string('tussenvoegsel', 50)->nullable();
+            $table->string('achternaam', 100);
+            $table->string('VolledigeNaam', 150)->virtualAs("CONCAT(voornaam, ' ', IFNULL(tussenvoegsel, ''), ' ', achternaam)")->stored();
             $table->date('Geboortedatum')->nullable(false);
             $table->boolean('IsActive')->default(true);
             $table->string('Comments', 255)->nullable();

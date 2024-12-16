@@ -10,7 +10,7 @@ class Patient extends Model
     use HasFactory;
 
     // Geef de naam van de database-tabel aan
-    protected $table = 'patient';
+    protected $table = 'patients';
 
     protected $primaryKey = 'Id';
 
