@@ -43,7 +43,8 @@ Route::get('/emails', [EmailController::class, 'index']);
 Route::post('/emails', [EmailController::class, 'store']);
 
 Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index']);
-Route::post('/get-beschikbaarheden', [BeschikbaarheidController::class, 'getBeschikbaarheden']);
+Route::post('/get-beschikbaarheden-by-month', [BeschikbaarheidController::class, 'getBeschikbaarhedenByMonth']);
+Route::post('/save-beschikbaarheid', [BeschikbaarheidController::class, 'saveBeschikbaarheid']);
 
 
 Route::resource('afspraken', AfsprakenController::class);
