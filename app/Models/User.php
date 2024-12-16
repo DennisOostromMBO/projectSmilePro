@@ -18,11 +18,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'voornaam', 
+        'tussenvoegsel', 
+        'achternaam', 
         'email',
         'password',
-        'rol_id', // Add rol_id to the fillable array
-        'persoon_id', // Add persoon_id to the fillable array
+        'rol_id', 
+        'persoon_id', 
     ];
 
     /**
@@ -34,17 +36,4 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
 }

@@ -17,12 +17,28 @@
         <!-- Hidden input field for user ID -->
         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="user_id">
 
+        <!-- Voornaam -->
         <div>
-            <x-input-label for="name" :value="__('Volledige Naam')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', Auth::user()->name)" autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-input-label for="voornaam" :value="__('Voornaam')" />
+            <x-text-input id="voornaam" name="voornaam" type="text" class="mt-1 block w-full" :value="old('voornaam', Auth::user()->voornaam)" autofocus autocomplete="given-name" />
+            <x-input-error class="mt-2" :messages="$errors->get('voornaam')" />
         </div>
 
+        <!-- Tussenvoegsel -->
+        <div>
+            <x-input-label for="tussenvoegsel" :value="__('Tussenvoegsel')" />
+            <x-text-input id="tussenvoegsel" name="tussenvoegsel" type="text" class="mt-1 block w-full" :value="old('tussenvoegsel', Auth::user()->tussenvoegsel)" autocomplete="additional-name" />
+            <x-input-error class="mt-2" :messages="$errors->get('tussenvoegsel')" />
+        </div>
+
+        <!-- Achternaam -->
+        <div>
+            <x-input-label for="achternaam" :value="__('Achternaam')" />
+            <x-text-input id="achternaam" name="achternaam" type="text" class="mt-1 block w-full" :value="old('achternaam', Auth::user()->achternaam)" autocomplete="family-name" />
+            <x-input-error class="mt-2" :messages="$errors->get('achternaam')" />
+        </div>
+
+        <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', Auth::user()->email)" autocomplete="username" />

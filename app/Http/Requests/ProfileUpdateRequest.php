@@ -22,7 +22,9 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'voornaam' => ['required', 'string', 'max:255'],
+            'tussenvoegsel' => ['nullable', 'string', 'max:255'],
+            'achternaam' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
                 'string',

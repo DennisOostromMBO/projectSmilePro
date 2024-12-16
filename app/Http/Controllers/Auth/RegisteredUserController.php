@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\User; // Importeer de User klasse
 use App\Models\PersoonModel;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -33,14 +33,16 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'voornaam' => ['required', 'string', 'max:255'],
+            'tussenvoegsel' => ['nullable', 'string', 'max:255'],
+            'achternaam' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         // Create a new persoon record
         $persoon = PersoonModel::create([
-            'VolledigeNaam' => $request->name, // Store the full name
+            'VolledigeNaam' => $request->voornaam . ' ' . $request->tussenvoegsel . ' ' . $request->achternaam,
             'Geboortedatum' => '2010-05-12', // Set the birth date to 12-5-2010
             'IsActive' => true,
             'Comments' => null,
@@ -50,9 +52,11 @@ class RegisteredUserController extends Controller
 
         // Create a new user record
         $user = User::create([
-            'persoon_id' => $persoon->id, 
-            'rol_id' => 6, 
-            'name' => $request->name,
+            'persoon_id' => $persoon->id,
+            'rol_id' => 6,
+            'voornaam' => $request->voornaam,
+            'tussenvoegsel' => $request->tussenvoegsel,
+            'achternaam' => $request->achternaam,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'IsActive' => 1,
