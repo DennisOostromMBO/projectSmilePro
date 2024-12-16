@@ -10,14 +10,17 @@ class Persoon extends Model
 {
     use HasFactory;
 
-    /**
-     * De tabel die aan het model is gekoppeld.
-     *
-     * @var string
-     */
     protected $table = 'persoon';
 
-<<<<
+   protected $primaryKey = 'Id';
+
+    protected $fillable = [
+        'Voornaam',
+        'Tussenvoegsel',
+        'Achternaam',
+        'VolledigeNaam',
+        'Geboortedatum',
+    ];
 
     public $timestamps = false;
 
