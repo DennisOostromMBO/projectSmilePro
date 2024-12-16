@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -11,9 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Lees de SQL uit het bestand en voer het uit om de tabel te maken
-        $sql = File::get(database_path('sql/contactEN.sql'));
-        DB::unprepared($sql);
+        Schema::create('contact', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
+            $table->string('straatnaam', 255);
+            $table->smallInteger('huisnummer');
+            $table->string('toevoeging', 10)->nullable();
+            $table->string('postcode', 10);
+            $table->string('plaats', 100);
+            $table->string('volledig_adres')->virtualAs("CONCAT(straatnaam, ' ', huisnummer, IF(toevoeging IS NOT NULL AND toevoeging != '', CONCAT('-', toevoeging), ''), ', ', postcode, ' ', plaats)")->stored();
+            $table->string('mobiel', 20);
+            $table->string('email', 255);
+            $table->boolean('is_actief')->default(true);
+            $table->string('opmerking', 255)->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -21,7 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Verwijder de tabel als onderdeel van het rollback-proces
-        DB::statement('DROP TABLE IF EXISTS contact');
+        Schema::dropIfExists('contact');
     }
 };
