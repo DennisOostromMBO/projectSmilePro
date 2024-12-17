@@ -20,4 +20,6 @@ class EmailController extends Controller
         $email = Email::create($request->only(['subject', 'body']));
         return response()->json($email);
     }
+
+    
 }

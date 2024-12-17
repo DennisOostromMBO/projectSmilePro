@@ -58,6 +58,7 @@ Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Com
 
 Route::get('/emails', [EmailController::class, 'index']);
 Route::post('/emails', [EmailController::class, 'store']);
+Route::post('/emails', [EmailController::class, 'store'])->name('emails.store');
 
 Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index']);
 Route::post('/get-beschikbaarheden-by-month', [BeschikbaarheidController::class, 'getBeschikbaarhedenByMonth']);
