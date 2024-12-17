@@ -37,11 +37,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
 Route::get('/patient', [PatientController::class, 'index'])->name('patient.index');
 Route::get('/patient/create', [PatientController::class, 'create'])->name('patient.create');
 Route::get('/patient/edit/{id}', [PatientController::class, 'edit'])->name('patient.edit');
 Route::put('/patient/update/{id}', [PatientController::class, 'update'])->name('patient.update');
 Route::post('/patient', [PatientController::class, 'store'])->name('patient.store');
+Route::delete('/patient/{id}', [PatientController::class, 'destroy'])->name('patient.destroy');
 
 
 Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');
@@ -54,8 +56,10 @@ Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'm
 
 Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Communicatie.index');
 
-Route::get('/emails', [EmailController::class, 'index']);
-Route::post('/emails', [EmailController::class, 'store']);
+Route::get('/emails', [EmailController::class, 'index'])->name('emails.index');
+Route::post('/emails', [EmailController::class, 'store'])->name('emails.store');
+Route::get('/emails/{id}', [EmailController::class, 'show'])->name('emails.show');
+Route::put('/emails/{id}', [EmailController::class, 'update'])->name('emails.update');
 
 Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index']);
 Route::post('/get-beschikbaarheden-by-month', [BeschikbaarheidController::class, 'getBeschikbaarhedenByMonth']);

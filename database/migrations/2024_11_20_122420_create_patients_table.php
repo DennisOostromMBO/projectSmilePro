@@ -16,6 +16,13 @@ return new class extends Migration
             $table->foreignId('persoon_id')->unique()->constrained('persoon')->onDelete('cascade');
             $table->string('nummer', 255);
             $table->text('medisch_dossier')->nullable();
+            $table->string('straatnaam', 255);
+            $table->smallInteger('huisnummer');
+            $table->string('toevoeging', 10)->nullable();
+            $table->string('postcode', 10);
+            $table->string('plaats', 100);
+            $table->string('mobiel', 20);
+            $table->string('email', 255);
             $table->boolean('is_active')->default(true);
             $table->string('comments', 255)->nullable();
             $table->timestamps();

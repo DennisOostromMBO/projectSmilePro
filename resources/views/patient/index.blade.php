@@ -7,9 +7,6 @@
     <title>Overzicht Patiënten</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    @if ($patients->isEmpty())
-        <meta http-equiv="refresh" content="4; url={{ url('/') }}">
-    @endif
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-16 rounded-lg shadow-lg w-full max-w-7xl">
@@ -46,29 +43,30 @@
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="py-3 px-4 border-b text-left font-semibold text-sm">Volledige naam</th>
-                        <th class="py-3 px-4 border-b text-left font-semibold text-sm">Leeftijdscategorie</th>
-                        <th class="py-3 px-4 border-b text-left font-semibold text-sm">Volledig adres</th>
-                        <th class="py-3 px-4 border-b text-left font-semibold text-sm">Mobielnummer</th>
                         <th class="py-3 px-4 border-b text-left font-semibold text-sm">Email</th>
-                        <th class="py-3 px-4 border-b text-left font-semibold text-sm">Nummer</th>
-                        <th class="py-3 px-4 border-b text-left font-semibold text-sm">Medisch Dossier</th>
-                        <th class="py-3 px-4 border-b text-left font-semibold text-sm">Bijwerken</th>
+                        <th class="py-3 px-4 border-b text-left font-semibold text-sm">Mobiel</th>
+                        <th class="py-3 px-4 border-b text-left font-semibold text-sm">Acties</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($patients as $patient)
-                        <tr class="hover:bg-gray-50">
-                            <td class="py-3 px-4 border-b">{{ $patient->VolledigeNaam }}</td>
-                            <td class="py-3 px-4 border-b">{{ $patient->LeeftijdCategorie }}</td>
-                            <td class="py-3 px-4 border-b">{{ $patient->VolledigAdres }}</td>
-                            <td class="py-3 px-4 border-b">{{ $patient->Mobielnummer }}</td>
-                            <td class="py-3 px-4 border-b">{{ $patient->Email }}</td>
-                            <td class="py-3 px-4 border-b">{{ $patient->Nummer }}</td>
-                            <td class="py-3 px-4 border-b">{{ $patient->MedischDossier }}</td>
-                            <td class="py-3 px-4 border-b text-center">
-                                <a href="{{ route('patient.edit', ['id' => $patient->id]) }}" class="text-yellow-500 hover:text-yellow-600">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
+                        <tr>
+                            <td class="py-3 px-4 border-b">
+                                @if ($patient->persoon)
+                                    {{ $patient->persoon->voornaam }} {{ $patient->persoon->tussenvoegsel }} {{ $patient->persoon->achternaam }}
+                                @else
+                                    Geen gegevens
+                                @endif
+                            </td>
+                            <td class="py-3 px-4 border-b">{{ $patient->email }}</td>
+                            <td class="py-3 px-4 border-b">{{ $patient->mobiel }}</td>
+                            <td class="py-3 px-4 border-b">
+                                <a href="{{ route('patient.edit', $patient->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Bewerken</a>
+                                <form action="{{ route('patient.destroy', $patient->id) }}" method="POST" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Verwijderen</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
