@@ -35,4 +35,9 @@ class Persoon extends Model
     {
         return $this->hasMany(GebruikerModel::class, 'PersoonId', 'Id');
     }
+
+    public function medewerker()
+    {
+        return $this->belongsTo(Medewerker::class, 'PersoonId', 'Id');
+    }
 }

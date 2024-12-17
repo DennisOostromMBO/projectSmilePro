@@ -167,7 +167,7 @@
         step="1800"    
         aria-describedby="timeFromError"
     >
-    <p id="timeFromError" class="text-red-500 text-sm mt-1" x-show="!validateTimeFrom()">Voer een geldige begintijd in.</p>
+    <p id="timeFromError" class="text-red-500 text-sm mt-1" x-show="!validateTimeFrom()">vul de tijd in tussen 8:00 en 18:00 uur</p>
 </div>
 
 <!-- Time To -->
@@ -183,7 +183,7 @@
         step="1800"   
         aria-describedby="timeToError"
     >
-    <p id="timeToError" class="text-red-500 text-sm mt-1" x-show="!validateTimeTo()">Voer een geldige eindtijd in.</p>
+    <p id="timeToError" class="text-red-500 text-sm mt-1" x-show="!validateTimeTo()">vul de tijd in tussen 8:00 en 18:00 uur</p>
 </div>
     
         <!-- Status -->
@@ -337,13 +337,14 @@ validateForm() {
             },
 
             saveTime() {
+                 
                 if (!this.validateForm()) {
                     alert('Please ensure all fields are correctly filled.');
                     return;
                 }
 
                 const eventIndex = this.events.findIndex(e => e.DatumVanaf === this.selectedEditDate);
-
+                
                 const eventData = {
                     MedewerkerId: this.editMedewerkerId,
                     DatumVanaf: this.selectedEditDate,
@@ -353,10 +354,6 @@ validateForm() {
                     Status: this.editStatus,
                     Opmerking: this.editRemark || ''
                 };
-
-                console.log('Events:', this.events);
-                console.log('Selected Edit Date:', this.selectedEditDate);
-                console.log('Event Data:', eventData);
 
                 axios.post('/save-beschikbaarheid', eventData, {
                     headers: {
@@ -371,6 +368,7 @@ validateForm() {
                             this.events.push(response.data.data);
                         }
                         this.closeEditModal();
+                        
                         alert('Beschikbaarheid succesvol opgeslagen.');
                     } else {
                         alert('Er is een fout opgetreden bij het opslaan van de beschikbaarheid.');
@@ -411,6 +409,10 @@ validateForm() {
                         DatumVanaf: this.convertToISODate(new Date(event.DatumVanaf)),
                         DatumTotMet: this.convertToISODate(new Date(event.DatumTotMet)),
                     }));
+                })
+                .catch(error => {
+                    console.error('Error fetching events:', error);
+                    alert('Interne serverfout: ' + error.message);
                 });
             },
 
