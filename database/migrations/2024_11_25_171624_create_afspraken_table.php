@@ -10,7 +10,7 @@ class CreateAfsprakenTable extends Migration
     {
         Schema::create('afspraken', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('gebruiker_id');
+            $table->unsignedBigInteger('gebruiker_id')->default(0);
             $table->string('patient_naam', 255);
             $table->string('medewerker_naam', 250);
             $table->date('datum');

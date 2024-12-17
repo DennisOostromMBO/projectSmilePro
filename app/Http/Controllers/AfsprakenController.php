@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -23,9 +24,11 @@ class AfsprakenController extends Controller
     // Formulier voor nieuwe afspraak
     public function create()
     {
-        return view('afspraken.aanmaken');
+        $medewerkers = Afspraak::distinct()->pluck('medewerker_naam');  // Haal medewerkers op
+        return view('afspraken.aanmaken', compact('medewerkers'));
     }
 
+    // Opslaan van een nieuwe afspraak
     public function store(Request $request)
     {
         $request->validate([
@@ -34,60 +37,49 @@ class AfsprakenController extends Controller
             'tijd' => 'required|date_format:H:i',
             'type_afspraak' => 'nullable|string',
         ]);
-
+    
         try {
-            // Verkrijg het gebruiker_id van de ingelogde gebruiker
-            $gebruiker_id = auth()->id(); // Dit geeft het ID van de ingelogde gebruiker
-
-            // Controleren of de datum niet verder dan 1 jaar in de toekomst ligt
+            // Controleer op dubbele afspraak (afspraak conflict)
+            $existingAppointment = Afspraak::where('datum', $request->datum)
+                                           ->where('tijd', $request->tijd)
+                                           ->first();
+    
+            if ($existingAppointment) {
+                return redirect()->route('afspraken.create')->with('error', 'Er is al een afspraak voor dit tijdstip.');
+            }
+    
+            // Controleer of de afspraak minimaal 12 uur van tevoren wordt gemaakt
+            $appointmentTime = Carbon::createFromFormat('Y-m-d H:i', $request->datum . ' ' . $request->tijd);
+            if ($appointmentTime->isBefore(Carbon::now()->addHours(12))) {
+                return redirect()->route('afspraken.create')->with('error', 'De afspraak kan alleen minimaal 12 uur van tevoren worden gemaakt.');
+            }
+    
+            // Controleer of de datum binnen de komende twee weken valt
             $datum = Carbon::parse($request->datum);
-            if ($datum->diffInYears(Carbon::now()) > 1) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'De afspraak mag maximaal 1 jaar vooruit worden gepland.',
-                ], 400);
+            if ($datum->isBefore(Carbon::now()->addDays(14))) {
+                return redirect()->route('afspraken.create')->with('error', 'Je kunt geen afspraak maken binnen de komende twee weken.');
             }
-
-            // Tijd validatie: Controleer of het tijdstip voor 16:30 is en binnen de 30 minuten intervallen valt
-            $tijd = Carbon::createFromFormat('H:i', $request->tijd);
-            if ($tijd->hour > 16 || ($tijd->hour == 16 && $tijd->minute > 30)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'De afspraak kan alleen worden ingepland tot 16:30 uur.',
-                ], 400);
-            }
-
-            // Genereer een willekeurige medewerker naam
-            $medewerker_naam = $this->generateRandomMedewerkerNaam();
-
+    
+            // Opslaan van de afspraak
             Afspraak::create([
-                'gebruiker_id' => $gebruiker_id,
                 'patient_naam' => $request->patient_naam,
-                'medewerker_naam' => $medewerker_naam,  // Genereerde medewerker naam
+                'medewerker_naam' => $request->medewerker_naam, // Verondersteld dat deze al is gekozen
                 'datum' => $request->datum,
                 'tijd' => $request->tijd,
                 'type_afspraak' => $request->type_afspraak,
+                'gebruiker_id' => auth()->id(), // Voeg de gebruiker_id toe
             ]);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Afspraak succesvol aangemaakt!',
-            ], 200);
+    
+            return redirect()->route('afspraken.create')->with([
+                'success' => 'Afspraak succesvol aangemaakt!',
+                'timer' => true
+            ]);
         } catch (\Exception $e) {
-            Log::error('Fout bij het opslaan van een afspraak: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Er is een fout opgetreden bij het opslaan van de afspraak.',
-            ], 500);
+            return redirect()->route('afspraken.create')->with('error', 'Er is een fout opgetreden.');
         }
     }
-
-    private function generateRandomMedewerkerNaam()
-    {
-        // Genereer een willekeurige medewerker naam
-        $namen = ['Jan', 'Piet', 'Klaas', 'Sophie', 'Emma', 'David', 'Laura', 'Lars'];
-        return $namen[array_rand($namen)];
-    }
+    
+    
 
     // Controleren op bestaande afspraken
     public function checkAvailability(Request $request)
@@ -96,26 +88,42 @@ class AfsprakenController extends Controller
             'datum' => 'required|date',
             'tijd' => 'required|date_format:H:i',
         ]);
-
-        $afspraak = Afspraak::where('datum', $request->datum)
-            ->where('tijd', $request->tijd)
-            ->first();
-
-        return response()->json(['available' => !$afspraak], 200);
+    
+        $datum = Carbon::parse($request->datum);
+        $tijd = Carbon::createFromFormat('H:i', $request->tijd);
+    
+        // Check voor afspraken in de komende twee weken
+        $beginPeriode = Carbon::now()->startOfDay();
+        $eindPeriode = Carbon::now()->addWeeks(2)->endOfDay();
+    
+        $beschikbareAfspraak = Afspraak::where('datum', '>=', $beginPeriode)
+            ->where('datum', '<=', $eindPeriode)
+            ->where('tijd', $tijd->format('H:i'))
+            ->exists();
+    
+        // Als er geen afspraak is voor deze tijd, is er een beschikbaarheid
+        if ($beschikbareAfspraak) {
+            return response()->json(['available' => false, 'message' => 'Er zijn geen beschikbare tijdsloten in de komende twee weken.'], 200);
+        }
+    
+        return response()->json(['available' => true], 200);
     }
-
+    
+    // Toon de details van een specifieke afspraak
     public function show($id)
     {
         $afspraak = Afspraak::findOrFail($id);
         return view('afspraken.bekijken', compact('afspraak'));
     }
 
+    // Formulier voor het bewerken van een afspraak
     public function edit($id)
     {
         $afspraak = Afspraak::findOrFail($id);
         return view('afspraken.bewerken', compact('afspraak'));
     }
 
+    // Bijwerken van een bestaande afspraak
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -152,16 +160,17 @@ class AfsprakenController extends Controller
         }
     }
 
+    // Verwijderen van een afspraak
     public function destroy($id)
     {
         $afspraak = Afspraak::findOrFail($id);
 
         try {
             $afspraak->delete();
-            return response()->json(['message' => 'Afspraak succesvol verwijderd'], 200);
+            return redirect()->route('afspraken.index')->with('success', 'Afspraak succesvol verwijderd');
         } catch (\Exception $e) {
             Log::error('Fout bij het verwijderen van een afspraak: ' . $e->getMessage());
-            return response()->json(['message' => 'Er is een fout opgetreden bij het verwijderen van de afspraak.'], 500);
+            return redirect()->route('afspraken.index')->with('error', 'Er is een fout opgetreden bij het verwijderen van de afspraak.');
         }
     }
 }

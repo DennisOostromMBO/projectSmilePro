@@ -49,6 +49,7 @@ Route::post('/get-beschikbaarheden', [BeschikbaarheidController::class, 'getBesc
 Route::resource('afspraken', AfsprakenController::class);
 // Route voor het aanmaken van een afspraak
 Route::post('/afspraken', [AfsprakenController::class, 'store'])->name('afspraken.store');
+Route::post('/afspraken/check-availability', [AfsprakenController::class, 'checkAvailability'])->name('afspraken.checkAvailability');
 
 
 Route::get('/aboutus', [AboutUsController::class, 'index'])->name('aboutus.index');
