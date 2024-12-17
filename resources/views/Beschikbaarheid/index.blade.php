@@ -162,8 +162,8 @@
         id="TimeFrom" 
         x-model="editTimeFrom" 
         class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
-        min="06:00"    
-        max="17:00"   
+        min="08:00"    
+        max="18:00"   
         step="1800"    
         aria-describedby="timeFromError"
     >
@@ -178,8 +178,8 @@
         id="TimeTo" 
         x-model="editTimeTo" 
         class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
-        min="06:00"  
-        max="17:00"   
+        min="08:00"  
+        max="18:00"   
         step="1800"   
         aria-describedby="timeToError"
     >
@@ -251,17 +251,37 @@
             editMedewerkerId: '',
 
             validateTimeFrom() {
-                return this.editTimeFrom.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
-            },
-            validateTimeTo() {
-                return this.editTimeTo.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
-            },
-            validateStatus() {
-                return ['Aanwezig', 'Afwezig', 'Verlof', 'Ziek'].includes(this.editStatus);
-            },
-            validateForm() {
-                return this.validateTimeFrom() && this.validateTimeTo() && this.validateStatus();
-            },
+    const match = this.editTimeFrom.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
+    if (!match) return false;
+
+    const [hours, minutes] = this.editTimeFrom.split(":").map(Number);
+    const timeInMinutes = hours * 60 + minutes;
+    const minTime = 8 * 60; // 08:00 in minutes
+    const maxTime = 18 * 60; // 18:00 in minutes
+
+    return timeInMinutes >= minTime && timeInMinutes <= maxTime;
+},
+
+validateTimeTo() {
+    const match = this.editTimeTo.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
+    if (!match) return false;
+
+    const [hours, minutes] = this.editTimeTo.split(":").map(Number);
+    const timeInMinutes = hours * 60 + minutes;
+    const minTime = 8 * 60; // 08:00 in minutes
+    const maxTime = 18 * 60; // 18:00 in minutes
+
+    return timeInMinutes >= minTime && timeInMinutes <= maxTime;
+},
+
+validateStatus() {
+    return ['Aanwezig', 'Afwezig', 'Verlof', 'Ziek'].includes(this.editStatus);
+},
+
+validateForm() {
+    return this.validateTimeFrom() && this.validateTimeTo() && this.validateStatus();
+},
+
 
             showEditModal(date) {
                 this.event_date = new Date(this.year, this.month, date).toDateString();
