@@ -39,25 +39,16 @@ class AfsprakenController extends Controller
         ]);
     
         try {
-            // Controleer op dubbele afspraak (afspraak conflict)
-            $existingAppointment = Afspraak::where('datum', $request->datum)
-                                           ->where('tijd', $request->tijd)
-                                           ->first();
-    
-            if ($existingAppointment) {
-                return redirect()->route('afspraken.create')->with('error', 'Er is al een afspraak voor dit tijdstip.');
-            }
-    
-            // Controleer of de afspraak minimaal 12 uur van tevoren wordt gemaakt
-            $appointmentTime = Carbon::createFromFormat('Y-m-d H:i', $request->datum . ' ' . $request->tijd);
-            if ($appointmentTime->isBefore(Carbon::now()->addHours(12))) {
-                return redirect()->route('afspraken.create')->with('error', 'De afspraak kan alleen minimaal 12 uur van tevoren worden gemaakt.');
-            }
-    
-            // Controleer of de datum binnen de komende twee weken valt
+            // Controleer of de datum niet verder dan 1 jaar in de toekomst ligt
             $datum = Carbon::parse($request->datum);
-            if ($datum->isBefore(Carbon::now()->addDays(14))) {
-                return redirect()->route('afspraken.create')->with('error', 'Je kunt geen afspraak maken binnen de komende twee weken.');
+            if ($datum->diffInYears(Carbon::now()) > 1) {
+                return redirect()->route('afspraken.create')->with('error', 'De afspraak mag maximaal 1 jaar vooruit worden gepland.');
+            }
+    
+            // Tijd validatie: Controleer of het tijdstip voor 16:30 is en binnen de 30 minuten intervallen valt
+            $tijd = Carbon::createFromFormat('H:i', $request->tijd);
+            if ($tijd->hour > 16 || ($tijd->hour == 16 && $tijd->minute > 30)) {
+                return redirect()->route('afspraken.create')->with('error', 'De afspraak kan alleen worden ingepland tot 16:30 uur.');
             }
     
             // Opslaan van de afspraak
@@ -67,18 +58,18 @@ class AfsprakenController extends Controller
                 'datum' => $request->datum,
                 'tijd' => $request->tijd,
                 'type_afspraak' => $request->type_afspraak,
-                'gebruiker_id' => auth()->id(), // Voeg de gebruiker_id toe
             ]);
     
             return redirect()->route('afspraken.create')->with([
-                'success' => 'Afspraak succesvol aangemaakt!',
-                'timer' => true
+                'success' => 'Afspraak succesvol aangemaakt! je wordt doorgestuurd naar de overzicht binnen 3 seconden',
+                'timer' => true, // Voeg de timer toe
             ]);
+            
         } catch (\Exception $e) {
-            return redirect()->route('afspraken.create')->with('error', 'Er is een fout opgetreden.');
+            Log::error('Fout bij het opslaan van een afspraak: ' . $e->getMessage());
+            return redirect()->route('afspraken.create')->with('error', 'Er is een fout opgetreden bij het opslaan van de afspraak.');
         }
     }
-    
     
 
     // Controleren op bestaande afspraken
@@ -125,40 +116,39 @@ class AfsprakenController extends Controller
 
     // Bijwerken van een bestaande afspraak
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'datum' => 'required|date',
-            'tijd' => 'required|date_format:H:i',
-            'type_afspraak' => 'nullable|string',
+{
+    $request->validate([
+        'datum' => 'required|date',
+        'tijd' => 'required|date_format:H:i',
+        'type_afspraak' => 'nullable|string',
+    ]);
+
+    $afspraak = Afspraak::findOrFail($id);
+
+    try {
+        // Controleer of er al een afspraak bestaat op het nieuwe tijdstip
+        $existingAppointment = Afspraak::where('datum', $request->datum)
+                                       ->where('tijd', $request->tijd)
+                                       ->where('id', '!=', $afspraak->id) // Zorg ervoor dat de huidige afspraak niet wordt meegenomen
+                                       ->first();
+
+        if ($existingAppointment) {
+            return redirect()->back()->with('error', 'Dit tijdstip is al bezet. Kies een ander tijdstip.');
+        }
+
+        // Als het tijdstip beschikbaar is, update dan de afspraak
+        $afspraak->update([
+            'datum' => $request->datum,
+            'tijd' => $request->tijd,
+            'type_afspraak' => $request->type_afspraak,
         ]);
 
-        $afspraak = Afspraak::findOrFail($id);
-
-        try {
-            // Controleren of de datum niet verder dan 1 jaar in de toekomst ligt
-            $datum = Carbon::parse($request->datum);
-            if ($datum->diffInYears(Carbon::now()) > 1) {
-                return redirect()->back()->with('error', 'De afspraak mag maximaal 1 jaar vooruit worden gepland.');
-            }
-
-            // Tijd validatie: Controleer of het tijdstip voor 16:30 is en binnen de 30 minuten intervallen valt
-            $tijd = Carbon::createFromFormat('H:i', $request->tijd);
-            if ($tijd->hour > 16 || ($tijd->hour == 16 && $tijd->minute > 30)) {
-                return redirect()->back()->with('error', 'De afspraak kan alleen worden ingepland tot 16:30 uur.');
-            }
-
-            $afspraak->update([
-                'datum' => $request->datum,
-                'tijd' => $request->tijd,
-                'type_afspraak' => $request->type_afspraak,
-            ]);
-
-            return redirect()->route('afspraken.index')->with('success', 'Afspraak succesvol bijgewerkt');
-        } catch (\Exception $e) {
-            Log::error('Fout bij het bijwerken van een afspraak: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Er is een fout opgetreden bij het bijwerken van de afspraak.');
-        }
+        return redirect()->route('afspraken.index')->with('success', 'Afspraak succesvol bijgewerkt');
+    } catch (\Exception $e) {
+        Log::error('Fout bij het bijwerken van een afspraak: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Er is een fout opgetreden bij het bijwerken van de afspraak.');
     }
+}
 
     // Verwijderen van een afspraak
     public function destroy($id)

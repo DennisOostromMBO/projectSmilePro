@@ -32,16 +32,14 @@
             </div>
         @endif
 
-        @if (session('success') && session('timer'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-            <script>
-                // Navigeren naar overzicht na 3 seconden
-                setTimeout(() => {
-                    window.location.href = "{{ route('afspraken.index') }}";
-                }, 3000); // 3 seconden
-            </script>
+       @if(session('timer'))
+    <script>
+        setTimeout(function() {
+            window.location.href = "{{ route('afspraken.index') }}"; // Redirect naar overzichtspagina
+        }, 3000); // 3 seconden
+    </script>
+
+
         @endif
 
         <!-- Formulier voor het aanmaken van een afspraak -->

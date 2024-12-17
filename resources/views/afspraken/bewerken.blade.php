@@ -9,7 +9,10 @@
 <body class="bg-gray-100">
     <div class="container mx-auto mt-8">
         <h1 class="text-2xl font-bold mb-4">Afspraak Bewerken</h1>
-
+        <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
+        <a href="{{ url('/afspraken') }}" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
+            Terug naar Overzicht
+        </a>
         @if (session('success'))
             <div class="bg-green-500 text-white p-4 rounded mb-4">
                 {{ session('success') }}
