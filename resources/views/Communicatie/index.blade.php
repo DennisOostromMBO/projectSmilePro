@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <!-- Popup voor wijzigen van e-mail -->
+    <!-- Modal voor wijzigen van e-mail -->
     <div id="edit-mail-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close-btn" onclick="closeEditMailModal()">✖</span>
@@ -288,7 +288,7 @@
                 if (data.success) {
                     alert("E-mail succesvol verzonden!");
                     closeNewMailModal();  // Sluit het modal venster
-                    fetchEmails();  // Haal de e-mails opnieuw op
+                    addEmailToList(data.email);  // Voeg de nieuwe e-mail toe aan de lijst
                 } else {
                     alert("Er is een fout opgetreden bij het verzenden.");
                 }
@@ -297,6 +297,32 @@
                 console.error('Fout bij het verzenden van e-mail:', error);
             });
         });
+
+        // Voeg de nieuwe e-mail toe aan de lijst
+        function addEmailToList(email) {
+            const emailDiv = document.createElement('div');
+            emailDiv.className = 'email';
+            emailDiv.innerHTML = `
+                <h2>${email.subject}</h2>
+                <p class="email-date">Ontvangen op: ${new Date(email.created_at).toLocaleString()}</p>
+            `;
+            emailDiv.addEventListener('click', function () {
+                openModal(email);
+            });
+            container.appendChild(emailDiv);
+
+            const emailListItem = document.createElement('div');
+            emailListItem.className = 'email-list-item';
+            emailListItem.innerHTML = `
+                <span>${email.subject}</span>
+                <button class="email-list-btn" onclick="editEmail(${email.id})">Wijzig</button>
+            `;
+            emailListContainer.appendChild(emailListItem);
+
+            if (noEmailsMessage.style.display === 'block') {
+                noEmailsMessage.style.display = 'none';
+            }
+        }
 
         // Laad inkomende e-mails bij het laden van de pagina
         window.onload = fetchEmails;

@@ -56,9 +56,10 @@ Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'm
 
 Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Communicatie.index');
 
-Route::get('/emails', [EmailController::class, 'index']);
-Route::post('/emails', [EmailController::class, 'store']);
+Route::get('/emails', [EmailController::class, 'index'])->name('emails.index');
 Route::post('/emails', [EmailController::class, 'store'])->name('emails.store');
+Route::get('/emails/{id}', [EmailController::class, 'show'])->name('emails.show');
+Route::put('/emails/{id}', [EmailController::class, 'update'])->name('emails.update');
 
 Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index']);
 Route::post('/get-beschikbaarheden-by-month', [BeschikbaarheidController::class, 'getBeschikbaarhedenByMonth']);
