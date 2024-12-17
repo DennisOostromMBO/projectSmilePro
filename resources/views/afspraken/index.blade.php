@@ -24,37 +24,38 @@
                 Er zijn geen afspraken beschikbaar. <a href="{{ route('afspraken.create') }}" class="text-blue-500 underline">Maak een nieuwe afspraak</a>.
             </div>
         @else
-            <table class="table-auto w-full bg-white shadow-md rounded">
-                <thead>
-                    <tr class="bg-gray-200 text-left">
-                        <th class="px-4 py-2">Volledige Naam</th>
-                        <th class="px-4 py-2">Leeftijdsgroep</th>
-                        <th class="px-4 py-2">Datum</th>
-                        <th class="px-4 py-2">Tijd</th>
-                        <th class="px-4 py-2">Berichten</th>
-                        <th class="px-4 py-2">Acties</th>
+        <table class="table-auto w-full bg-white shadow-md rounded">
+            <thead>
+                <tr class="bg-gray-200 text-left">
+                    <th class="px-4 py-2">Patiënt Naam</th>
+                    <th class="px-4 py-2">Medewerker Naam</th>
+                    <th class="px-4 py-2">Datum</th>
+                    <th class="px-4 py-2">Tijd</th>
+                    <th class="px-4 py-2">Type Afspraak</th>
+                    <th class="px-4 py-2">Acties</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($afspraken as $afspraak)
+                    <tr class="border-b">
+                        <td class="px-4 py-2">{{ $afspraak->patient_naam }}</td>
+                        <td class="px-4 py-2">{{ $afspraak->medewerker_naam }}</td>
+                        <td class="px-4 py-2">{{ $afspraak->datum }}</td>
+                        <td class="px-4 py-2">{{ \Carbon\Carbon::parse($afspraak->tijd)->format('H:i') }}</td>
+                        <td class="px-4 py-2">{{ $afspraak->type_afspraak ?? '-' }}</td>
+                        <td class="px-4 py-2">
+                            <a href="{{ route('afspraken.edit', $afspraak->id) }}" class="text-blue-500 underline">Bewerken</a>
+                            <form action="{{ route('afspraken.destroy', $afspraak->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 underline ml-2" onclick="return confirm('Weet je zeker dat je deze afspraak wilt verwijderen?')">Verwijderen</button>
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach ($afspraken as $afspraak)
-                        <tr class="border-b">
-                            <td class="px-4 py-2">{{ $afspraak->volledige_naam }}</td>
-                            <td class="px-4 py-2">{{ $afspraak->leeftijdsgroep }}</td>
-                            <td class="px-4 py-2">{{ $afspraak->datum }}</td>
-                            <td class="px-4 py-2">{{ \Carbon\Carbon::parse($afspraak->tijd)->format('H:i') }}</td>
-                            <td class="px-4 py-2">{{ $afspraak->berichten ?? '-' }}</td>
-                            <td class="px-4 py-2">
-                                <a href="{{ route('afspraken.edit', $afspraak->id) }}" class="text-blue-500 underline">Bewerken</a>
-                                <form action="{{ route('afspraken.destroy', $afspraak->id) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 underline ml-2" onclick="return confirm('Weet je zeker dat je deze afspraak wilt verwijderen?')">Verwijderen</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                @endforeach
+            </tbody>
+        </table>
+        
         @endif
     </div>
 </body>

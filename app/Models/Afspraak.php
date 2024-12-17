@@ -13,14 +13,13 @@ class Afspraak extends Model
 
     protected $fillable = [
         'gebruiker_id',
-        'volledige_naam',
-        'leeftijdsgroep',
+        'patient_naam',
+        'medewerker_naam',
         'datum',
         'tijd',
-        'berichten',
+        'type_afspraak',
     ];
-
-    // Relatie met de gebruiker
+    
     public function gebruiker()
     {
         return $this->belongsTo(User::class, 'gebruiker_id');

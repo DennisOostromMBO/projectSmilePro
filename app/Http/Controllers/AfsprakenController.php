@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Afspraak;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class AfsprakenController extends Controller
 {
@@ -15,7 +15,7 @@ class AfsprakenController extends Controller
             $afspraken = Afspraak::all();
             return view('afspraken.index', compact('afspraken'));
         } catch (\Exception $e) {
-            \Log::error('Fout bij het ophalen van afspraken: ' . $e->getMessage());
+            Log::error('Fout bij het ophalen van afspraken: ' . $e->getMessage());
             return redirect()->route('home')->with('error', 'Er is een probleem met het ophalen van de afspraken.');
         }
     }
@@ -29,20 +29,44 @@ class AfsprakenController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'gebruiker_id' => 'required|exists:gebruikers,id',
+            'patient_naam' => 'required|string|max:255',
             'datum' => 'required|date',
             'tijd' => 'required|date_format:H:i',
-            'berichten' => 'nullable|string',
+            'type_afspraak' => 'nullable|string',
         ]);
 
         try {
+            // Verkrijg het gebruiker_id van de ingelogde gebruiker
+            $gebruiker_id = auth()->id(); // Dit geeft het ID van de ingelogde gebruiker
+
+            // Controleren of de datum niet verder dan 1 jaar in de toekomst ligt
+            $datum = Carbon::parse($request->datum);
+            if ($datum->diffInYears(Carbon::now()) > 1) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'De afspraak mag maximaal 1 jaar vooruit worden gepland.',
+                ], 400);
+            }
+
+            // Tijd validatie: Controleer of het tijdstip voor 16:30 is en binnen de 30 minuten intervallen valt
+            $tijd = Carbon::createFromFormat('H:i', $request->tijd);
+            if ($tijd->hour > 16 || ($tijd->hour == 16 && $tijd->minute > 30)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'De afspraak kan alleen worden ingepland tot 16:30 uur.',
+                ], 400);
+            }
+
+            // Genereer een willekeurige medewerker naam
+            $medewerker_naam = $this->generateRandomMedewerkerNaam();
+
             Afspraak::create([
-                'gebruiker_id' => $request->gebruiker_id,
-                'volledige_naam' => $request->volledige_naam, // toevoegen van de volledige naam
-                'leeftijdsgroep' => $request->leeftijdsgroep,  // toevoegen van de leeftijdsgroep
+                'gebruiker_id' => $gebruiker_id,
+                'patient_naam' => $request->patient_naam,
+                'medewerker_naam' => $medewerker_naam,  // Genereerde medewerker naam
                 'datum' => $request->datum,
                 'tijd' => $request->tijd,
-                'berichten' => $request->berichten,
+                'type_afspraak' => $request->type_afspraak,
             ]);
 
             return response()->json([
@@ -50,7 +74,7 @@ class AfsprakenController extends Controller
                 'message' => 'Afspraak succesvol aangemaakt!',
             ], 200);
         } catch (\Exception $e) {
-            \Log::error('Fout bij het opslaan van een afspraak: ' . $e->getMessage());
+            Log::error('Fout bij het opslaan van een afspraak: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Er is een fout opgetreden bij het opslaan van de afspraak.',
@@ -58,7 +82,14 @@ class AfsprakenController extends Controller
         }
     }
 
-    // Controleren op bestaande afspraken (AJAX)
+    private function generateRandomMedewerkerNaam()
+    {
+        // Genereer een willekeurige medewerker naam
+        $namen = ['Jan', 'Piet', 'Klaas', 'Sophie', 'Emma', 'David', 'Laura', 'Lars'];
+        return $namen[array_rand($namen)];
+    }
+
+    // Controleren op bestaande afspraken
     public function checkAvailability(Request $request)
     {
         $request->validate([
@@ -70,21 +101,15 @@ class AfsprakenController extends Controller
             ->where('tijd', $request->tijd)
             ->first();
 
-        if ($afspraak) {
-            return response()->json(['available' => false], 200);
-        }
-
-        return response()->json(['available' => true], 200);
+        return response()->json(['available' => !$afspraak], 200);
     }
 
-    // Bekijken van een specifieke afspraak
     public function show($id)
     {
         $afspraak = Afspraak::findOrFail($id);
         return view('afspraken.bekijken', compact('afspraak'));
     }
 
-    // Formulier voor bewerken van afspraak
     public function edit($id)
     {
         $afspraak = Afspraak::findOrFail($id);
@@ -93,38 +118,40 @@ class AfsprakenController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'datum' => 'required|date',
-            'tijd' => 'required|date_format:H:i|before_or_equal:16:30',
-            'berichten' => 'nullable|string',
+            'tijd' => 'required|date_format:H:i',
+            'type_afspraak' => 'nullable|string',
         ]);
-        
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'De tijd moet voor of gelijk aan 16:30 zijn.');
-        }
-         
-        
-    
+
         $afspraak = Afspraak::findOrFail($id);
-    
+
         try {
+            // Controleren of de datum niet verder dan 1 jaar in de toekomst ligt
+            $datum = Carbon::parse($request->datum);
+            if ($datum->diffInYears(Carbon::now()) > 1) {
+                return redirect()->back()->with('error', 'De afspraak mag maximaal 1 jaar vooruit worden gepland.');
+            }
+
+            // Tijd validatie: Controleer of het tijdstip voor 16:30 is en binnen de 30 minuten intervallen valt
+            $tijd = Carbon::createFromFormat('H:i', $request->tijd);
+            if ($tijd->hour > 16 || ($tijd->hour == 16 && $tijd->minute > 30)) {
+                return redirect()->back()->with('error', 'De afspraak kan alleen worden ingepland tot 16:30 uur.');
+            }
+
             $afspraak->update([
                 'datum' => $request->datum,
                 'tijd' => $request->tijd,
-                'berichten' => $request->berichten,
+                'type_afspraak' => $request->type_afspraak,
             ]);
-    
+
             return redirect()->route('afspraken.index')->with('success', 'Afspraak succesvol bijgewerkt');
         } catch (\Exception $e) {
-            \Log::error('Fout bij het bijwerken van een afspraak: ' . $e->getMessage());
+            Log::error('Fout bij het bijwerken van een afspraak: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Er is een fout opgetreden bij het bijwerken van de afspraak.');
         }
     }
-    
-    
 
-
-    // Verwijderen van een afspraak
     public function destroy($id)
     {
         $afspraak = Afspraak::findOrFail($id);
@@ -133,7 +160,7 @@ class AfsprakenController extends Controller
             $afspraak->delete();
             return response()->json(['message' => 'Afspraak succesvol verwijderd'], 200);
         } catch (\Exception $e) {
-            \Log::error('Fout bij het verwijderen van een afspraak: ' . $e->getMessage());
+            Log::error('Fout bij het verwijderen van een afspraak: ' . $e->getMessage());
             return response()->json(['message' => 'Er is een fout opgetreden bij het verwijderen van de afspraak.'], 500);
         }
     }

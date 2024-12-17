@@ -26,31 +26,52 @@
             @csrf
             @method('PUT')
             
+            <!-- Patient Naam - Alleen-Lezen met andere kleur -->
             <div class="mb-4">
-                <label for="volledige_naam" class="block text-gray-700">Volledige Naam</label>
-                <input type="text" id="volledige_naam" name="volledige_naam" value="{{ $afspraak->volledige_naam }}" class="w-full p-2 border rounded" disabled>
+                <label for="patient_naam" class="block text-gray-700">Patient Naam</label>
+                <input type="text" id="patient_naam" name="patient_naam" value="{{ $afspraak->patient_naam }}" class="w-full p-2 border rounded bg-gray-200 text-gray-500" readonly>
             </div>
 
+            <!-- Medewerker Naam - Alleen-Lezen met andere kleur -->
             <div class="mb-4">
-                <label for="leeftijdsgroep" class="block text-gray-700">Leeftijdsgroep</label>
-                <input type="text" id="leeftijdsgroep" name="leeftijdsgroep" value="{{ $afspraak->leeftijdsgroep }}" class="w-full p-2 border rounded" disabled>
+                <label for="medewerker_naam" class="block text-gray-700">Medewerker Naam</label>
+                <input type="text" id="medewerker_naam" name="medewerker_naam" value="{{ $afspraak->medewerker_naam }}" class="w-full p-2 border rounded bg-gray-200 text-gray-500" readonly>
             </div>
 
+            <!-- Datum - Maximaal 1 jaar in de toekomst -->
             <div class="mb-4">
                 <label for="datum" class="block text-gray-700">Datum</label>
-                <input type="date" id="datum" name="datum" value="{{ $afspraak->datum }}" class="w-full p-2 border rounded" required>
+                <input type="date" id="datum" name="datum" value="{{ old('datum', $afspraak->datum) }}" class="w-full p-2 border rounded" min="{{ \Carbon\Carbon::today()->toDateString() }}" max="{{ \Carbon\Carbon::today()->addYear()->toDateString() }}" required>
             </div>
 
+            <!-- Tijd - Alleen Keuzes per 30 Minuten tot 16:30 -->
             <div class="mb-4">
                 <label for="tijd" class="block text-gray-700">Tijd</label>
-                <input type="time" id="tijd" name="tijd" value="{{ $afspraak->tijd }}" class="w-full p-2 border rounded" required>
-                @if ($errors->has('tijd'))
-                @endif
+                <select id="tijd" name="tijd" class="w-full p-2 border rounded" required>
+                    @php
+                        $times = [];
+                        $start = \Carbon\Carbon::createFromFormat('H:i', '08:00');
+                        $end = \Carbon\Carbon::createFromFormat('H:i', '16:30');
+                        while ($start <= $end) {
+                            $times[] = $start->format('H:i');
+                            $start->addMinutes(30);
+                        }
+                    @endphp
+                    @foreach ($times as $time)
+                        <option value="{{ $time }}" {{ old('tijd', $afspraak->tijd) == $time ? 'selected' : '' }}>{{ $time }}</option>
+                    @endforeach
+                </select>
             </div>
 
+            <!-- Type Afspraak - Keuze Dropdown -->
             <div class="mb-4">
-                <label for="berichten" class="block text-gray-700">Berichten</label>
-                <textarea id="berichten" name="berichten" class="w-full p-2 border rounded">{{ $afspraak->berichten }}</textarea>
+                <label for="type_afspraak" class="block text-gray-700">Type Afspraak</label>
+                <select id="type_afspraak" name="type_afspraak" class="w-full p-2 border rounded">
+                    <option value="Consult" {{ old('type_afspraak', $afspraak->type_afspraak) == 'Consult' ? 'selected' : '' }}>Consult</option>
+                    <option value="Controle" {{ old('type_afspraak', $afspraak->type_afspraak) == 'Controle' ? 'selected' : '' }}>Controle</option>
+                    <option value="Therapie" {{ old('type_afspraak', $afspraak->type_afspraak) == 'Therapie' ? 'selected' : '' }}>Therapie</option>
+                    <option value="Overleg" {{ old('type_afspraak', $afspraak->type_afspraak) == 'Overleg' ? 'selected' : '' }}>Overleg</option>
+                </select>
             </div>
 
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Opslaan</button>
