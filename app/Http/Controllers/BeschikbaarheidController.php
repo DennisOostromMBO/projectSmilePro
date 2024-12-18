@@ -40,101 +40,52 @@ class BeschikbaarheidController extends Controller
     public function saveBeschikbaarheid(Request $request)
     {
         try {
-            // Validate the incoming request data
             $validatedData = $request->validate([
-                'MedewerkerId' => 'required|integer|exists:medewerkers,Id',
+                'MedewerkerId' => 'required|integer',
                 'DatumVanaf' => 'required|date',
                 'DatumTotMet' => 'required|date',
                 'TijdVanaf' => 'required|date_format:H:i',
                 'TijdTotMet' => 'required|date_format:H:i',
-                'Status' => 'required|in:Aanwezig,Afwezig,Verlof,Ziek',
-                'Opmerking' => 'nullable|string',
+                'Status' => 'required|string',
+                'Opmerking' => 'nullable|string'
             ]);
-            
-            // Find the beschikbaarheid by DatumVanaf and DatumTotMet
-            $beschikbaarheid = Beschikbaarheid::where('DatumVanaf', $validatedData['DatumVanaf'])
-                                               ->where('DatumTotMet', $validatedData['DatumTotMet'])
-                                               ->first();
-            if (!$beschikbaarheid) {
-                return response()->json(['error' => 'Beschikbaarheid not found'], 404);
-            }
+
+
 
             // Update the beschikbaarheid
-            $beschikbaarheid->update([
-                'MedewerkerId' => $validatedData['MedewerkerId'],
-                'DatumVanaf' => $validatedData['DatumVanaf'],
-                'DatumTotMet' => $validatedData['DatumTotMet'],
-                'TijdVanaf' => $validatedData['TijdVanaf'],
-                'TijdTotMet' => $validatedData['TijdTotMet'],
-                'Status' => $validatedData['Status'],
-                'Opmerking' => $validatedData['Opmerking'] ?? '',
-                'IsActief' => true,
-            ]);
+            // Beschikbaarheid::where('Id', $beschikbaarheid->Id)->update([
+            //     'MedewerkerId' => $validatedData['MedewerkerId'],
+            //     'DatumVanaf' => $validatedData['DatumVanaf'],
+            //     'DatumTotMet' => $validatedData['DatumTotMet'],
+            //     'TijdVanaf' => $validatedData['TijdVanaf'],
+            //     'TijdTotMet' => $validatedData['TijdTotMet'],
+            //     'Status' => $validatedData['Status'],
+            //     'Opmerking' => $validatedData['Opmerking'] ?? '',
+            //     'IsActief' => true
+            // ]);
+
+            $beschikbaarheid = Beschikbaarheid::find($request->input('MedewerkerId'));
+
+            DB::table('beschikbaarheid')
+                ->where('Id', $beschikbaarheid->Id)
+                ->update([
+                    'MedewerkerId' => $validatedData['MedewerkerId'],
+                    'DatumVanaf' => $validatedData['DatumVanaf'],
+                    'DatumTotMet' => $validatedData['DatumTotMet'],
+                    'TijdVanaf' => $validatedData['TijdVanaf'],
+                    'TijdTotMet' => $validatedData['TijdTotMet'],
+                    'Status' => $validatedData['Status'],
+                    'Opmerking' => $validatedData['Opmerking'] ?? '',
+                    'IsActief' => true
+                ]);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Beschikbaarheid succesvol bijgewerkt.',
-                'data' => $beschikbaarheid
+                'data' => $validatedData
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Interne serverfout',
-                'message' => $e->getMessage()
-            ], 500);
+            return response()->json(['error' => 'Failed to update beschikbaarheid', 'message' => $e->getMessage()], 500);
         }
     }
-
-    // public function saveBeschikbaarheid(Request $request)
-    // {
-        
-
-
-    //     try 
-    //     {
-    //         // dd($request);
-
-
-    //         // Validate the incoming request data
-    //         $validatedData = $request->validate([
-    //             'MedewerkerId' => 'required|integer|exists:medewerkers,Id',
-    //             'DatumVanaf' => 'required|date',
-    //             'DatumTotMet' => 'required|date',
-    //             'TijdVanaf' => 'required|date_format:H:i',
-    //             'TijdTotMet' => 'required|date_format:H:i',
-    //             'Status' => 'required|in:Aanwezig,Afwezig,Verlof,Ziek',
-    //             'Opmerking' => 'nullable|string',
-    //         ]);
-    //         $beschikbaarheid = Beschikbaarheid::find($request->input('id'));
-    //         if (!$beschikbaarheid) {
-    //             return response()->json(['error' => 'Beschikbaarheid not found'], 404);
-    //         }
-    //         $beschikbaarheid->MedewerkerId = $validatedData['MedewerkerId'];
-    //         $beschikbaarheid->DatumVanaf = $validatedData['DatumVanaf'];
-    //         $beschikbaarheid->DatumTotMet = $validatedData['DatumTotMet'];
-    //         $beschikbaarheid->TijdVanaf = $validatedData['TijdVanaf'];
-    //         $beschikbaarheid->TijdTotMet = $validatedData['TijdTotMet'];
-    //         $beschikbaarheid->Status = $validatedData['Status'];
-    //         $beschikbaarheid->Opmerking = $validatedData['Opmerking'] ?? '';
-    //         $beschikbaarheid->IsActief = true;
-    //         $beschikbaarheid->save();
-
-            
-
-
-
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Beschikbaarheid succesvol opgeslagen.',
-    //             'data' => $beschikbaarheid
-    //         ]);
-    //     } 
-    //     catch (\Exception $e) 
-    //     {
-    //         return response()->json([
-    //             'error' => 'Interne serverfout',
-    //             'message' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
 }
