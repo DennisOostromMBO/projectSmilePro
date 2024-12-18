@@ -10,28 +10,36 @@ class GebruikerModel extends Model
     use HasFactory;
 
     // Specificeer de tabelnaam
-    protected $table = 'gebruiker';
+    protected $table = 'users'; // Zorg ervoor dat de tabelnaam correct is
 
     // Specificeer de velden die massaal toewijsbaar zijn
     protected $fillable = [
-        'Id',
-        'PersoonId',
-        'Gebruikersnaam',
-        'Wachtwoord',
+        'persoon_id',
+        'rol_id',
+        'voornaam',
+        'tussenvoegsel',
+        'achternaam',
+        'email',
+        'password',
         'Isingelogd',
         'Ingelogd',
         'Uitgelogd',
         'IsActive',
-        'Comments',
+        'comments',
     ];
 
-    /**
-     * Definieer de relatie met de Persoon model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function persoon()
     {
-        return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
+        return $this->belongsTo(Persoon::class, 'persoon_id', 'id');
+    }
+
+    public function rol()
+    {
+        return $this->belongsTo(RolModel::class, 'rol_id', 'id');
+    }
+
+    public function getVolledigeNaamAttribute()
+    {
+        return "{$this->voornaam} {$this->tussenvoegsel} {$this->achternaam}";
     }
 }

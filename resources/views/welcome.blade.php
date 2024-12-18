@@ -21,7 +21,7 @@
                         <a class="nav-link" href="{{ route('patient.index') }}">Patiënten</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('AccountOverzicht.index') }}">Account Overzicht</a>
+                        <a class="nav-link" href="{{ route('accountoverzicht.index') }}">Account Overzicht</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('praktijkmanager.medewerkers') }}">Medewerkers</a>
@@ -45,29 +45,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a>
                     </li>
-                @endif
-                    <ul class="navbar-nav ms-auto">
-                        @if (Auth::check())
-                            <li class="nav-item">
-                                <a class="nav-link font-weight-bold" href="{{ route('profile.edit') }}">
-                                    <strong>{{ Auth::user()->VolledigeNaam }}</strong>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-
-                                </form>
-                            </li>
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">Register</a>
-                            </li>
-                        @endif
-                    </ul>
+                    @endif
                 </ul>
             </div>
         </div>

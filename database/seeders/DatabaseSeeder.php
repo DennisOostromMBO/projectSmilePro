@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             'tussenvoegsel' => '',
             'achternaam' => 'Manager',
             'email' => 'test@example.com',
+            'password' => bcrypt('test'),
             'rol_id' => 1,
         ]);
     }

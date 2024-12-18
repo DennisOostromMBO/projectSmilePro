@@ -46,7 +46,9 @@ Route::post('/patient', [PatientController::class, 'store'])->name('patient.stor
 Route::delete('/patient/{id}', [PatientController::class, 'destroy'])->name('patient.destroy');
 
 
-Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');
+Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('accountoverzicht.index');
+
+
 Route::resource('factuur', FactuurController::class);
 Route::get('/factuurs', [FactuurController::class, 'index'])->name('factuur.index');
 Route::get('/factuurs/{id}', [FactuurController::class, 'show'])->name('factuur.show');

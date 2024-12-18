@@ -195,7 +195,7 @@
                             emailDiv.className = 'email';
                             emailDiv.innerHTML = `
                                 <h2>${email.subject}</h2>
-                                <p class="email-date">Ontvangen op: ${new Date(email.created_at).toLocaleString()}</p>
+                                <p class="email-date">Verstuurd op: ${new Date(email.created_at).toLocaleString()}</p>
                             `;
                             emailDiv.addEventListener('click', function () {
                                 openModal(email);
@@ -227,7 +227,7 @@
 
             modalSubject.textContent = email.subject;
             modalBody.textContent = email.body;
-            modalDate.textContent = `Ontvangen op: ${new Date(email.created_at).toLocaleString()}`;
+            modalDate.textContent = `Verstuurd op: ${new Date(email.created_at).toLocaleString()}`;
             modal.style.display = 'flex';
         }
 
@@ -304,7 +304,7 @@
             emailDiv.className = 'email';
             emailDiv.innerHTML = `
                 <h2>${email.subject}</h2>
-                <p class="email-date">Ontvangen op: ${new Date(email.created_at).toLocaleString()}</p>
+                <p class="email-date">Verstuurd op: ${new Date(email.created_at).toLocaleString()}</p>
             `;
             emailDiv.addEventListener('click', function () {
                 openModal(email);
