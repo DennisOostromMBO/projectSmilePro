@@ -53,4 +53,9 @@ class Persoon extends Model
             return 'Oudere';
         }
     }
+
+    public function getAge()
+    {
+        return Carbon::parse($this->Geboortedatum)->age;
+    }
 }

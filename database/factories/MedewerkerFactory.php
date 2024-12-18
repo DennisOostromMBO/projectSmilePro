@@ -20,10 +20,20 @@ class MedewerkerFactory extends Factory
     {
         return [
             "PersoonId" => Persoon::query()->inRandomOrder()->value('id'),
-            "Nummer" => $this->faker->word(),
-            "Medewerkertype" => $this->faker->word(),
+            "Nummer" => $this->faker->phoneNumber(),
+            "Medewerkertype" => $this->faker->randomElement([
+                'Assistent',
+                'Mondhygiënist',
+                'Tandarts',
+                'Praktijkmanagement',
+            ]),
             "Specialisatie" => $this->faker->word(),
-            "Beschikbaarheid" => $this->faker->word()
+            "Beschikbaarheid" => $this->faker->randomElement([
+                'Full-time',
+                'Part-time',
+                'Freelance',
+                'On-call',
+            ]),
         ];
     }
 }
