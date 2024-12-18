@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -11,9 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Lees de SQL uit het bestand en voer het uit om de tabel te maken
-        $sql = File::get(database_path('sql/patient.sql'));
-        DB::unprepared($sql);
+        Schema::create('patients', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('persoon_id')->unique()->constrained('persoon')->onDelete('cascade');
+            $table->string('nummer', 255);
+            $table->text('medisch_dossier')->nullable();
+            $table->string('straatnaam', 255);
+            $table->smallInteger('huisnummer');
+            $table->string('toevoeging', 10)->nullable();
+            $table->string('postcode', 10);
+            $table->string('plaats', 100);
+            $table->string('mobiel', 20);
+            $table->string('email', 255);
+            $table->boolean('is_active')->default(true);
+            $table->string('comments', 255)->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -21,7 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Verwijder de tabel als onderdeel van het rollback-proces
-        DB::statement('DROP TABLE IF EXISTS patient');
+        Schema::dropIfExists('patients');
     }
 };

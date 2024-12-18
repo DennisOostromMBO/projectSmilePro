@@ -30,3 +30,4 @@ class Beschikbaarheid extends Model
         return $this->belongsTo(Medewerker::class, 'medewerkerId', 'Id'); // Consistente foreign key naam
     }
 }
+

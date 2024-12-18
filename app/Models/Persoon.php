@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Persoon extends Model
 {
@@ -12,46 +11,34 @@ class Persoon extends Model
 
     protected $table = 'persoon';
 
+    protected $primaryKey = 'id';
+
     protected $fillable = [
-        'Voornaam',
-        'Tussenvoegsel',
-        'Achternaam',
-        'Geboortedatum',
+        'voornaam',
+        'tussenvoegsel',
+        'achternaam',
+        'geboortedatum',
+        'is_active',
+        'comments',
     ];
+
+    protected $appends = ['VolledigeNaam'];
 
     public $timestamps = false;
 
-    // Relaties
-    public function patient()
+    public function getVolledigeNaamAttribute()
     {
-        return $this->belongsTo(Patient::class, 'PersoonId', 'Id');
+        return trim("{$this->voornaam} {$this->tussenvoegsel} {$this->achternaam}");
     }
 
-    public function gebruikers()
+    public function patients()
     {
-        return $this->hasMany(GebruikerModel::class, 'PersoonId', 'Id');
+        return $this->hasMany(Patient::class, 'persoon_id', 'id');
     }
 
-    // Accessor voor de leeftijdscategorie
-    public function getLeeftijdCategorieAttribute()
+    public function medewerker()
     {
-        $leeftijd = Carbon::parse($this->Geboortedatum)->age;
-
-        if ($leeftijd <= 1) {
-            return 'Baby';
-        } elseif ($leeftijd >= 2 && $leeftijd <= 3) {
-            return 'Peuter';
-        } elseif ($leeftijd >= 4 && $leeftijd <= 6) {
-            return 'Kleuter';
-        } elseif ($leeftijd >= 7 && $leeftijd <= 12) {
-            return 'Kind';
-        } elseif ($leeftijd >= 13 && $leeftijd <= 18) {
-            return 'Tiener';
-        } elseif ($leeftijd >= 19 && $leeftijd <= 64) {
-            return 'Volwassene';
-        } else {
-            return 'Oudere';
-        }
+        return $this->belongsTo(Medewerker::class, 'PersoonId', 'Id');
     }
 
     public function getAge()

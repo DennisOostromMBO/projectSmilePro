@@ -14,7 +14,7 @@ class Gebruiker extends Model
 {
     use HasFactory;
 
-    protected $table = 'gebruiker'; // Zorg ervoor dat de tabelnaam correct is
+    protected $table = 'users'; 
 
     protected $fillable = [
         'Gebruikersnaam',

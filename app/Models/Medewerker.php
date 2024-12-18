@@ -29,6 +29,6 @@ class Medewerker extends Model
 
     public function beschikbaarheden()
     {
-        return $this->hasMany(Beschikbaarheid::class, 'medewerker_id', 'Id');
+        return $this->hasMany(Beschikbaarheid::class, 'medewerkerId', 'Id');
     }
 }

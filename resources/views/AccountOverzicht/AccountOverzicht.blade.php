@@ -33,8 +33,8 @@
                     <thead>
                         <tr>
                             <th class="py-2 px-4 border-b text-center">Volledige Naam</th>
-                            <th class="py-2 px-4 border-b text-center">Gebruikersnaam</th>
-                            <th class="py-2 px-4 border-b text-center">Wachtwoord</th>
+                            <th class="py-2 px-4 border-b text-center">E-mail</th>
+                            <th class="py-2 px-4 border-b text-center">Rol</th>
                             <th class="py-2 px-4 border-b text-center">Is Active</th>
                             <th class="py-2 px-4 border-b text-center">Is Ingelogd</th>
                             <th class="py-2 px-4 border-b text-center">Ingelogd</th>
@@ -45,11 +45,9 @@
                     <tbody>
                         @foreach($gebruikers as $gebruiker)
                             <tr>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->persoon->VolledigeNaam }}</td>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->Gebruikersnaam }}</td>
-                                <td class="py-2 px-4 border-b text-center align-middle">
-                                    {{ substr($gebruiker->Wachtwoord, 0, floor(strlen($gebruiker->Wachtwoord) * 0.4)) }}{{ str_repeat('*', ceil(strlen($gebruiker->Wachtwoord) * 0.6)) }}
-                                </td>
+                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->VolledigeNaam }}</td>
+                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->email }}</td>
+                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->rol->Naam }}</td>
                                 <td class="py-2 px-4 border-b text-center align-middle"><span
                                     class="px-2 py-1 rounded-full text-xs {{ $gebruiker->IsActive ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
                                     {{ $gebruiker->IsActive ? 'Actief' : 'Inactief' }}
@@ -66,7 +64,7 @@
                                     class="px-2 py-1 rounded-full text-xs {{ $gebruiker->Uitgelogd ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
                                     {{ $gebruiker->Uitgelogd ? 'Uitgelogd' : 'Ingelogd' }}
                                 </span></td>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->Comments }}</td>
+                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->comments }}</td>
                             </tr>   
                         @endforeach 
                     </tbody>

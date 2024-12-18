@@ -1,19 +1,20 @@
 -- ****************************************************************
 -- Doel: Opvragen van records uit de tabel
---       Patient, Contact en Persoon
+--       Gebruiker, Persoon en Contact
 -- ************************************************
 -- Versie:    Datum:            Auteur:              Details
 -- *******    ******            *******              ******* 
--- 01         29-11-2024        Dennis Oostrom       SP voor read
+-- 01         13-12-2024        Daniel van Grol       SP voor read
 -- ****************************************************************     
 
-
 -- Verwijder de bestaande stored procedure
-DROP PROCEDURE IF EXISTS spGetAllPatientInfo;
+DROP PROCEDURE IF EXISTS spGetAllGebruikersInfo;
 
-CREATE PROCEDURE spGetAllPatientInfo()
+CREATE PROCEDURE spGetAllGebruikersInfo()
 BEGIN
     SELECT 
+        GEBR.name AS Gebruikersnaam,
+        GEBR.Email,
         PERS.VolledigeNaam, 
         PERS.Geboortedatum,
         CASE 
@@ -27,17 +28,13 @@ BEGIN
         END AS LeeftijdCategorie,
         CONT.VolledigAdres, 
         CONT.Mobiel AS Mobielnummer, 
-        CONT.Email, 
-        PATI.Nummer, 
-        PATI.MedischDossier
-    FROM patient AS PATI
-    INNER JOIN persoon AS PERS ON PATI.PersoonId = PERS.Id
-    INNER JOIN contact AS CONT ON PATI.Id = CONT.PatientId
-    ORDER BY PATI.Nummer ASC; 
+        CONT.Email AS ContactEmail
+    FROM gebruiker AS GEBR
+    INNER JOIN persoon AS PERS ON GEBR.PersoonId = PERS.Id
+    INNER JOIN contact AS CONT ON PERS.Id = CONT.PersoonId
+    ORDER BY GEBR.name ASC; 
 END;
 
-
 -- **********debug code stored procedure***************
---  CALL spGetAllPatientInfo();
+--  CALL spGetAllGebruikersInfo();
 -- ****************************************************
-

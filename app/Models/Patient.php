@@ -10,13 +10,24 @@ class Patient extends Model
     use HasFactory;
 
     // Geef de naam van de database-tabel aan
-    protected $table = 'patient';
+    protected $table = 'patients';
+
+    protected $primaryKey = 'Id';
 
     // Velden die massaal toegewezen mogen worden
     protected $fillable = [
-        'PersoonId',
-        'Nummer',
-        'MedischDossier',
+        'persoon_id',
+        'nummer',
+        'medisch_dossier',
+        'straatnaam',
+        'huisnummer',
+        'toevoeging',
+        'postcode',
+        'plaats',
+        'mobiel',
+        'email',
+        'is_active',
+        'comments',
     ];
 
     // Geen timestamps gebruikt in deze tabel
@@ -27,14 +38,6 @@ class Patient extends Model
      */
     public function persoon()
     {
-        return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
-    }
-
-    /**
-     * Relatie: Een patiënt heeft één contactpersoon
-     */
-    public function contact()
-    {
-        return $this->hasOne(Contact::class, 'PatientId', 'Id');
+        return $this->belongsTo(Persoon::class, 'persoon_id', 'Id');
     }
 }
