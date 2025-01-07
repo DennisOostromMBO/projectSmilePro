@@ -1,1 +1,1 @@
-<a class="navbar-brand text-3xl font-bold" href="http://127.0.0.1:8000">SmilePro</a>
+<a class="navbar-brand text-3xl font-bold" href="{{ url('/') }}">SmilePro</a>
