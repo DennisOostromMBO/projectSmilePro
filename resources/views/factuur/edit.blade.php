@@ -18,8 +18,8 @@
             @csrf
             @method('PUT')
             <div class="mb-4">
-                <label for="klant_id" class="block text-gray-700">Klant ID</label>
-                <input type="text" name="klant_id" id="klant_id" value="{{ $factuur->klant_id }}" class="w-full border-gray-300 rounded mt-1" required>
+                <label for="persoon_id" class="block text-gray-700">Persoon ID</label>
+                <input type="text" name="persoon_id" id="persoon_id" value="{{ $factuur->persoon_id }}" class="w-full border-gray-300 rounded mt-1" required>
             </div>
             <div class="mb-4">
                 <label for="voornaam" class="block text-gray-700">Voornaam</label>

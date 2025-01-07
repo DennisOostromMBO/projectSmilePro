@@ -12,7 +12,8 @@
         <table class="min-w-full bg-white">
             <thead>
                 <tr>
-                    <th class="py-2 px-4 border-b">Klant Naam</th>
+                    <th class="py-2 px-4 border-b">Persoon ID</th>
+                    <th class="py-2 px-4 border-b">Naam Persoon</th>
                     <th class="py-2 px-4 border-b">Beschrijving</th>
                     <th class="py-2 px-4 border-b">Vervaldatum</th>
                     <th class="py-2 px-4 border-b">BTW</th>
@@ -23,6 +24,7 @@
             <tbody>
                 @foreach ($facturen as $factuur)
                     <tr>
+                        <td class="py-2 px-4 border-b">{{ $factuur->persoon_id }}</td>
                         <td class="py-2 px-4 border-b">
                             {{ $factuur->persoon ? $factuur->persoon->volledige_naam : 'N/A' }}
                         </td>

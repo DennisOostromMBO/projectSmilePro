@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <th>Klant ID</th>
-            <td>{{ $factuur->klant_id }}</td>
+            <td>{{ $factuur->persoon_id }}</td>
         </tr>
         <tr>
             <th>Beschrijving</th>

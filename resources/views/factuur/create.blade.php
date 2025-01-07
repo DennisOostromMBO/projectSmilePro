@@ -18,20 +18,8 @@
         <form action="{{ route('factuur.store') }}" method="POST" class="bg-white p-6 rounded shadow-md">
             @csrf
             <div class="mb-4">
-                <label for="klant_id" class="block text-gray-700">Klant ID</label>
-                <input type="text" name="klant_id" id="klant_id" class="w-full border-gray-300 rounded mt-1" required>
-            </div>
-            <div class="mb-4">
-                <label for="voornaam" class="block text-gray-700">Voornaam</label>
-                <input type="text" name="voornaam" id="voornaam" class="w-full border-gray-300 rounded mt-1" required>
-            </div>
-            <div class="mb-4">
-                <label for="tussenvoegsel" class="block text-gray-700">Tussenvoegsel</label>
-                <input type="text" name="tussenvoegsel" id="tussenvoegsel" class="w-full border-gray-300 rounded mt-1">
-            </div>
-            <div class="mb-4">
-                <label for="achternaam" class="block text-gray-700">Achternaam</label>
-                <input type="text" name="achternaam" id="achternaam" class="w-full border-gray-300 rounded mt-1" required>
+                <label for="persoon_id" class="block text-gray-700">Persoon ID</label>
+                <input type="text" name="persoon_id" id="persoon_id" class="w-full border-gray-300 rounded mt-1" required>
             </div>
             <div class="mb-4">
                 <label for="beschrijving" class="block text-gray-700">Beschrijving</label>
