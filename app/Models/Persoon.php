@@ -11,21 +11,22 @@ class Persoon extends Model
     protected $table = 'personen';
 
     protected $fillable = [
-        'voornaam',
-        'tussenvoegsel',
-        'achternaam',
-        'geboortedatum',
+        'Voornaam',
+        'Tussenvoegsel',
+        'Achternaam',
+        'Geboortedatum',
     ];
 
     public $timestamps = false;
 
-    public function VolledigeNaam()
+    // callable through $person->Fname
+    public function getFnameAttribute()
     {
         return trim("{$this->Voornaam} {$this->Tussenvoegsel} {$this->Achternaam}");
     }
 
     public function patient()
     {
-        return $this->hasOne(Patient::class, 'persoon_Id', 'Id');
+        return $this->hasOne(Patient::class, 'PersoonId','Id');
     }
 }

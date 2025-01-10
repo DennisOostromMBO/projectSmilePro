@@ -24,9 +24,9 @@
             <tbody>
             @foreach ($facturen as $factuur)
                 <tr>
-                <td class="py-2 px-4 border-b">{{ $factuur->persoon_Id }}</td>
+                <td class="py-2 px-4 border-b">{{ $factuur->persoonId }}</td>
                 <td class="py-2 px-4 border-b">
-                    {{ $factuur->persoon ? $factuur->persoon->VolledigeNaam : 'N/A' }}
+                    {{ $factuur->persoon ? $factuur->persoon->fname : 'N/A' }}
                 </td>
                 <td class="py-2 px-4 border-b">{{ $factuur->beschrijving }}</td>
                 <td class="py-2 px-4 border-b">{{ $factuur->vervaldatum }}</td>

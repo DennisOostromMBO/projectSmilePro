@@ -11,7 +11,7 @@ class Factuur extends Model
     protected $table = 'factuur';
 
     protected $fillable = [
-        'persoon_Id',
+        'persoonId',
         'klant_id',
         'beschrijving',
         'vervaldatum',
@@ -21,6 +21,6 @@ class Factuur extends Model
 
     public function persoon()
     {
-        return $this->belongsTo(Persoon::class, 'Id', 'persoon_Id');
+        return $this->belongsTo(Persoon::class, 'persoonId','Id');
     }
 }
