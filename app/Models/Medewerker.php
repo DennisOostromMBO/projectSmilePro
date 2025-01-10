@@ -24,7 +24,7 @@ class Medewerker extends Model
 
     public function persoon()
     {
-        return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
+        return $this->belongsTo(Persoon::class, 'PersoonId', 'id');
     }
 
     public function beschikbaarheden()

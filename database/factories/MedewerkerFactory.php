@@ -18,8 +18,19 @@ class MedewerkerFactory extends Factory
      */
     public function definition(): array
     {
+        static $usedPersoonIds = [];
+
+        $persoonId = Persoon::query()
+            ->whereNotIn('id', $usedPersoonIds)
+            ->inRandomOrder()
+            ->value('id');
+
+        if ($persoonId !== null) {
+            $usedPersoonIds[] = $persoonId;
+        }
+
         return [
-            "PersoonId" => Persoon::query()->inRandomOrder()->value('id'),
+            "PersoonId" => $persoonId,
             "Nummer" => $this->faker->phoneNumber(),
             "Medewerkertype" => $this->faker->randomElement([
                 'Assistent',

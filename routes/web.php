@@ -55,6 +55,11 @@ Route::get('/factuurs/{id}', [FactuurController::class, 'show'])->name('factuur.
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
+//  route('medewerkers.edit', $medewerker->Id)
+Route::get('/praktijkmanager/edit/{id}', [PraktijkmanagerController::class, 'edit'])->name('medewerkers.edit');
+Route::put('/praktijkmanager/update/{id}', [PraktijkmanagerController::class, 'update'])->name('medewerkers.update');
+Route::get('/praktijkmanager/create', [PraktijkmanagerController::class, 'create'])->name('medewerkers.create');
+Route::post('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'store'])->name('medewerkers.store');
 
 Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Communicatie.index');
 
@@ -74,7 +79,3 @@ Route::post('/save-afspraak', [AfsprakenController::class, 'store']);
 Route::get('/aboutus', [AboutUsController::class, 'index'])->name('aboutus.index');
 
 require __DIR__ . '/auth.php';
-
-
-
-

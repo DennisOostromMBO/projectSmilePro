@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $sql = File::get(database_path('sql/patient.sql'));
+        $sql = File::get(database_path('sql/sessions.sql'));
         DB::unprepared($sql);
     }
 
@@ -20,6 +20,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement('DROP TABLE IF EXISTS patient');
+        DB::statement('DROP TABLE IF EXISTS sessions');
     }
 };

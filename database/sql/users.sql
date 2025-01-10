@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS users (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    persoon_id INT UNSIGNED NULL,
+    rol_id INT UNSIGNED NOT NULL,
+    voornaam VARCHAR(255) NOT NULL,
+    tussenvoegsel VARCHAR(255) NULL,
+    achternaam VARCHAR(255) NOT NULL,
+    email VARCHAR(191) NOT NULL UNIQUE,
+    email_verified_at TIMESTAMP NULL,
+    password VARCHAR(255) NOT NULL,
+    Isingelogd BIT DEFAULT 0,
+    Ingelogd TIMESTAMP NULL,
+    Uitgelogd TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    IsActive BIT DEFAULT 1,
+    remember_token VARCHAR(100) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    comments VARCHAR(255) NULL,
+    VolledigeNaam VARCHAR(255) AS (CONCAT(voornaam, ' ', IFNULL(tussenvoegsel, ''), ' ', achternaam)) STORED,
+    FOREIGN KEY (persoon_id) REFERENCES persoon(id) ON DELETE CASCADE,
+    FOREIGN KEY (rol_id) REFERENCES rol(id) ON DELETE CASCADE
+) ENGINE=InnoDB;

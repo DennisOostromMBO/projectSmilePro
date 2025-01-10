@@ -14,6 +14,6 @@ class MedewerkerSeeder extends Seeder
     public function run(): void
     {
         //
-        Medewerker::factory()->count(20)->create();
+        Medewerker::factory()->count(10)->create();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -47,9 +48,9 @@ class BeschikbaarheidSeeder extends Seeder
             'isActief' => 0,
             'opmerking' => 'Opmerking 3',
         ]);
-           // Voeg de beschikbaarheden voor een medewerker toe
-           Beschikbaarheid::create([
-            'medewerkerId' => 11, // Medewerker ID (pas aan op basis van jouw gegevens)
+        // Voeg de beschikbaarheden voor een medewerker toe
+        Beschikbaarheid::create([
+            'medewerkerId' => 5, // Medewerker ID (pas aan op basis van jouw gegevens)
             'datumVanaf' => '2024-12-19', // Startdatum van de beschikbaarheid
             'DatumTotMet' => '2024-12-19', // Einddatum van de beschikbaarheid
             'tijdVanaf' => '09:00:00', // Starttijd van de beschikbaarheid
@@ -59,7 +60,7 @@ class BeschikbaarheidSeeder extends Seeder
             'opmerking' => 'Opmerking 1', // Opmerking bij de beschikbaarheid
         ]);
         Beschikbaarheid::create([
-            'medewerkerId' => 10, // Medewerker ID (pas aan op basis van jouw gegevens)
+            'medewerkerId' => 4, // Medewerker ID (pas aan op basis van jouw gegevens)
             'datumVanaf' => '2024-12-18', // Startdatum van de beschikbaarheid
             'DatumTotMet' => '2024-12-18', // Einddatum van de beschikbaarheid
             'tijdVanaf' => '09:00:00', // Starttijd van de beschikbaarheid
