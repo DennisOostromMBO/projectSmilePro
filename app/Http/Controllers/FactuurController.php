@@ -12,10 +12,6 @@ class FactuurController extends Controller
     public function index()
     {
         $facturen = Factuur::with('persoon')->get();
-        $hi = DB::table('factuur')
-            ->join('persoon', 'factuur.persoon_Id', '=', 'persoon.Id')
-            ->select('factuur.*', 'persoon.Voornaam', 'persoon.Tussenvoegsel', 'persoon.Achternaam')
-            ->get();
         return view('factuur.index', compact('facturen'));
     }
 
