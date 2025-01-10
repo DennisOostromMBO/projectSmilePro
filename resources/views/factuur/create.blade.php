@@ -18,24 +18,28 @@
         <form action="{{ route('factuur.store') }}" method="POST" class="bg-white p-6 rounded shadow-md">
             @csrf
             <div class="mb-4">
-                <label for="persoon_id" class="block text-gray-700">Persoon ID</label>
-                <input type="text" name="persoon_id" id="persoon_id" class="w-full border-gray-300 rounded mt-1" required>
+            <label for="persoon_id" class="block text-gray-700">Persoon</label>
+            <select name="persoon_Id" id="persoon_Id" class="w-full border-gray-300 rounded mt-1" required>
+                @foreach($personen as $persoon)
+                <option value="{{ $persoon->id }}">{{ $persoon->VolledigeNaam }}</option>
+                @endforeach
+            </select>
             </div>
             <div class="mb-4">
-                <label for="beschrijving" class="block text-gray-700">Beschrijving</label>
-                <textarea name="beschrijving" id="beschrijving" class="w-full border-gray-300 rounded mt-1" required></textarea>
+            <label for="beschrijving" class="block text-gray-700">Beschrijving</label>
+            <textarea name="beschrijving" id="beschrijving" class="w-full border-gray-300 rounded mt-1" required></textarea>
             </div>
             <div class="mb-4">
-                <label for="vervaldatum" class="block text-gray-700">Vervaldatum</label>
-                <input type="date" name="vervaldatum" id="vervaldatum" class="w-full border-gray-300 rounded mt-1" required>
+            <label for="vervaldatum" class="block text-gray-700">Vervaldatum</label>
+            <input type="date" name="vervaldatum" id="vervaldatum" class="w-full border-gray-300 rounded mt-1" required>
             </div>
             <div class="mb-4">
-                <label for="totaal_bedrag" class="block text-gray-700">Totaal Bedrag</label>
-                <input type="number" name="totaal_bedrag" id="totaal_bedrag" class="w-full border-gray-300 rounded mt-1" required oninput="calculateBTW()">
+            <label for="totaal_bedrag" class="block text-gray-700">Totaal Bedrag</label>
+            <input type="number" name="totaal_bedrag" id="totaal_bedrag" class="w-full border-gray-300 rounded mt-1" required oninput="calculateBTW()">
             </div>
             <div class="mb-4">
-                <label for="btw" class="block text-gray-700">BTW</label>
-                <input type="number" name="btw" id="btw" class="w-full border-gray-300 rounded mt-1" readonly>
+            <label for="btw" class="block text-gray-700">BTW</label>
+            <input type="number" name="btw" id="btw" class="w-full border-gray-300 rounded mt-1" readonly>
             </div>
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Create</button>
         </form>

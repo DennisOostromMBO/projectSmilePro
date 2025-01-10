@@ -17,7 +17,7 @@ return new class extends Migration
 
         Schema::create('factuur', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('persoon_id')->nullable()->after('id');
+            $table->unsignedBigInteger('persoon_Id')->nullable()->after('id');
             $table->string('beschrijving');
             $table->date('vervaldatum');
             $table->decimal('btw', 5, 2);

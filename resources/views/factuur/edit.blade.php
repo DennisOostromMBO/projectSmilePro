@@ -1,3 +1,4 @@
+<!-- resources/views/factuur/edit.blade.php -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,20 +19,12 @@
             @csrf
             @method('PUT')
             <div class="mb-4">
-                <label for="persoon_id" class="block text-gray-700">Persoon ID</label>
-                <input type="text" name="persoon_id" id="persoon_id" value="{{ $factuur->persoon_id }}" class="w-full border-gray-300 rounded mt-1" required>
-            </div>
-            <div class="mb-4">
-                <label for="voornaam" class="block text-gray-700">Voornaam</label>
-                <input type="text" name="voornaam" id="voornaam" value="{{ $factuur->voornaam }}" class="w-full border-gray-300 rounded mt-1" required>
-            </div>
-            <div class="mb-4">
-                <label for="tussenvoegsel" class="block text-gray-700">Tussenvoegsel</label>
-                <input type="text" name="tussenvoegsel" id="tussenvoegsel" value="{{ $factuur->tussenvoegsel }}" class="w-full border-gray-300 rounded mt-1">
-            </div>
-            <div class="mb-4">
-                <label for="achternaam" class="block text-gray-700">Achternaam</label>
-                <input type="text" name="achternaam" id="achternaam" value="{{ $factuur->achternaam }}" class="w-full border-gray-300 rounded mt-1" required>
+                <label for="persoon_Id" class="block text-gray-700">Persoon</label>
+                <select name="persoon_Id" id="persoon_Id" class="w-full border-gray-300 rounded mt-1" required>
+                    @foreach($personen as $persoon)
+                        <option value="{{ $persoon->id }}" {{ $factuur->persoon_Id == $persoon->id ? 'selected' : '' }}>{{ $persoon->volledige_naam }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="mb-4">
                 <label for="beschrijving" class="block text-gray-700">Beschrijving</label>

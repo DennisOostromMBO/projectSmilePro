@@ -11,32 +11,37 @@
         <a href="{{ route('factuur.create') }}" class="bg-green-500 text-white px-4 py-2 rounded mb-4 inline-block">Create Factuur</a>
         <table class="min-w-full bg-white">
             <thead>
-                <tr>
-                    <th class="py-2 px-4 border-b">Persoon ID</th>
-                    <th class="py-2 px-4 border-b">Naam Persoon</th>
-                    <th class="py-2 px-4 border-b">Beschrijving</th>
-                    <th class="py-2 px-4 border-b">Vervaldatum</th>
-                    <th class="py-2 px-4 border-b">BTW</th>
-                    <th class="py-2 px-4 border-b">Totaal Bedrag</th>
-                    <th class="py-2 px-4 border-b">Actions</th>
-                </tr>
+            <tr>
+                <th class="py-2 px-4 border-b">Persoon ID</th>
+                <th class="py-2 px-4 border-b">Naam Persoon</th>
+                <th class="py-2 px-4 border-b">Beschrijving</th>
+                <th class="py-2 px-4 border-b">Vervaldatum</th>
+                <th class="py-2 px-4 border-b">BTW</th>
+                <th class="py-2 px-4 border-b">Totaal Bedrag</th>
+                <th class="py-2 px-4 border-b">Actions</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach ($facturen as $factuur)
-                    <tr>
-                        <td class="py-2 px-4 border-b">{{ $factuur->persoon_id }}</td>
-                        <td class="py-2 px-4 border-b">
-                            {{ $factuur->persoon ? $factuur->persoon->volledige_naam : 'N/A' }}
-                        </td>
-                        <td class="py-2 px-4 border-b">{{ $factuur->beschrijving }}</td>
-                        <td class="py-2 px-4 border-b">{{ $factuur->vervaldatum }}</td>
-                        <td class="py-2 px-4 border-b">{{ $factuur->btw }}</td>
-                        <td class="py-2 px-4 border-b">{{ $factuur->totaal_bedrag }}</td>
-                        <td class="py-2 px-4 border-b">
-                            <a href="{{ route('factuur.edit', $factuur->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Edit</a>
-                        </td>
-                    </tr>
-                @endforeach
+            @foreach ($facturen as $factuur)
+                <tr>
+                <td class="py-2 px-4 border-b">{{ $factuur->persoon_Id }}</td>
+                <td class="py-2 px-4 border-b">
+                    {{ $factuur->persoon ? $factuur->persoon->VolledigeNaam : 'N/A' }}
+                </td>
+                <td class="py-2 px-4 border-b">{{ $factuur->beschrijving }}</td>
+                <td class="py-2 px-4 border-b">{{ $factuur->vervaldatum }}</td>
+                <td class="py-2 px-4 border-b">{{ $factuur->btw }}</td>
+                <td class="py-2 px-4 border-b">{{ $factuur->totaal_bedrag }}</td>
+                <td class="py-2 px-4 border-b">
+                    <a href="{{ route('factuur.edit', $factuur->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Edit</a>
+                    <form action="{{ route('factuur.destroy', $factuur->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Are you sure you want to delete this factuur?')">Delete</button>
+                    </form>
+                </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>

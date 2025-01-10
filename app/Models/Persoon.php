@@ -8,7 +8,7 @@ class Persoon extends Model
 {
     use HasFactory;
 
-    protected $table = 'persoon';
+    protected $table = 'personen';
 
     protected $fillable = [
         'voornaam',
@@ -19,13 +19,13 @@ class Persoon extends Model
 
     public $timestamps = false;
 
-    public function getVolledigeNaamAttribute()
+    public function VolledigeNaam()
     {
-        return trim("{$this->voornaam} {$this->tussenvoegsel} {$this->achternaam}");
+        return trim("{$this->Voornaam} {$this->Tussenvoegsel} {$this->Achternaam}");
     }
 
     public function patient()
     {
-        return $this->hasOne(Patient::class, 'persoon_id', 'id');
+        return $this->hasOne(Patient::class, 'persoon_Id', 'Id');
     }
 }

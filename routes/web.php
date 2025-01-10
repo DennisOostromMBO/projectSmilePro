@@ -29,6 +29,7 @@ Route::get('/factuurs/create', [FactuurController::class, 'create'])->name('fact
 Route::post('/factuurs', [FactuurController::class, 'store'])->name('factuur.store');
 Route::get('/factuurs/{id}/edit', [FactuurController::class, 'edit'])->name('factuur.edit');
 Route::put('/factuurs/{id}', [FactuurController::class, 'update'])->name('factuur.update');
+Route::resource('factuur', FactuurController::class);
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
