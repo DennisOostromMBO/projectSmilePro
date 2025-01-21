@@ -7,7 +7,7 @@ use App\Models\Afspraak;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
+//De afspraak worden in afgelopen zetten na 1,5 dus 90 minuten 30 minuten lukte niet
 class AfsprakenController extends Controller
 {  public function index()
     {
@@ -23,7 +23,7 @@ class AfsprakenController extends Controller
                 // Starttijd van de afspraak
                 $startTijd = Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd);
                 
-                // Eindtijd van de afspraak (30 minuten na starttijd)
+                // Eindtijd van de afspraak (90 minuten na starttijd)
                 $eindTijd = $startTijd->copy()->addMinutes(30);
                 
                 // Als de eindtijd later is dan nu, is de afspraak toekomstig

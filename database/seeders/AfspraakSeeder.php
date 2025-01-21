@@ -44,7 +44,7 @@ class AfspraakSeeder extends Seeder
             'patient_naam' => 'Baris Alper Yilmaz',
             'medewerker_naam' => 'Mvr. Lima',
             'datum' => '2025-01-21',
-            'tijd' => '09:44',
+            'tijd' => '09:30',
             'type_afspraak' => 'Overleg',
         ]);
         Afspraak::create([
