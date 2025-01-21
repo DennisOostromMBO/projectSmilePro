@@ -50,6 +50,7 @@ Route::resource('afspraken', AfsprakenController::class);
 // Route voor het aanmaken van een afspraak
 Route::post('/afspraken', [AfsprakenController::class, 'store'])->name('afspraken.store');
 Route::post('/afspraken/check-availability', [AfsprakenController::class, 'checkAvailability'])->name('afspraken.checkAvailability');
+Route::delete('/afspraken/{id}/annuleren', [AfsprakenController::class, 'annuleren'])->name('afspraken.annuleren');
 
 
 Route::get('/aboutus', [AboutUsController::class, 'index'])->name('aboutus.index');

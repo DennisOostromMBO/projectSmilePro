@@ -49,8 +49,10 @@
             <div class="mb-4">
                 <label for="patient_naam" class="block text-gray-700">Patiënt Naam</label>
                 <input type="text" id="patient_naam" name="patient_naam" value="{{ old('patient_naam') }}"
-                    class="w-full p-2 border rounded" required>
+                    class="w-full p-2 border rounded" required pattern="[A-Za-z\s]+" title="Alleen letters en spaties zijn toegestaan.">
             </div>
+
+           
 
             <!-- Medewerker Naam selecteren -->
             <div class="mb-4">
@@ -110,3 +112,14 @@
 </body>
 
 </html>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        let patientNaam = document.getElementById('patient_naam').value;
+        // Check of de patiëntnaam geen cijfers bevat
+        if (/\d/.test(patientNaam)) {
+            event.preventDefault(); // Formulier niet versturen
+            alert('Patiënt Naam mag geen cijfers bevatten.');
+        }
+    });
+</script>

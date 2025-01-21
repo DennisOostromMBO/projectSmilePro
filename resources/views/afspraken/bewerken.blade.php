@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afspraak Bewerken</title>
+    <title>Afspraak Wijzigen</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto mt-8">
-        <h1 class="text-2xl font-bold mb-4">Afspraak Bewerken</h1>
+        <h1 class="text-2xl font-bold mb-4">Afspraak Wijzigen</h1>
         <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
         <a href="{{ url('/afspraken') }}" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
             Terug naar Overzicht
@@ -24,6 +24,13 @@
                 {{ session('error') }}
             </div>
         @endif
+        
+        @if (session('error'))
+    <div class="bg-red-500 text-white p-4 rounded mb-4">
+        {{ session('error') }}
+    </div>
+        @endif
+
 
         <form action="{{ route('afspraken.update', $afspraak->id) }}" method="POST" class="bg-white shadow-md rounded p-6">
             @csrf
@@ -80,5 +87,22 @@
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Opslaan</button>
         </form>
     </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const datumInput = document.querySelector('input[name="datum"]');
+            const tijdInput = document.querySelector('select[name="tijd"]');
+            const selectedDateTime = moment(datumInput.value + ' ' + tijdInput.value, 'YYYY-MM-DD HH:mm');
+
+            // Controleer of de geselecteerde datum en tijd in het verleden liggen
+            if (selectedDateTime.isBefore(moment())) {
+                e.preventDefault();
+                alert('Je kunt een afspraak niet naar een tijd in het verleden verplaatsen.');
+            }
+        });
+    </script>
+
+    <!-- Include moment.js -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 </body>
 </html>
