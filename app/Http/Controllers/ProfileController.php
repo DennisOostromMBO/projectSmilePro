@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -48,6 +49,15 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        // Log de rol ID voor debugging
+        Log::info('User rol ID: ' . $user->rol_Id);
+
+        // Controleer of de gebruiker de rol ID 1 heeft
+        if ($user->rol_id === 1) {
+            Log::info('Praktijk managers kunnen hun account niet verwijderen.');
+            return Redirect::route('profile.edit')->with('error', 'Praktijk managers kunnen hun account niet verwijderen.');
+        }
+
         Auth::logout();
 
         $user->delete();
@@ -58,3 +68,4 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 }
+
