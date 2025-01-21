@@ -10,10 +10,13 @@ class Persoon extends Model
 
     protected $table = 'personen';
 
+    protected $primaryKey = 'Id';
+
     protected $fillable = [
         'Voornaam',
         'Tussenvoegsel',
         'Achternaam',
+        'VolledigeNaam',
         'Geboortedatum',
     ];
 
@@ -28,5 +31,10 @@ class Persoon extends Model
     public function patient()
     {
         return $this->hasOne(Patient::class, 'PersoonId','Id');
+    }
+
+    public function gebruikers()
+    {
+        return $this->hasMany(GebruikerModel::class, 'PersoonId','Id');
     }
 }

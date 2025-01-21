@@ -1,8 +1,8 @@
-<!-- resources/views/factuur/edit.blade.php -->
+<!-- filepath: /c:/Users/Wassim/Desktop/project2024/projectSmilePro/resources/views/factuur/edit.blade.php -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edit Factuur</title>
+    <title>Factuur Bewerken</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script>
         function calculateBTW() {
@@ -14,15 +14,17 @@
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">Edit Factuur</h1>
-        <form action="{{ route('factuur.update', $factuur->id) }}" method="POST" class="bg-white p-6 rounded shadow-md">
+        <h1 class="text-2xl font-bold mb-4">Factuur Bewerken</h1>
+        <form action="{{ route('factuur.update', $factuur->id) }}" method="POST" class="bg-white p-6 rounded shadow-md max-w-lg mx-auto">
             @csrf
             @method('PUT')
             <div class="mb-4">
-                <label for="persoon_Id" class="block text-gray-700">Persoon</label>
-                <select name="persoon_Id" id="persoon_Id" class="w-full border-gray-300 rounded mt-1" required>
+                <label for="persoonId" class="block text-gray-700">Persoon</label>
+                <select name="persoonId" id="persoonId" class="w-full border-gray-300 rounded mt-1" required>
                     @foreach($personen as $persoon)
-                        <option value="{{ $persoon->id }}" {{ $factuur->persoon_Id == $persoon->id ? 'selected' : '' }}>{{ $persoon->volledige_naam }}</option>
+                        <option value="{{ $persoon->Id }}" {{ $factuur->persoonId == $persoon->Id ? 'selected' : '' }}>
+                            {{ $persoon->fname }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -42,8 +44,12 @@
                 <label for="btw" class="block text-gray-700">BTW</label>
                 <input type="number" name="btw" id="btw" value="{{ $factuur->btw }}" class="w-full border-gray-300 rounded mt-1" readonly>
             </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Bijwerken</button>
         </form>
     </div>
+
+    <div class="mt-4 text-center">
+        <a href="{{ route('factuur.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Terug naar Facturen</a>
+    </div>  
 </body>
 </html>

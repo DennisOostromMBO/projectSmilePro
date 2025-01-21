@@ -12,7 +12,6 @@ class Factuur extends Model
 
     protected $fillable = [
         'persoonId',
-        'klant_id',
         'beschrijving',
         'vervaldatum',
         'btw',
