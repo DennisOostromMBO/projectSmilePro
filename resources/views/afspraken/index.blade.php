@@ -56,14 +56,14 @@
                                 <!-- Link naar bewerken van afspraak -->
                                 <a href="{{ route('afspraken.edit', $afspraak->id) }}" class="text-blue-500 underline">Bewerken</a>
                                 <!-- Formulier om afspraak te verwijderen -->
-                               <!--
+                               
                                 <form action="{{ route('afspraken.destroy', $afspraak->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-500 underline ml-2"
                                         onclick="return confirm('Weet je zeker dat je deze afspraak wilt verwijderen?')">Verwijderen</button>
                                 </form>
-                                -->
+                                
 
                             </td>
                         </tr>
