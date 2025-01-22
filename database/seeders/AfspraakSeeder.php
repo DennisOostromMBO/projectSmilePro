@@ -63,7 +63,7 @@ class AfspraakSeeder extends Seeder
             'patient_naam' => 'Mauro Icardi',
             'medewerker_naam' => 'Mvr. Cabrella',
             'datum' => '2025-02-22',
-            'tijd' => '12:30',
+            'tijd' => '13:10',
             'type_afspraak' => 'Overleg',
 
             
