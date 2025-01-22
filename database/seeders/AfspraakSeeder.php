@@ -106,8 +106,8 @@ class AfspraakSeeder extends Seeder
             'gebruiker_id' => 7,
             'patient_naam' => 'Noah Levi',
             'medewerker_naam' => 'Mvr. Lima',
-            'datum' => '2025-01-23',
-            'tijd' => '09:30',
+            'datum' => '2025-01-28',
+            'tijd' => '10:30',
             'type_afspraak' => 'Controle',
 
             
@@ -117,7 +117,7 @@ class AfspraakSeeder extends Seeder
             'gebruiker_id' => 9,
             'patient_naam' => 'Lucas Fischer',
             'medewerker_naam' => 'Dr. Jansen',
-            'datum' => '2025-01-23',
+            'datum' => '2025-01-28',
             'tijd' => '09:00',
             'type_afspraak' => 'Controle',
 

@@ -100,7 +100,7 @@
                 <select id="type_afspraak" name="type_afspraak" class="w-full p-2 border rounded">
                     <option value="Consult">Consult</option>
                     <option value="Controle">Controle</option>
-                    <option value="Therapie">Therapie</option>
+                    <option value="Controle">Reparatie</option>
                     <option value="Overleg">Overleg</option>
                 </select>
             </div>
