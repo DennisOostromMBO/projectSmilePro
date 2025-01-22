@@ -31,3 +31,4 @@ class Contact extends Model
         return $this->belongsTo(Patient::class, 'PatientId', 'Id');
     }    
 }
+

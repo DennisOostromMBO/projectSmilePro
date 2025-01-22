@@ -36,3 +36,4 @@ class Persoon extends Model
         return $this->hasMany(GebruikerModel::class, 'PersoonId', 'Id');
     }
 }
+
