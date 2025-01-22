@@ -75,7 +75,7 @@ class AfspraakSeeder extends Seeder
             'medewerker_naam' => 'Mvr. Astima',
             'datum' => '2025-01-23',
             'tijd' => '08:00',
-            'type_afspraak' => 'Controle',
+            'type_afspraak' => 'Reparatie',
 
             
         ]);
