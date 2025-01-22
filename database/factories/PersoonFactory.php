@@ -19,9 +19,7 @@ class PersoonFactory extends Factory
         $fixName = rand(0, 10) > 5 ? $this->faker->word() : '';
 
         return [
-            "Voornaam" => $this->faker->firstName(),
-            "Tussenvoegsel" => $fixName,
-            "Achternaam" => $this->faker->lastName(),
+            "VolledigeNaam" => $this->faker->lastName(),
             "Geboortedatum" => $this->faker->date(),
         ];
     }

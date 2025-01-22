@@ -1,7 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PraktijkmanagerController;
 use App\Http\Controllers\AccountOverzichtController;
@@ -12,9 +15,17 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\AfsprakenController;
 use App\Http\Controllers\AboutUsController;
 
+
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
+
+// Auth routes
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('register', [RegisteredUserController::class, 'store']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -39,7 +50,6 @@ Route::resource('factuur', FactuurController::class);
 Route::get('/factuurs', [FactuurController::class, 'index'])->name('factuur.index');
 Route::get('/factuurs/{id}', [FactuurController::class, 'show'])->name('factuur.show');
 
-
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
 
@@ -49,15 +59,17 @@ Route::get('/emails', [EmailController::class, 'index']);
 Route::post('/emails', [EmailController::class, 'store']);
 
 Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index']);
-Route::post('/get-beschikbaarheden', [BeschikbaarheidController::class, 'getBeschikbaarheden']);
-
+Route::post('/get-beschikbaarheden-by-month', [BeschikbaarheidController::class, 'getBeschikbaarhedenByMonth']);
+Route::post('/save-beschikbaarheid', [BeschikbaarheidController::class, 'saveBeschikbaarheid']);
 
 Route::resource('afspraken', AfsprakenController::class);
 Route::post('/afspraken', [AfsprakenController::class, 'store'])->name('afspraken.store');
 Route::post('/save-afspraak', [AfsprakenController::class, 'store']);
 
-
 Route::get('/aboutus', [AboutUsController::class, 'index'])->name('aboutus.index');
+
 require __DIR__ . '/auth.php';
+
+
 
 
