@@ -24,7 +24,7 @@ class FactuurController extends Controller
             ->distinct()
             ->get();
 
-        return view('factuur.create', compact('personen'));
+        return view('factuur.create', compact('personen'))->with('message', 'The factuur has been created.');
     }
 
 
@@ -43,7 +43,7 @@ class FactuurController extends Controller
 
             Factuur::create($request->all());
 
-            return redirect()->route('factuur.index')->with('success', 'Factuur created successfully.');
+            return redirect()->route('factuur.index')->with('success', 'Factuur created successfully.')->with('message', 'The factuur has been created.');
         } catch (\Exception $e) {
             Log::error('Error creating Factuur', ['error' => $e->getMessage()]);
 
@@ -77,7 +77,7 @@ public function edit($id)
         ->distinct()
         ->get();
 
-    return view('factuur.edit', compact('factuur', 'personen'));
+    return view('factuur.edit', compact('factuur', 'personen'))->with('message', 'The factuur has been updated.');
 }
 
 public function update(Request $request, $id)
@@ -96,7 +96,7 @@ public function update(Request $request, $id)
         $factuur = Factuur::findOrFail($id);
         $factuur->update($request->all());
 
-        return redirect()->route('factuur.index')->with('success', 'Factuur updated successfully.');
+        return redirect()->route('factuur.index')->with('success', 'Factuur updated successfully.')->with('message', 'The factuur has been updated.');
     } catch (\Exception $e) {
         Log::error('Error updating Factuur', ['error' => $e->getMessage()]);
 
@@ -111,6 +111,6 @@ public function update(Request $request, $id)
         $factuur = Factuur::findOrFail($id);
         $factuur->delete();
 
-        return redirect()->route('factuur.index')->with('success', 'Factuur deleted successfully.');
+        return redirect()->route('factuur.index')->with('success', 'Factuur deleted successfully.')->with('message', 'The factuur has been deleted.');
     }
 }

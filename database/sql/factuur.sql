@@ -27,6 +27,8 @@ SET time_zone = "+00:00";
 -- Tabelstructuur voor tabel `factuur`
 --
 
+use smilepro;
+
 DROP TABLE IF EXISTS `factuur`;
 CREATE TABLE IF NOT EXISTS `factuur` (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,

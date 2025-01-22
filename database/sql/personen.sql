@@ -27,6 +27,8 @@ SET time_zone = "+00:00";
 -- Tabelstructuur voor tabel `personen`
 --
 
+use smilepro;
+
 DROP TABLE IF EXISTS `personen`;
 CREATE TABLE IF NOT EXISTS `personen` (
   `Id` int UNSIGNED NOT NULL AUTO_INCREMENT,

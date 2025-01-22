@@ -1,4 +1,3 @@
-<!-- filepath: /c:/Users/Wassim/Desktop/project2024/projectSmilePro/resources/views/factuur/create.blade.php -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +24,13 @@
 
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">Factuur Aanmaken</h1>
+
+        @if(session('message'))
+            <div class="bg-green-500 text-white p-4 rounded mb-4">
+                {{ session('message') }}
+            </div>
+        @endif
+
         <form action="{{ route('factuur.store') }}" method="POST" class="bg-white p-6 rounded shadow-md max-w-lg mx-auto">
             @csrf
             <div class="mb-4">
