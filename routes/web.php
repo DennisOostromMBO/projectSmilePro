@@ -31,6 +31,7 @@ Route::get('/patient/create', [PatientController::class, 'create'])->name('patie
 Route::get('/patient/edit/{id}', [PatientController::class, 'edit'])->name('patient.edit');
 Route::put('/patient/update/{id}', [PatientController::class, 'update'])->name('patient.update');
 Route::post('/patient', [PatientController::class, 'store'])->name('patient.store');
+Route::delete('/patient/{id}', [PatientController::class, 'destroy'])->name('patient.destroy');
 
 
 Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');

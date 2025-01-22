@@ -14,6 +14,7 @@ DROP PROCEDURE IF EXISTS spGetAllPatientInfo;
 CREATE PROCEDURE spGetAllPatientInfo()
 BEGIN
     SELECT 
+        PATI.Id AS PatiëntId,
         PERS.VolledigeNaam, 
         PERS.Geboortedatum,
         CASE 

@@ -104,7 +104,7 @@
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                         <label for="MedischDossier" class="block text-sm font-medium text-gray-700">Medisch Dossier</label>
-                        <textarea id="MedischDossier" name="MedischDossier" rows="4" class="mt-1 block w-full p-3 border border-gray-300 rounded-md" placeholder="Medisch dossier van patiënt" required>{{ old('MedischDossier', $patient->MedischDossier) }}</textarea>
+                        <textarea id="MedischDossier" name="MedischDossier" rows="4" class="mt-1 block w-full p-3 border border-gray-300 rounded-md" placeholder="Medisch dossier van patiënt" >{{ old('MedischDossier', $patient->MedischDossier) }}</textarea>
                     </div>
                 </div>
             </div>

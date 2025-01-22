@@ -10,6 +10,7 @@ use App\Repositories\PatientInfoRepository;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PatientController extends Controller
 {
@@ -23,18 +24,39 @@ class PatientController extends Controller
     public function index()
     {
         try {
-            // Haal de gegevens op via de repository
-            $patients = $this->patientInfoRepository->getPatientInfo();
-
+            // Haal gegevens op uit de repository
+            $patientsCollection = $this->patientInfoRepository->getPatientInfo();
+    
+            // Pagination
+            // Haal de huidige pagina op uit de querystring of gebruik standaardpagina 1
+            $currentPage = LengthAwarePaginator::resolveCurrentPage();
+            // Stel het aantal items per pagina in
+            $perPage = 5;
+            // Bereken de items die op de huidige pagina moeten worden weergegeven
+            // 'slice' wordt gebruikt om een subset van de verzameling ($patientsCollection) te maken.
+            // ($currentPage - 1) * $perPage berekent de startindex van de huidige pagina
+            $currentItems = $patientsCollection->slice(($currentPage - 1) * $perPage, $perPage);
+            // Maak een nieuwe LengthAwarePaginator instantie om de gegevens te beheren
+            $patients = new LengthAwarePaginator(
+                $currentItems, // De items voor de huidige pagina
+                $patientsCollection->count(),  // Totaal aantal items in de collectie
+                $perPage, // Aantal items per pagina
+                $currentPage, // Huidige pagina
+                ['path' => request()->url(), // URL voor de paginering-links
+                'query' => request()->query()] // Query-parameters (zoals filters) opnemen in de paginering-links
+            );
+    
             // Stuur de gegevens naar de view
             return view('patient.index', compact('patients'));
         } catch (Exception $e) {
+            // Log de fout voor debugging
             Log::error('Fout bij het ophalen van patiëntinformatie: ' . $e->getMessage());
-
+    
             // Redirect met een foutmelding
             return redirect()->route('patient.index')->with('error', 'Er is een probleem opgetreden bij het ophalen van de patiëntenlijst.');
         }
     }
+    
 
     public function edit(Request $request, $id)
     {
@@ -74,7 +96,7 @@ class PatientController extends Controller
         'Geboortedatum' => 'required|date|after_or_equal:1900-01-01|before:today',
         'Mobiel' => 'required|regex:/^06\d{8}$/',
         'Email' => 'required|email|max:255|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/|not_regex:/xn--/',
-        'MedischDossier' => 'required|string|max:1000',
+        'MedischDossier' => 'max:1000',
         'Straatnaam' => 'required|string|max:255|regex:/^[^\d]+$/',
         'Huisnummer' => 'required|regex:/^\d+$/|digits_between:1,4',
         'Toevoeging' => 'nullable|string|max:8',
@@ -119,7 +141,7 @@ class PatientController extends Controller
         // Straatnaam
         'Straatnaam.required' => 'Straatnaam is verplicht.',
         'Straatnaam.max' => 'Straatnaam is te lang.',
-        'Straatnaam.regex' => 'Straatnaam mag geen cijfers bevatten.',
+        'Straatnaam.regex' => 'Straatnaam is ongeldig.',
     
         // Huisnummer
         'Huisnummer.required' => 'Huisnummer is verplicht.',
@@ -133,10 +155,9 @@ class PatientController extends Controller
         // Plaats
         'Plaats.required' => 'Plaats is verplicht.',
         'Plaats.max' => 'Plaats is te lang.',
-        'Plaats.regex' => 'Plaats mag geen cijfers bevatten.',
+        'Plaats.regex' => 'Plaats is ongeldig.',
     
         // Medisch dossier
-        'MedischDossier.required' => 'Medisch dossier is verplicht.',
         'MedischDossier.max' => 'Medisch dossier is te lang.',
     ]);
     
@@ -243,8 +264,8 @@ class PatientController extends Controller
             'plaats' => 'required|string|max:255|regex:/^[^\d]+$/',
             'toevoeging' => 'nullable|string|max:8',
             'straatnaam' => 'required|string|max:255|regex:/^[^\d]+$/',
-            'medisch_dossier' => 'required|string|max:1000|',
-            'mobiel' => 'required|regex:/^06\d{8}$/|unique:contact,Mobiel',
+            'medisch_dossier' => 'max:1000|',
+            'mobiel' => 'regex:/^06\d{8}$/|unique:contact,Mobiel',
         ], [
             // Voornaam
             'voornaam.required' => 'Voornaam is verplicht.',
@@ -284,11 +305,11 @@ class PatientController extends Controller
             // Straatnaam
             'straatnaam.required' => 'Straatnaam is verplicht.',
             'straatnaam.max' => 'Straatnaam is te lang.',
-            'straatnaam.regex' => 'Straatnaam mag geen cijfers bevatten.',
+            'straatnaam.regex' => 'Straatnaam is ongeldig.',
             
             // Huisnummer
             'huisnummer.required' => 'Huisnummer is verplicht.',
-            'huisnummer.regex' => 'Huisnummer mag alleen cijfers bevatten.',
+            'huisnummer.regex' => 'Huisnummer is ongeldig.',
             'huisnummer.digits_between' => 'Huisnummer is ongeldig',
             
             // Postcode
@@ -298,10 +319,9 @@ class PatientController extends Controller
             // Plaats
             'plaats.required' => 'Plaats is verplicht.',
             'plaats.max' => 'Plaats is te lang.',
-            'plaats.regex' => 'Plaats mag geen cijfers bevatten.',
+            'plaats.regex' => 'Plaats is ongeldig.',
             
             // Medisch dossier
-            'medisch_dossier.required' => 'Medisch dossier is verplicht.',
             'medisch_dossier.max' => 'Medisch dossier is te lang.',
         ]);
         
@@ -345,5 +365,40 @@ class PatientController extends Controller
     
         // Redirect naar de patiënt overzicht pagina
         return redirect()->route('patient.index')->with('success', 'Patiënt succesvol toegevoegd!');
+    }
+
+    public function destroy($id)
+    {
+        try {
+            // Controleer of het medisch dossier leeg is
+            $patient = DB::table('patient')->where('id', $id)->first();
+    
+            if (!$patient) {
+                Log::error('Patiënt niet gevonden.', ['id' => $id]);
+                return redirect()->route('patient.index')
+                    ->with('error', 'Patiënt niet gevonden.');
+            }
+    
+            if (!empty($patient->MedischDossier)) {
+                Log::error('Medisch dossier is niet leeg.', ['id' => $id, 'MedischDossier' => $patient->MedischDossier]);
+                return redirect()->route('patient.index')
+                    ->with('error', 'De patiënt kan niet worden verwijderd omdat het medisch dossier niet leeg is.');
+            }
+    
+            // Roep de opgeslagen procedure aan
+            DB::statement('CALL spDeletePatient(?)', [$id]);
+    
+            Log::info('Patiënt succesvol verwijderd.', ['id' => $id]);
+            return redirect()->route('patient.index')
+                ->with('success', 'Patiënt succesvol verwijderd.');
+        } catch (\Exception $e) {
+            Log::error('Fout bij het verwijderen van de patiënt.', [
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return redirect()->route('patient.index')
+                ->with('error', 'Er is een fout opgetreden bij het verwijderen van de patiënt: ' . $e->getMessage());
+        }
     }
 }

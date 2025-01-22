@@ -17,14 +17,14 @@ class PatientSeeder extends Seeder
         Patient::create([
             'PersoonId' => 1,
             'Nummer' => 'P001',
-            'MedischDossier' => 'Allergieën: Penicilline, Vorige behandelingen: Geen',
+            //'MedischDossier' => 'Allergieën: Penicilline, Vorige behandelingen: Geen',
         ]);
 
-        Patient::create([
-            'PersoonId' => 2,
-            'Nummer' => 'P002',
-            'MedischDossier' => 'Allergieën: Pinda, Vorige behandelingen: Chirurgie 2022',
-        ]);
+      //  Patient::create([
+      //      'PersoonId' => 2,
+       //     'Nummer' => 'P002',
+      //     // 'MedischDossier' => 'Allergieën: Pinda, Vorige behandelingen: Chirurgie 2022',
+      //  ]);
         
     }
 }
