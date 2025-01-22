@@ -54,15 +54,6 @@ class FactuurController extends Controller
 /*
     public function store(Request $request)
     {
-<<<<<<< HEAD
-        try {
-            $factuur = Factuur::findOrFail($id);
-            return view('factuur.details', compact('factuur'));
-        } catch (\Exception $e) {
-            return redirect()->route('factuur.index')->with('error', 'Factuur not found.');
-        }
-    }
-=======
         $request->validate([
             'persoonId' => 'required|exists:persoon,Id',
             'beschrijving' => 'required',
@@ -104,7 +95,6 @@ public function update(Request $request, $id)
 
         $factuur = Factuur::findOrFail($id);
         $factuur->update($request->all());
->>>>>>> wassim_features
 
         return redirect()->route('factuur.index')->with('success', 'Factuur updated successfully.')->with('message', 'The factuur has been updated.');
     } catch (\Exception $e) {

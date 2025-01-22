@@ -8,7 +8,7 @@ class Persoon extends Model
 {
     use HasFactory;
 
-    protected $table = 'persoon';
+    protected $table = 'personen';
 
     protected $primaryKey = 'Id';
 
@@ -38,5 +38,10 @@ class Persoon extends Model
     public function gebruikers()
     {
         return $this->hasMany(GebruikerModel::class, 'PersoonId','Id');
+    }
+
+    public function facturen()
+    {
+        return $this->hasMany(Factuur::class, 'persoonId', 'Id');
     }
 }
