@@ -226,35 +226,72 @@ class AfsprakenController extends Controller
     {
         try {
             $afspraak = Afspraak::findOrFail($id);
-
-            // Controleer of de annulering binnen 24 uur is
+    
+            // Huidige tijd en afspraak tijd
             $huidigeTijd = Carbon::now();
             $afspraakTijd = Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd);
-
-            if ($afspraak->isBinnen24Uur()) {
+            $eindTijd = $afspraakTijd->copy()->addMinutes(30); // Afspraken duren 30 minuten
+    
+            if ($huidigeTijd->isAfter($eindTijd)) {
                 return redirect()->route('afspraken.index')->withErrors([
-                    'error' => 'Het is helaas niet meer mogelijk om de afspraak te annuleren binnen 24 uur voor de geplande tijd.'
+                    'error' => 'De afspraak is al afgelopen en kan niet meer worden geannuleerd.'
                 ]);
             }
-
+    
+            if ($huidigeTijd->isBetween($afspraakTijd, $eindTijd)) {
+                // Annuleren tijdens de afspraak of binnen 30 minuten voor de afspraak
+                // We controleren de bevestiging van de gebruiker
+                if ($request->has('confirm_cancelation') && $request->input('confirm_cancelation') === 'yes') {
+                    $afspraak->delete();
+                    return redirect()->route('afspraken.index')->with('success', 'De afspraak is succesvol geannuleerd.');
+                } else {
+                    return redirect()->route('afspraken.index')->withErrors([
+                        'error' => 'Je probeert de afspraak te annuleren binnen 30 minuten voor de start. Dit zal in rekening worden gebracht: €39,50.'
+                    ]);
+                }
+            }
+    
+            // Annuleren binnen 24 uur zonder extra kosten
+            if ($huidigeTijd->diffInHours($afspraakTijd, false) < 24) {
+                return redirect()->route('afspraken.index')->withErrors([
+                    'error' => 'Het is niet meer mogelijk om de afspraak te annuleren binnen 24 uur voor de geplande tijd.'
+                ]);
+            }
+    
             $afspraak->delete();
-
-            return back()->with('success', 'De afspraak is succesvol geannuleerd.');
+    
+            return redirect()->route('afspraken.index')->with('success', 'De afspraak is succesvol geannuleerd.');
         } catch (\Exception $e) {
             Log::error('Fout bij het annuleren van afspraak: ' . $e->getMessage());
-            return back()->withErrors('Er is een fout opgetreden bij het annuleren van de afspraak.');
+            return redirect()->route('afspraken.index')->withErrors([
+                'error' => 'Er is een fout opgetreden bij het annuleren van de afspraak.'
+            ]);
         }
     }
+    
+    
+
 }
 ?>
 <script>
-    document.querySelector('form').addEventListener('submit', function (e) {
-        const nameInput = document.querySelector('input[name="patient_naam"]');
-        const regex = /^[a-zA-Z\\s]+$/;
+    function confirmCancellation(afspraakTijd, afspraakId) {
+        var currentTime = new Date();
+        var appointmentTime = new Date(afspraakTijd);
+        var timeDifference = (appointmentTime - currentTime) / (1000 * 60); // in minuten
 
-        if (!regex.test(nameInput.value)) {
-            e.preventDefault();
-            alert('De naam mag alleen letters en spaties bevatten.');
+        if (timeDifference < 30) {
+            // Als de afspraak binnen 30 minuten is, vraag de gebruiker om de annulering te bevestigen met extra kosten
+            var result = confirm('Je probeert de afspraak te annuleren binnen 30 minuten van de geplande tijd. Dit zal €39,50 kosten. Weet je het zeker?');
+            if (result) {
+                // Voeg een extra verborgen veld toe om aan te geven dat de gebruiker akkoord gaat
+                document.getElementById('confirm_cancelation_' + afspraakId).value = 'yes';
+                return true; // Formulier wordt ingediend
+            } else {
+                return false; // Annuleer de actie
+            }
+        } else {
+            // Annuleer zonder kosten
+            return true;
         }
-    });
+    }
 </script>

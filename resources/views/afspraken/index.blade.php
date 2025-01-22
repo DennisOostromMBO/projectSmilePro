@@ -78,14 +78,16 @@
                             <form action="{{ route('afspraken.annuleren', $afspraak->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-500 underline ml-2" onclick="return confirm('Weet je zeker dat je deze afspraak wilt annuleren?')">Annuleren</button>
+                                <input type="hidden" name="confirm_cancelation" id="confirm_cancelation_{{ $afspraak->id }}" value="no">
+                                <button type="submit" class="text-red-500 underline ml-2" 
+                                    onclick="return confirmCancellation('{{ \Carbon\Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd)->toIso8601String() }}', {{ $afspraak->id }})">
+                                    Annuleren
+                                </button>
                             </form>
                         @endif
                     </td>
                 </tr>
                 @endforeach
-
-                
                 </tbody>
             </table>
         @endif
@@ -117,6 +119,29 @@
             </table>
         @endif
     </div>
+
+    <script>
+        function confirmCancellation(afspraakTijd, afspraakId) {
+            var currentTime = new Date();
+            var appointmentTime = new Date(afspraakTijd);
+            var timeDifference = (appointmentTime - currentTime) / (1000 * 60); // in minuten
+
+            if (timeDifference < 30) {
+                // Als de afspraak binnen 30 minuten is, vraag de gebruiker om de annulering te bevestigen met extra kosten
+                var result = confirm('Je probeert de afspraak te annuleren binnen 30 minuten van de geplande tijd. Dit zal €39,50 kosten. Weet je het zeker?');
+                if (result) {
+                    // Voeg een extra verborgen veld toe om aan te geven dat de gebruiker akkoord gaat
+                    document.getElementById('confirm_cancelation_' + afspraakId).value = 'yes';
+                    return true; // Formulier wordt ingediend
+                } else {
+                    return false; // Annuleer de actie
+                }
+            } else {
+                // Annuleer zonder kosten
+                return true;
+            }
+        }
+    </script>
 </body>
 
 </html>
