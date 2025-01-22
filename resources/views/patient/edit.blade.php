@@ -23,7 +23,7 @@
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
         <h1 class="text-3xl font-bold mb-6 text-center">Bewerk Patiënt gegevens</h1>
-        <form action="{{ route('patient.update', ['id' => $patient->Id]) }}" method="POST">
+        <form action="{{ route('patient.update', ['id' => $patient->id]) }}" method="POST">
             @csrf
             @method('PUT')
 

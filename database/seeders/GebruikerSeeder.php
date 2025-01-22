@@ -10,56 +10,56 @@ class GebruikerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Haal de bestaande PersoonId waarden op uit de personen tabel
-        $persoon = DB::table('persoon')->pluck('id')->toArray();
+        // Haal de bestaande PersoonId waarden op uit de persoon tabel
+        $personen = DB::table('persoon')->pluck('Id')->toArray();
 
         // Zorg ervoor dat er genoeg personen zijn om de gebruikers te maken
-        if (count($persoon) < 4) {
+        if (count($personen) < 4) {
             throw new \Exception('Niet genoeg personen in de tabel om gebruikers te maken.');
         }
 
         DB::table('gebruiker')->insert([
             [
-                'PersoonId' => $persoon[0], // Gebruik de eerste id
-                'Gebruikersnaam' => 'johndoe',
-                'Wachtwoord' => 'Monkey123',
+                'PersoonId' => $personen[0], // Gebruik de eerste id
+                'name' => 'johndoe',
+                'Email' => 'johndoe@example.com', // Voeg de email kolom toe
+                'password' => Hash::make('Monkey123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
-                'Ingelogd' => 0,
-                'Uitgelogd' => 1,
                 'Comments' => 'First user',
             ],
             [
-                'PersoonId' => $persoon[1], // Gebruik de tweede id
-                'Gebruikersnaam' => 'janesmith',
-                'Wachtwoord' => 'Frikandel123',
+                'PersoonId' => $personen[1], // Gebruik de tweede id
+                'name' => 'janesmith',
+                'Email' => 'janesmith@example.com', // Voeg de email kolom toe
+                'password' => Hash::make('Frikandel123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
-                'Ingelogd' => 0,
-                'Uitgelogd' => 1,
                 'Comments' => 'Second user',
             ],
             [
-                'PersoonId' => $persoon[2], // Gebruik de derde id
-                'Gebruikersnaam' => 'alicewit',
-                'Wachtwoord' => 'koala123',
+                'PersoonId' => $personen[2], // Gebruik de derde id
+                'name' => 'alicejohnson',
+                'Email' => 'alicejohnson@example.com', // Voeg de email kolom toe
+                'password' => Hash::make('Password123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
-                'Ingelogd' => 0,
-                'Uitgelogd' => 1,
+
                 'Comments' => 'Third user',
             ],
             [
-                'PersoonId' => $persoon[3], // Gebruik de vierde id
-                'Gebruikersnaam' => 'bobjohnson',
-                'Wachtwoord' => 'IKBENBOB',
+                'PersoonId' => $personen[3], // Gebruik de vierde id
+                'name' => 'bobwilliams',
+                'Email' => 'bobwilliams@example.com', // Voeg de email kolom toe
+                'password' => Hash::make('SecurePass123'), // Hash het wachtwoord
                 'IsActive' => 1,
                 'Isingelogd' => 0,
-                'Ingelogd' => 0,
-                'Uitgelogd' => 1,
+
                 'Comments' => 'Fourth user',
             ],
         ]);

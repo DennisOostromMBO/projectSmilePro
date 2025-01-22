@@ -16,13 +16,14 @@ class PersoonFactory extends Factory
      */
     public function definition(): array
     {
-        $fixName = rand(0, 10) > 5 ? $this->faker->word() : '';
+        $tussenvoegsel = rand(0, 1) ? $this->faker->word() : '';
 
         return [
-            "Voornaam" => $this->faker->firstName(),
-            "Tussenvoegsel" => $fixName,
-            "Achternaam" => $this->faker->lastName(),
-            "Geboortedatum" => $this->faker->date(),
+            'voornaam' => $this->faker->firstName(),
+            'tussenvoegsel' => $tussenvoegsel,
+            'achternaam' => $this->faker->lastName(),
+            'geboortedatum' => $this->faker->date(),
+
         ];
     }
 }
