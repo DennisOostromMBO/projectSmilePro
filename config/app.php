@@ -1,6 +1,8 @@
 <?php
 
 return [
+    Barryvdh\Debugbar\ServiceProvider::class,
+
 
     /*
     |--------------------------------------------------------------------------

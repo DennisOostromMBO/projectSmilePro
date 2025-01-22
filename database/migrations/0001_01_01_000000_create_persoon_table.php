@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 return new class extends Migration
 {
@@ -11,17 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('persoon', function (Blueprint $table) {
-            $table->id();
-            $table->string('Voornaam', 100);
-            $table->string('Tussenvoegsel', 50)->nullable();
-            $table->string('Achternaam', 100);
-            $table->string('VolledigeNaam', 150)->virtualAs("CONCAT(voornaam, ' ', IFNULL(tussenvoegsel, ''), ' ', achternaam)")->stored();
-            $table->date('Geboortedatum')->nullable(false);
-            $table->boolean('IsActive')->default(true);
-            $table->string('Comments', 255)->nullable();
-            $table->timestamps();
-        });
+        $sql = File::get(database_path('sql/persoon.sql'));
+        DB::unprepared($sql);
     }
 
     /**
@@ -29,6 +20,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('persoon');
+        DB::statement('DROP TABLE IF EXISTS persoon');
     }
 };
