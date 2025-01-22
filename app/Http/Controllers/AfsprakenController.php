@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 //De afspraak worden in afgelopen zetten na 1,5 dus 90 minuten 30 minuten lukte niet
 class AfsprakenController extends Controller
-{  public function index()
+{ public function index(Request $request)
     {
         try {
             // Haal alle afspraken op
@@ -18,46 +18,35 @@ class AfsprakenController extends Controller
             // Huidige tijd
             $now = Carbon::now();
     
+            // Medewerkers ophalen voor de filter dropdown
+            $medewerkers = Afspraak::distinct()->pluck('medewerker_naam');
+    
+            // Filter op medewerker als er een filter is toegepast
+            if ($request->has('medewerker') && $request->medewerker != '') {
+                $afspraken = $afspraken->where('medewerker_naam', $request->medewerker);
+            }
+    
             // Filter afspraken in de toekomst
             $toekomstigeAfspraken = $afspraken->filter(function($afspraak) use ($now) {
-                // Starttijd van de afspraak
                 $startTijd = Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd);
-                
-                // Eindtijd van de afspraak (90 minuten na starttijd)
                 $eindTijd = $startTijd->copy()->addMinutes(30);
-                
-                // Als de eindtijd later is dan nu, is de afspraak toekomstig
                 return $eindTijd->isAfter($now);
             });
     
             // Filter afgelopen afspraken
             $afgelopenAfspraken = $afspraken->filter(function($afspraak) use ($now) {
-                // Starttijd van de afspraak
                 $startTijd = Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd);
-                
-                // Eindtijd van de afspraak (30 minuten na starttijd)
                 $eindTijd = $startTijd->copy()->addMinutes(30);
-                
-                // Als de eindtijd voor nu ligt, is de afspraak afgelopen
                 return $eindTijd->isBefore($now);
             });
     
-            // Debugging informatie toevoegen voor logging
-            Log::info('Huidige tijd: ' . $now);
-            foreach ($afspraken as $afspraak) {
-                $startTijd = Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd);
-                $eindTijd = $startTijd->copy()->addMinutes(30);
-                Log::info('Afspraak ID ' . $afspraak->id . ' van ' . $startTijd . ' tot ' . $eindTijd . ' vergelijken met ' . $now);
-            }
-    
-            // Stuur de afspraken naar de view
-            return view('afspraken.index', compact('toekomstigeAfspraken', 'afgelopenAfspraken'));
+            // Stuur de afspraken en medewerkers naar de view
+            return view('afspraken.index', compact('toekomstigeAfspraken', 'afgelopenAfspraken', 'medewerkers'));
         } catch (\Exception $e) {
             Log::error('Fout bij het ophalen van afspraken: ' . $e->getMessage());
             return redirect()->route('home')->with('error', 'Er is een probleem met het ophalen van de afspraken.');
         }
     }
-    
     
 
 

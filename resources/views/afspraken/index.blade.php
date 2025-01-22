@@ -37,6 +37,20 @@
             </div>
         @endif
 
+        <!-- Filter voor Medewerker -->
+        <div class="mb-4">
+            <form method="GET" action="{{ route('afspraken.index') }}">
+                <label for="medewerker" class="mr-2">Filter op Medewerker:</label>
+                <select name="medewerker" id="medewerker" class="px-4 py-2 border rounded">
+                    <option value="">Alle medewerkers</option>
+                    @foreach ($medewerkers as $medewerker)
+                        <option value="{{ $medewerker }}" @if(request('medewerker') == $medewerker) selected @endif>{{ $medewerker }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Filter</button>
+            </form>
+        </div>
+
         <!-- Bericht wanneer er geen afspraken zijn -->
         @if ($toekomstigeAfspraken->isEmpty() && $afgelopenAfspraken->isEmpty())
             <div class="bg-yellow-100 text-yellow-800 p-4 rounded mb-4">
