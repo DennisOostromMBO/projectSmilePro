@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Lees de SQL uit het bestand en voer het uit om de tabel te maken
         $sql = File::get(database_path('sql/patient.sql'));
         DB::unprepared($sql);
     }
@@ -21,7 +20,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Verwijder de tabel als onderdeel van het rollback-proces
         DB::statement('DROP TABLE IF EXISTS patient');
     }
 };

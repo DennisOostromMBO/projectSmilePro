@@ -162,12 +162,12 @@
         id="TimeFrom" 
         x-model="editTimeFrom" 
         class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
-        min="06:00"    
-        max="17:00"   
+        min="08:00"    
+        max="18:00"   
         step="1800"    
         aria-describedby="timeFromError"
     >
-    <p id="timeFromError" class="text-red-500 text-sm mt-1" x-show="!validateTimeFrom()">Voer een geldige begintijd in.</p>
+    <p id="timeFromError" class="text-red-500 text-sm mt-1" x-show="!validateTimeFrom()">vul de tijd in tussen 8:00 en 18:00 uur</p>
 </div>
 
 <!-- Time To -->
@@ -178,12 +178,12 @@
         id="TimeTo" 
         x-model="editTimeTo" 
         class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
-        min="06:00"  
-        max="17:00"   
+        min="08:00"  
+        max="18:00"   
         step="1800"   
         aria-describedby="timeToError"
     >
-    <p id="timeToError" class="text-red-500 text-sm mt-1" x-show="!validateTimeTo()">Voer een geldige eindtijd in.</p>
+    <p id="timeToError" class="text-red-500 text-sm mt-1" x-show="!validateTimeTo()">vul de tijd in tussen 8:00 en 18:00 uur</p>
 </div>
     
         <!-- Status -->
@@ -251,17 +251,37 @@
             editMedewerkerId: '',
 
             validateTimeFrom() {
-                return this.editTimeFrom.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
+                const match = this.editTimeFrom.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
+                if (!match) return false;
+
+                const [hours, minutes] = this.editTimeFrom.split(":").map(Number);
+                const timeInMinutes = hours * 60 + minutes;
+                const minTime = 8 * 60; // 08:00 in minutes
+                const maxTime = 18 * 60; // 18:00 in minutes
+
+                return timeInMinutes >= minTime && timeInMinutes <= maxTime;
             },
+
             validateTimeTo() {
-                return this.editTimeTo.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
+                const match = this.editTimeTo.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
+                if (!match) return false;
+            
+                const [hours, minutes] = this.editTimeTo.split(":").map(Number);
+                const timeInMinutes = hours * 60 + minutes;
+                const minTime = 8 * 60; // 08:00 in minutes
+                const maxTime = 18 * 60; // 18:00 in minutes
+            
+                return timeInMinutes >= minTime && timeInMinutes <= maxTime;
             },
+
             validateStatus() {
                 return ['Aanwezig', 'Afwezig', 'Verlof', 'Ziek'].includes(this.editStatus);
             },
+            
             validateForm() {
                 return this.validateTimeFrom() && this.validateTimeTo() && this.validateStatus();
             },
+
 
             showEditModal(date) {
                 this.event_date = new Date(this.year, this.month, date).toDateString();
@@ -317,13 +337,14 @@
             },
 
             saveTime() {
+                 
                 if (!this.validateForm()) {
                     alert('Please ensure all fields are correctly filled.');
                     return;
                 }
 
                 const eventIndex = this.events.findIndex(e => e.DatumVanaf === this.selectedEditDate);
-
+                
                 const eventData = {
                     MedewerkerId: this.editMedewerkerId,
                     DatumVanaf: this.selectedEditDate,
@@ -333,10 +354,6 @@
                     Status: this.editStatus,
                     Opmerking: this.editRemark || ''
                 };
-
-                console.log('Events:', this.events);
-                console.log('Selected Edit Date:', this.selectedEditDate);
-                console.log('Event Data:', eventData);
 
                 axios.post('/save-beschikbaarheid', eventData, {
                     headers: {
@@ -351,6 +368,7 @@
                             this.events.push(response.data.data);
                         }
                         this.closeEditModal();
+                        
                         alert('Beschikbaarheid succesvol opgeslagen.');
                     } else {
                         alert('Er is een fout opgetreden bij het opslaan van de beschikbaarheid.');
@@ -391,6 +409,10 @@
                         DatumVanaf: this.convertToISODate(new Date(event.DatumVanaf)),
                         DatumTotMet: this.convertToISODate(new Date(event.DatumTotMet)),
                     }));
+                })
+                .catch(error => {
+                    console.error('Error fetching events:', error);
+                    alert('Interne serverfout: ' + error.message);
                 });
             },
 

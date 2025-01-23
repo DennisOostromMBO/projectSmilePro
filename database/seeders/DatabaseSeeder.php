@@ -10,6 +10,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Database\Factories\UserFactory;
+use App\Models\Patient;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,17 +23,21 @@ class DatabaseSeeder extends Seeder
             persoonSeeder::class,
             RolSeeder::class, // Zorg ervoor dat de RolSeeder eerst wordt aangeroepen
             MedewerkerSeeder::class,
-            PatientSeeder::class,
+            PatientsSeeder::class,
             ContactSeeder::class,
             EmailSeeder::class,
-            BeschikbaarheidSeeder::class,
             FactuurSeeder::class,
+            BeschikbaarheidSeeder::class,
+            
         ]);
 
         // Maak een testgebruiker aan
         User::factory()->create([
-            'name' => 'Test User',
+            'voornaam' => 'Praktijk',
+            'tussenvoegsel' => '',
+            'achternaam' => 'Manager',
             'email' => 'test@example.com',
+            'password' => bcrypt('1'),
             'rol_id' => 1,
         ]);
     }

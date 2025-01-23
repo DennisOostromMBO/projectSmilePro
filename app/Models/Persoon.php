@@ -1,10 +1,8 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Persoon extends Model
 {
@@ -12,7 +10,7 @@ class Persoon extends Model
 
     protected $table = 'persoon';
 
-   protected $primaryKey = 'Id';
+    protected $primaryKey = 'Id';
 
     protected $fillable = [
         'Voornaam',
@@ -22,17 +20,28 @@ class Persoon extends Model
         'Geboortedatum',
     ];
 
+    protected $appends = ['VolledigeNaam'];
+
     public $timestamps = false;
 
-    // Relaties
+    // callable through $person->Fname
+    public function getFnameAttribute()
+    {
+        return trim("{$this->Voornaam} {$this->Tussenvoegsel} {$this->Achternaam}");
+    }
+
     public function patient()
     {
-        return $this->hasMany(Patient::class, 'PersoonId', 'Id');
+        return $this->hasOne(Patient::class, 'PersoonId','Id');
     }
-    
 
     public function gebruikers()
     {
-        return $this->hasMany(GebruikerModel::class, 'PersoonId', 'Id');
+        return $this->hasMany(GebruikerModel::class, 'PersoonId','Id');
+    }
+
+    public function facturen()
+    {
+        return $this->hasMany(Factuur::class, 'persoonId', 'Id');
     }
 }

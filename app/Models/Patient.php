@@ -16,9 +16,18 @@ class Patient extends Model
 
     // Velden die massaal toegewezen mogen worden
     protected $fillable = [
-        'PersoonId',
-        'Nummer',
-        'MedischDossier',
+        'persoon_id',
+        'nummer',
+        'medisch_dossier',
+        'straatnaam',
+        'huisnummer',
+        'toevoeging',
+        'postcode',
+        'plaats',
+        'mobiel',
+        'email',
+        'is_active',
+        'comments',
     ];
 
     // Geen timestamps gebruikt in deze tabel
@@ -29,12 +38,6 @@ class Patient extends Model
      */
     public function persoon()
     {
-        return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
+        return $this->belongsTo(Persoon::class, 'persoon_id', 'Id');
     }
-    
-    public function contact()
-    {
-        return $this->hasOne(Contact::class, 'PatientId', 'Id');
-    }
-    
 }

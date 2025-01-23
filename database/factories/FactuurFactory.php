@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Factuur;
+use App\Models\Persoon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FactuurFactory extends Factory
@@ -12,11 +13,13 @@ class FactuurFactory extends Factory
     public function definition(): array
     {
         return [
-            'klant_id' => $this->faker->numberBetween(1, 100),
+            'persoon_id' => Persoon::inRandomOrder()->first()->id, // Willekeurig een bestaand persoon_id selecteren
             'beschrijving' => $this->faker->sentence,
             'vervaldatum' => $this->faker->date,
-            'btw' => $this->faker->randomFloat(2, 0, 21),
+            'btw' => 21,
             'totaal_bedrag' => $this->faker->randomFloat(2, 100, 1000),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

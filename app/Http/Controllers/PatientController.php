@@ -48,6 +48,7 @@ class PatientController extends Controller
     
             // Stuur de gegevens naar de view
             return view('patient.index', compact('patients'));
+           
         } catch (Exception $e) {
             // Log de fout voor debugging
             Log::error('Fout bij het ophalen van patiëntinformatie: ' . $e->getMessage());
@@ -237,22 +238,8 @@ class PatientController extends Controller
         return view('patient.create');
     }
 
-    public function store(Request $request) // voor create
+    public function store(Request $request)
     {
-        // Controleer of e-mail of mobiel al bestaat
-      $emailExists = Contact::where('Email', $request->input('email'))->exists();
-      $mobielExists = Contact::where('Mobiel', $request->input('mobiel'))->exists();
-
-    // Als e-mail of mobiel al bestaat, geef een foutmelding weer bovenaan de pagina
-    if ($emailExists) {
-        return redirect()->back()->withErrors(['email_exists' => 'Patiënt bestaat al in het systeem, dubbel e-mailadres!'])->withInput();
-    }
-
-    if ($mobielExists) {
-        return redirect()->back()->withErrors(['mobiel_exists' => 'Patiënt bestaat al in het systeem, dubbel mobielnummer!'])->withInput();
-    }
-    
-        // Validatie van de invoervelden
         $validated = $request->validate([
             'voornaam' => 'required|string|max:255|regex:/^[a-zA-ZÀ-ÿ\- ]+$/u',
             'tussenvoegsel' => 'nullable|string|max:255|regex:/^[a-zA-ZÀ-ÿ\- ]+$/u',
@@ -311,12 +298,8 @@ class PatientController extends Controller
             'huisnummer.required' => 'Huisnummer is verplicht.',
             'huisnummer.regex' => 'Huisnummer is ongeldig.',
             'huisnummer.digits_between' => 'Huisnummer is ongeldig',
-            
-            // Postcode
             'postcode.required' => 'Postcode is verplicht.',
             'postcode.regex' => 'Postcode is ongeldig.',
-            
-            // Plaats
             'plaats.required' => 'Plaats is verplicht.',
             'plaats.max' => 'Plaats is te lang.',
             'plaats.regex' => 'Plaats is ongeldig.',
@@ -324,43 +307,106 @@ class PatientController extends Controller
             // Medisch dossier
             'medisch_dossier.max' => 'Medisch dossier is te lang.',
         ]);
-        
-    
+
         try {
             // Opslaan in de Persoon tabel
             $persoon = Persoon::create([
-                'Voornaam' => $validated['voornaam'],
-                'Tussenvoegsel' => $validated['tussenvoegsel'],
-                'Achternaam' => $validated['achternaam'],
-                'Geboortedatum' => $validated['geboortedatum'],
+                'voornaam' => $validated['voornaam'],
+                'tussenvoegsel' => $validated['tussenvoegsel'],
+                'achternaam' => $validated['achternaam'],
+                'geboortedatum' => $validated['geboortedatum'],
             ]);
-    
+
             // Haal het laatste patiëntnummer op en genereer het volgende nummer
-            $lastPatient = Patient::orderBy('Nummer', 'desc')->first();
-            $lastPatientNumber = $lastPatient ? $lastPatient->Nummer : 'P000';
+            $lastPatient = Patient::orderBy('nummer', 'desc')->first();
+            $lastPatientNumber = $lastPatient ? $lastPatient->nummer : 'P000';
             $nextPatientNumber = 'P' . str_pad((int)substr($lastPatientNumber, 1) + 1, 3, '0', STR_PAD_LEFT);
-    
+
             // Opslaan in de Patient tabel
             $patient = Patient::create([
-                'PersoonId' => $persoon->Id,
-                'MedischDossier' => $validated['medisch_dossier'],
-                'Nummer' => $nextPatientNumber, // Voeg het patiëntnummer toe
+                'persoon_id' => $persoon->id,
+                'medisch_dossier' => $validated['medisch_dossier'],
+                'nummer' => $nextPatientNumber, // Voeg het patiëntnummer toe
             ]);
-    
+
             // Voeg contactgegevens toe
             $contact = Contact::create([
-                'PatientId' => $patient->Id,
-                'Mobiel' => $validated['mobiel'],
-                'Email' => $validated['email'],
-                'Postcode' => $validated['postcode'],
-                'Huisnummer' => $validated['huisnummer'],
-                'Toevoeging' => $validated['toevoeging'],
-                'Plaats' => $validated['plaats'],
-                'Straatnaam' => $validated['straatnaam'],
+                'patient_id' => $patient->id,
+                'mobiel' => $validated['mobiel'],
+                'email' => $validated['email'],
+                'postcode' => $validated['postcode'],
+                'huisnummer' => $validated['huisnummer'],
+                'toevoeging' => $validated['toevoeging'],
+                'plaats' => $validated['plaats'],
+                'straatnaam' => $validated['straatnaam'],
             ]);
-    
+
+            return redirect()->route('patient.index')->with('success', 'Patiënt succesvol aangemaakt.');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Fout bij opslaan gegevens: ' . $e->getMessage()])->withInput();
+            return redirect()->back()->with('error', 'Er is een fout opgetreden bij het aanmaken van de patiënt.');
+        }
+    }
+
+    public function edit($id)
+    {
+        $patient = Patient::with('persoon')->findOrFail($id);
+        return view('patient.edit', compact('patient'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'voornaam' => 'required|string|max:255',
+            'tussenvoegsel' => 'nullable|string|max:255',
+            'achternaam' => 'required|string|max:255',
+            'geboortedatum' => 'required|date',
+            'medisch_dossier' => 'required|string|max:255',
+            'straatnaam' => 'required|string|regex:/^[a-zA-Z\s]+$/',
+            'huisnummer' => 'required|digits_between:1,5',
+            'postcode' => 'required|string|regex:/^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/',
+            'plaats' => 'required|string|max:255|regex:/^[a-zA-Z\s]+$/',
+            'mobiel' => 'required|string|max:20',
+            'email' => 'required|string|email|max:255|unique:patients,email,' . $id,
+        ], [
+            'straatnaam.regex' => 'Straatnaam mag geen cijfers bevatten.',
+            'huisnummer.required' => 'Huisnummer is verplicht.',
+            'huisnummer.digits_between' => 'Huisnummer is ongeldig',
+            'postcode.required' => 'Postcode is verplicht.',
+            'postcode.regex' => 'Postcode is ongeldig.',
+            'plaats.required' => 'Plaats is verplicht.',
+            'plaats.max' => 'Plaats is te lang.',
+            'plaats.regex' => 'Plaats mag geen cijfers bevatten.',
+            'medisch_dossier.required' => 'Medisch dossier is verplicht.',
+            'medisch_dossier.max' => 'Medisch dossier is te lang.',
+        ]);
+
+        try {
+            $patient = Patient::findOrFail($id);
+            $persoon = $patient->persoon;
+
+            // Update de Persoon tabel
+            $persoon->update([
+                'voornaam' => $validated['voornaam'],
+                'tussenvoegsel' => $validated['tussenvoegsel'],
+                'achternaam' => $validated['achternaam'],
+                'geboortedatum' => $validated['geboortedatum'],
+            ]);
+
+            // Update de Patient tabel
+            $patient->update([
+                'medisch_dossier' => $validated['medisch_dossier'],
+                'straatnaam' => $validated['straatnaam'],
+                'huisnummer' => $validated['huisnummer'],
+                'toevoeging' => $request->input('toevoeging'),
+                'postcode' => $validated['postcode'],
+                'plaats' => $validated['plaats'],
+                'mobiel' => $validated['mobiel'],
+                'email' => $validated['email'],
+            ]);
+
+            return redirect()->route('patient.index')->with('success', 'Patiënt succesvol bijgewerkt.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Er is een fout opgetreden bij het bijwerken van de patiënt.');
         }
     
         // Redirect naar de patiënt overzicht pagina

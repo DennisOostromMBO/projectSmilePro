@@ -21,7 +21,7 @@
                         <a class="nav-link" href="{{ route('patient.index') }}">Patiënten</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('AccountOverzicht.index') }}">Account Overzicht</a>
+                        <a class="nav-link" href="{{ route('accountoverzicht.index') }}">Account Overzicht</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('praktijkmanager.medewerkers') }}">Medewerkers</a>

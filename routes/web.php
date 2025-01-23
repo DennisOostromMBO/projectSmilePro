@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
 Route::get('/patient', [PatientController::class, 'index'])->name('patient.index');
 Route::get('/patient/create', [PatientController::class, 'create'])->name('patient.create');
 Route::get('/patient/edit/{id}', [PatientController::class, 'edit'])->name('patient.edit');
@@ -45,18 +46,22 @@ Route::post('/patient', [PatientController::class, 'store'])->name('patient.stor
 Route::delete('/patient/{id}', [PatientController::class, 'destroy'])->name('patient.destroy');
 
 
-Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('AccountOverzicht.index');
-Route::resource('factuur', FactuurController::class);
 Route::get('/factuurs', [FactuurController::class, 'index'])->name('factuur.index');
-Route::get('/factuurs/{id}', [FactuurController::class, 'show'])->name('factuur.show');
+Route::get('/factuurs/create', [FactuurController::class, 'create'])->name('factuur.create');
+Route::post('/factuurs', [FactuurController::class, 'store'])->name('factuur.store');
+Route::get('/factuurs/{id}/edit', [FactuurController::class, 'edit'])->name('factuur.edit');
+Route::put('/factuurs/{id}', [FactuurController::class, 'update'])->name('factuur.update');
+Route::delete('/factuurs/{id}', [FactuurController::class, 'destroy'])->name('factuur.destroy');
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
 
 Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Communicatie.index');
 
-Route::get('/emails', [EmailController::class, 'index']);
-Route::post('/emails', [EmailController::class, 'store']);
+Route::get('/emails', [EmailController::class, 'index'])->name('emails.index');
+Route::post('/emails', [EmailController::class, 'store'])->name('emails.store');
+Route::get('/emails/{id}', [EmailController::class, 'show'])->name('emails.show');
+Route::put('/emails/{id}', [EmailController::class, 'update'])->name('emails.update');
 
 Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index']);
 Route::post('/get-beschikbaarheden-by-month', [BeschikbaarheidController::class, 'getBeschikbaarhedenByMonth']);
