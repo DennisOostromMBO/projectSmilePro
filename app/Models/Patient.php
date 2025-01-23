@@ -16,28 +16,21 @@ class Patient extends Model
 
     // Velden die massaal toegewezen mogen worden
     protected $fillable = [
-        'persoon_id',
-        'nummer',
-        'medisch_dossier',
-        'straatnaam',
-        'huisnummer',
-        'toevoeging',
-        'postcode',
-        'plaats',
-        'mobiel',
-        'email',
-        'is_active',
-        'comments',
+        'PersoonId',
+        'Nummer',
+        'MedischDossier',
     ];
 
     // Geen timestamps gebruikt in deze tabel
     public $timestamps = false;
 
     /**
-     * Relatie: Een patiënt behoort tot één persoon
-     */
-    public function persoon()
-    {
-        return $this->belongsTo(Persoon::class, 'persoon_id', 'Id');
+     
+Relatie: Een patiënt behoort tot één persoon*/
+  public function persoon(){
+      return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
     }
+    
+  public function contact(){
+      return $this->hasOne(Contact::class, 'PatientId', 'Id');}
 }

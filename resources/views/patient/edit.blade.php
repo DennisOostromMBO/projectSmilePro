@@ -1,33 +1,40 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Patiënt Bewerken</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .input-container {
+            position: relative;
+        }
 
-@section('content')
-<div class="container">
-    <h1>Patiënt Bewerken</h1>
+        .error-message {
+            position: absolute;
+            top: -20px; 
+            left: 0;
+            color: #e53e3e;
+            font-size: 0.875rem; 
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <h1 class="text-3xl font-bold mb-6 text-center">Bewerk Patiënt gegevens</h1>
+        <form action="{{ route('patient.update', ['id' => $patient->Id]) }}" method="POST">
+            @csrf
+            @method('PUT')
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    <form action="{{ route('patient.update', $patient->id) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        @if ($errors->has('email_exists'))
-            <div class="alert alert-danger">
+            @if ($errors->has('email_exists'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
                 <strong>Let op!</strong> {{ $errors->first('email_exists') }}
             </div>
         @endif
-
+        
         @if ($errors->has('mobiel_exists'))
-            <div class="alert alert-danger">
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
                 <strong>Let op!</strong> {{ $errors->first('mobiel_exists') }}
             </div>
         @endif
