@@ -12,7 +12,7 @@ class FactuurFactory extends Factory
     public function definition(): array
     {
         return [
-            'PersoonId' => 3,
+            'persoon_id' => 3,
             'beschrijving' => $this->faker->sentence,
             'vervaldatum' => $this->faker->date,
             'btw' => $this->faker->randomFloat(2, 0, 21),
