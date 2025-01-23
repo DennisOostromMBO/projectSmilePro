@@ -27,6 +27,9 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('register', [RegisteredUserController::class, 'store']);
 
+// Account Overzicht routes
+Route::get('accountoverzicht', [AccountOverzichtController::class, 'index'])->name('accountoverzicht.index');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
