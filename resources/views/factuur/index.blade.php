@@ -8,6 +8,12 @@
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">Factuur Overzicht</h1>
         <a href="{{ route('factuur.create') }}" class="bg-green-500 text-white px-4 py-2 rounded mb-4 inline-block">Factuur Aanmaken</a>
+
+        <form method="GET" action="{{ route('factuur.index') }}" class="mb-4">
+            <input type="text" name="search" placeholder="Zoek op naam" class="border-gray-300 rounded p-2 w-full" value="{{ request('search') }}">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Zoeken</button>
+        </form>
+
         @if($facturen->isEmpty())
             <p class="text-center text-gray-500">Geen factuurs beschikbaar!</p>
         @else
@@ -18,7 +24,7 @@
                             <th class="py-2 px-4 border-b">Naam Persoon</th>
                             <th class="py-2 px-4 border-b">Beschrijving</th>
                             <th class="py-2 px-4 border-b">Vervaldatum</th>
-                            <th class="py-2 px-4 border-b">BTW</th>
+                            <th class="py-2 px-4 border-b">BTW Bedrag</th>
                             <th class="py-2 px-4 border-b">Totaal Bedrag</th>
                             <th class="py-2 px-4 border-b">Acties</th>
                         </tr>
@@ -31,7 +37,7 @@
                                 </td>
                                 <td class="py-2 px-4 border-b">{{ $factuur->beschrijving }}</td>
                                 <td class="py-2 px-4 border-b">{{ $factuur->vervaldatum }}</td>
-                                <td class="py-2 px-4 border-b">{{ $factuur->btw }}</td>
+                                <td class="py-2 px-4 border-b">{{ number_format($factuur->totaal_bedrag / 100 * 21, 2) }}</td>
                                 <td class="py-2 px-4 border-b">{{ $factuur->totaal_bedrag }}</td>
                                 <td class="py-2 px-4 border-b">
                                     <a href="{{ route('factuur.edit', $factuur->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Bewerken</a>

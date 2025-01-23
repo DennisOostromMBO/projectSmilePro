@@ -10,9 +10,17 @@ use Illuminate\Support\Facades\Log;
 
 class FactuurController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $facturen = Factuur::with('persoon')->get();
+        $search = $request->input('search');
+        $facturen = Factuur::with('persoon')
+            ->whereHas('persoon', function($query) use ($search) {
+                if ($search) {
+                    $query->where('VolledigeNaam', 'like', "%{$search}%");
+                }
+            })
+            ->get();
+
         return view('factuur.index', compact('facturen'));
     }
 
