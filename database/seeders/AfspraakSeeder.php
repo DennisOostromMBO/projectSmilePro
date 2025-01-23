@@ -16,8 +16,8 @@ class AfspraakSeeder extends Seeder
             'gebruiker_id' => 1,
             'patient_naam' => 'Kerem Akturkoglu',
             'medewerker_naam' => 'Dr. Pietersen',
-            'datum' => '2025-01-22',
-            'tijd' => '12:30',
+            'datum' => '2025-01-24',
+            'tijd' => '10:00',
             'type_afspraak' => 'Controle',
         ]);
 
@@ -25,8 +25,8 @@ class AfspraakSeeder extends Seeder
             'gebruiker_id' => 2,
             'patient_naam' => 'Piet Pietersen',
             'medewerker_naam' => 'Dr. Jansen',
-            'datum' => '2025-01-22',
-            'tijd' => '12:00',
+            'datum' => '2025-01-23',
+            'tijd' => '12:30',
             'type_afspraak' => 'Controle',
         ]);
 
