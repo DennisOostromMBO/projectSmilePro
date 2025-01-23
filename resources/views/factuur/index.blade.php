@@ -8,6 +8,7 @@
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">Factuur Overzicht</h1>
         <a href="{{ route('factuur.create') }}" class="bg-green-500 text-white px-4 py-2 rounded mb-4 inline-block">Factuur Aanmaken</a>
+        <a href="{{ route('welcome') }}" class="bg-gray-500 text-white px-4 py-2 rounded mb-4 inline-block">Terug naar Home</a>
 
         <form method="GET" action="{{ route('factuur.index') }}" class="mb-4">
             <input type="text" name="search" placeholder="Zoek op naam" class="border-gray-300 rounded p-2 w-full" value="{{ request('search') }}">
@@ -61,6 +62,7 @@
                 </table>
             </div>
         @endif
+        {{ $facturen->links() }}
     </div>
 </body>
 </html>

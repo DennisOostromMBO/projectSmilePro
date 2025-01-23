@@ -24,6 +24,10 @@ class Persoon extends Model
 
     public $timestamps = false;
 
+    public function getFnameAttribute()
+    {
+        return trim("{$this->Voornaam} {$this->Tussenvoegsel} {$this->Achternaam}");
+    }
 
     public function patient()
     {

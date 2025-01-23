@@ -19,7 +19,7 @@ class FactuurController extends Controller
                     $query->where('VolledigeNaam', 'like', "%{$search}%");
                 }
             })
-            ->get();
+            ->paginate(5); // Change this line to paginate results
 
         return view('factuur.index', compact('facturen'));
     }
