@@ -11,15 +11,17 @@ class Factuur extends Model
     protected $table = 'factuur';
 
     protected $fillable = [
-        'persoonId',
+        'persoon_id',
         'beschrijving',
         'vervaldatum',
         'btw',
         'totaal_bedrag',
+        'created_at',
+        'updated_at',
     ];
 
     public function persoon()
     {
-        return $this->belongsTo(Persoon::class, 'persoonId','Id');
+        return $this->belongsTo(Persoon::class, 'persoon_id', 'id');
     }
 }

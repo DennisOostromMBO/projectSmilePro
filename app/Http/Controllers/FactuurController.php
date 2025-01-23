@@ -18,32 +18,28 @@ class FactuurController extends Controller
 
     public function create()
     {
-        // Fetch all records from the personen table and handle NULL values for Tussenvoegsel
-        $personen = DB::table('personen')
-            ->select('Id', DB::raw("CONCAT(Voornaam, ' ', COALESCE(Tussenvoegsel, ''), ' ', Achternaam) as fname"))
-            ->distinct()
-            ->get();
-
-        return view('factuur.create', compact('personen'))->with('message', 'The factuur has been created.');
+        $personen = Persoon::all();
+        return view('factuur.create', compact('personen'));
     }
-
 
     public function store(Request $request)
     {
         $request->validate([
-            'persoonId' => 'required|exists:personen,Id',
+            'persoon_id' => 'required|exists:persoon,id',
             'beschrijving' => 'required',
             'vervaldatum' => 'required|date',
-            'btw' => 'required|numeric',
             'totaal_bedrag' => 'required|numeric',
         ]);
 
         try {
-            Log::info('Creating Factuur', $request->all());
+            $data = $request->all();
+            $data['btw'] = $data['totaal_bedrag'] * 0.21; // Bereken de BTW als 21% van het totaalbedrag
 
-            Factuur::create($request->all());
+            Log::info('Creating Factuur', $data);
 
-            return redirect()->route('factuur.index')->with('success', 'Factuur created successfully.')->with('message', 'The factuur has been created.');
+            Factuur::create($data);
+
+            return redirect()->route('factuur.index')->with('success', 'Factuur created successfully.');
         } catch (\Exception $e) {
             Log::error('Error creating Factuur', ['error' => $e->getMessage()]);
 
@@ -51,58 +47,39 @@ class FactuurController extends Controller
         }
     }
 
-/*
-    public function store(Request $request)
+    public function edit($id)
+    {
+        $factuur = Factuur::findOrFail($id);
+        $personen = Persoon::all();
+
+        return view('factuur.edit', compact('factuur', 'personen'));
+    }
+
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'persoonId' => 'required|exists:persoon,Id',
-            'beschrijving' => 'required',
+            'persoon_id' => 'required|exists:persoon,id',
+            'beschrijving' => 'required|string|max:255',
             'vervaldatum' => 'required|date',
-            'btw' => 'required|numeric',
             'totaal_bedrag' => 'required|numeric',
         ]);
 
-        Log::info('Creating Factuur', $request->all());
+        try {
+            $data = $request->all();
+            $data['btw'] = $data['totaal_bedrag'] * 0.21; // Bereken de BTW als 21% van het totaalbedrag
 
-        Factuur::create($request->all());
+            Log::info('Updating Factuur', $data);
 
-        return redirect()->route('factuur.index')->with('success', 'Factuur created successfully.');
+            $factuur = Factuur::findOrFail($id);
+            $factuur->update($data);
+
+            return redirect()->route('factuur.index')->with('success', 'Factuur updated successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error updating Factuur', ['error' => $e->getMessage()]);
+
+            return redirect()->back()->with('error', 'There was an error updating the Factuur: ' . $e->getMessage());
+        }
     }
-*/
-public function edit($id)
-{
-    $factuur = Factuur::findOrFail($id);
-    $personen = DB::table('personen')
-            ->select('Id', DB::raw("CONCAT(Voornaam, ' ', COALESCE(Tussenvoegsel, ''), ' ', Achternaam) as fname"))
-        ->distinct()
-        ->get();
-
-    return view('factuur.edit', compact('factuur', 'personen'))->with('message', 'The factuur has been updated.');
-}
-
-public function update(Request $request, $id)
-{
-    $request->validate([
-        'persoonId' => 'required|exists:personen,Id',
-        'beschrijving' => 'required',
-        'vervaldatum' => 'required|date',
-        'btw' => 'required|numeric',
-        'totaal_bedrag' => 'required|numeric',
-    ]);
-
-    try {
-        Log::info('Updating Factuur', $request->all());
-
-        $factuur = Factuur::findOrFail($id);
-        $factuur->update($request->all());
-
-        return redirect()->route('factuur.index')->with('success', 'Factuur updated successfully.')->with('message', 'The factuur has been updated.');
-    } catch (\Exception $e) {
-        Log::error('Error updating Factuur', ['error' => $e->getMessage()]);
-
-        return redirect()->back()->with('error', 'There was an error updating the Factuur: ' . $e->getMessage());
-    }
-}
 
     public function destroy($id)
     {
@@ -111,6 +88,6 @@ public function update(Request $request, $id)
         $factuur = Factuur::findOrFail($id);
         $factuur->delete();
 
-        return redirect()->route('factuur.index')->with('success', 'Factuur deleted successfully.')->with('message', 'The factuur has been deleted.');
+        return redirect()->route('factuur.index')->with('success', 'Factuur deleted successfully.');
     }
 }
