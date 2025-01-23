@@ -13,7 +13,7 @@ class FactuurFactory extends Factory
     public function definition(): array
     {
         return [
-            'persoon_id' => Persoon::inRandomOrder()->first()->id, // Willekeurig een bestaand persoon_id selecteren
+            'PersoonId' => Persoon::inRandomOrder()->first()->id, // Willekeurig een bestaand persoon_id selecteren
             'beschrijving' => $this->faker->sentence,
             'vervaldatum' => $this->faker->date,
             'btw' => 21,

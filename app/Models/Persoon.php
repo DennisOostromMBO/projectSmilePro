@@ -20,7 +20,7 @@ class Persoon extends Model
         'Geboortedatum',
     ];
 
-    protected $appends = ['VolledigeNaam'];
+    //protected $appends = ['VolledigeNaam'];
 
     public $timestamps = false;
 
