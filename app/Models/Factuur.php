@@ -16,6 +16,7 @@ class Factuur extends Model
         'vervaldatum',
         'btw',
         'totaal_bedrag',
+        'betaald', 
         'created_at',
         'updated_at',
     ];

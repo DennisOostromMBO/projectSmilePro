@@ -43,6 +43,13 @@
                 <label for="btw" class="block text-gray-700">BTW</label>
                 <input type="number" step="0.01" name="btw" id="btw" class="w-full border-gray-300 rounded mt-1" value="{{ $factuur->btw }}" readonly>
             </div>
+            <div class="mb-4">
+                <label for="betaald" class="block text-gray-700">Betaald</label>
+                <select name="betaald" id="betaald" class="w-full border-gray-300 rounded mt-1" required>
+                    <option value="1" {{ $factuur->betaald ? 'selected' : '' }}>Ja</option>
+                    <option value="0" {{ !$factuur->betaald ? 'selected' : '' }}>Nee</option>
+                </select>
+            </div>
             <div class="flex justify-between items-center">
                 <a href="{{ route('factuur.index') }}" class="bg-gray-100 text-blue-500 px-4 py-2 rounded border border-gray-300 hover:bg-gray-200">
                     Terug naar Factuur

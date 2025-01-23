@@ -25,7 +25,9 @@
                             <th class="py-2 px-4 border-b">Beschrijving</th>
                             <th class="py-2 px-4 border-b">Vervaldatum</th>
                             <th class="py-2 px-4 border-b">BTW Bedrag</th>
-                            <th class="py-2 px-4 border-b">Totaal Bedrag</th>
+                            <th class="py-2 px-4 border-b">Totaal Bedrag (excl. BTW)</th>
+                            <th class="py-2 px-4 border-b">Totaal Bedrag (incl. BTW)</th>
+                            <th class="py-2 px-4 border-b">Betaald</th>
                             <th class="py-2 px-4 border-b">Acties</th>
                         </tr>
                     </thead>
@@ -37,15 +39,21 @@
                                 </td>
                                 <td class="py-2 px-4 border-b">{{ $factuur->beschrijving }}</td>
                                 <td class="py-2 px-4 border-b">{{ $factuur->vervaldatum }}</td>
-                                <td class="py-2 px-4 border-b">{{ number_format($factuur->totaal_bedrag / 100 * 21, 2) }}</td>
-                                <td class="py-2 px-4 border-b">{{ $factuur->totaal_bedrag }}</td>
+                                <td class="py-2 px-4 border-b">{{ number_format($factuur->totaal_bedrag * 0.21, 2) }}</td>
+                                <td class="py-2 px-4 border-b">{{ number_format($factuur->totaal_bedrag, 2) }}</td>
+                                <td class="py-2 px-4 border-b">{{ number_format($factuur->totaal_bedrag * 1.21, 2) }}</td>
+                                <td class="py-2 px-4 border-b">{{ $factuur->betaald ? 'Ja' : 'Nee' }}</td>
                                 <td class="py-2 px-4 border-b">
                                     <a href="{{ route('factuur.edit', $factuur->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Bewerken</a>
-                                    <form action="{{ route('factuur.destroy', $factuur->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Weet je zeker dat je de factuur wilt verwijderen?')">Verwijderen</button>
-                                    </form>
+                                    @if($factuur->betaald)
+                                        <form action="{{ route('factuur.destroy', $factuur->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Weet je zeker dat je de factuur wilt verwijderen?')">Verwijderen</button>
+                                        </form>
+                                    @else
+                                        <button class="bg-gray-500 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Verwijderen</button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
