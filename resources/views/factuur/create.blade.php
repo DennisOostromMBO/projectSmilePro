@@ -8,7 +8,7 @@
     <script>
         function calculateBTW() {
             const totaalBedrag = parseFloat(document.getElementById('totaal_bedrag').value) || 0;
-            const btw = (totaalBedrag * 21) / 121;
+            const btw = totaalBedrag * 0.21;
             document.getElementById('btw').value = btw.toFixed(2);
         }
 
@@ -71,4 +71,3 @@
     </div>
 </body>
 </html>
-
