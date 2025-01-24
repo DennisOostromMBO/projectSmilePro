@@ -53,6 +53,7 @@ class PraktijkmanagerController extends Controller
             "medewerkertype" => "required|string|max:255",
             "specialisatie" => "required|string|max:255",
             "beschikbaarheid" => "required|string|max:255",
+            "contractverloopdatum" => "required|date",
         ], [
             "voornaam.required" => "Voornaam is verplicht",
             "voornaam.string" => "Voornaam moet een string zijn",
@@ -79,6 +80,8 @@ class PraktijkmanagerController extends Controller
             "beschikbaarheid.required" => "Beschikbaarheid is verplicht",
             "beschikbaarheid.string" => "Beschikbaarheid moet een string zijn",
             "beschikbaarheid.max" => "Beschikbaarheid mag maximaal 255 karakters bevatten",
+            "contractverloopdatum.required" => "Contractverloopdatum is verplicht",
+            "contractverloopdatum.date" => "Contractverloopdatum moet een datum zijn",
         ]);
 
         // dd($validated);
@@ -101,6 +104,7 @@ class PraktijkmanagerController extends Controller
                 'Medewerkertype' => $validated['medewerkertype'],
                 'Specialisatie' => $validated['specialisatie'],
                 'Beschikbaarheid' => $validated['beschikbaarheid'],
+                'ContractVerloopdatum' => $validated['contractverloopdatum'],
             ]);
 
             return redirect()->route('praktijkmanager.medewerkers')->with('success', 'Medewerker succesvol bijgewerkt.');
@@ -132,6 +136,7 @@ class PraktijkmanagerController extends Controller
             "medewerkertype" => "required|string|max:255",
             "specialisatie" => "required|string|max:255",
             "beschikbaarheid" => "required|string|max:255",
+            "contractverloopdatum" => "required|date",
         ], [
             "voornaam.required" => "Voornaam is verplicht",
             "voornaam.string" => "Voornaam moet een string zijn",
@@ -158,6 +163,8 @@ class PraktijkmanagerController extends Controller
             "beschikbaarheid.required" => "Beschikbaarheid is verplicht",
             "beschikbaarheid.string" => "Beschikbaarheid moet een string zijn",
             "beschikbaarheid.max" => "Beschikbaarheid mag maximaal 255 karakters bevatten",
+            "contractverloopdatum.required" => "Contractverloopdatum is verplicht",
+            "contractverloopdatum.date" => "Contractverloopdatum moet een datum zijn",
         ]);
 
         try {
@@ -170,9 +177,9 @@ class PraktijkmanagerController extends Controller
             ]);
 
             // Haal het laatste patiëntnummer op en genereer het volgende nummer
-            $lastMedewerker = Medewerker::orderBy('nummer', 'desc')->first();
-            $lastMedewerkerNumber = $lastMedewerker ? $lastMedewerker->nummer : 'M000';
-            $nextMedewerkerNumber = 'M' . str_pad((int)substr($lastMedewerkerNumber, 1) + 1, 3, '0', STR_PAD_LEFT);
+            // $lastMedewerker = Medewerker::orderBy('nummer', 'desc')->first();
+            // $lastMedewerkerNumber = $lastMedewerker ? $lastMedewerker->nummer : 'M000';
+            // $nextMedewerkerNumber = 'M' . str_pad((int)substr($lastMedewerkerNumber, 1) + 1, 3, '0', STR_PAD_LEFT);
 
             // Opslaan in de Patient tabel
             $medewerker = Medewerker::create([
@@ -181,6 +188,7 @@ class PraktijkmanagerController extends Controller
                 'Medewerkertype' => $validated['medewerkertype'],
                 'Specialisatie' => $validated['specialisatie'],
                 'Beschikbaarheid' => $validated['beschikbaarheid'],
+                'ContractVerloopdatum' => $validated['contractverloopdatum'],
             ]);
 
             return redirect()->route('praktijkmanager.medewerkers')->with('success', 'Medewerker succesvol aangemaakt.');
@@ -221,6 +229,10 @@ class PraktijkmanagerController extends Controller
             if (!$medewerker) {
                 Log::warning('Medewerker niet gevonden.', ['id' => $id]);
                 return redirect()->back()->with('error', 'Medewerker niet gevonden.');
+            }
+
+            if ($medewerker->ContractVerloopdatum >= now()) {
+                return redirect()->back()->with('error', 'Medewerker kan niet worden verwijderd. Het contract is nog niet verlopen.');
             }
 
             $persoonId = $medewerker->PersoonId;

@@ -9,6 +9,7 @@ BEGIN
         Medewerkertype VARCHAR(255) NOT NULL,
         Specialisatie VARCHAR(255) NOT NULL,
         Beschikbaarheid VARCHAR(255) NOT NULL,
+        ContractVerloopdatum DATE NOT NULL,
         IsActive BIT DEFAULT 1,
         Comments VARCHAR(255) NULL,
         CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

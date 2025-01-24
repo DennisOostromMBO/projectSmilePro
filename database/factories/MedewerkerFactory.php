@@ -61,6 +61,8 @@ class MedewerkerFactory extends Factory
                 'Freelance',
                 'On-call',
             ]),
+
+            "ContractVerloopdatum" => $this->faker->dateTimeBetween('-1 year', '+1 year'),
         ];
     }
 }
