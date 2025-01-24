@@ -8,7 +8,7 @@
     <script>
         function calculateBTW() {
             const totaalBedrag = parseFloat(document.getElementById('totaal_bedrag').value) || 0;
-            const btw = (totaalBedrag * 21) / 121;
+            const btw = totaalBedrag * 0.21;
             document.getElementById('btw').value = btw.toFixed(2);
         }
 
@@ -37,7 +37,7 @@
                 <label for="persoon_id" class="block text-gray-700">Persoon</label>
                 <select name="persoon_id" id="persoon_id" class="w-full border-gray-300 rounded mt-1" required>
                     @foreach($personen as $persoon)
-                        <option value="{{ $persoon->id }}">
+                        <option value="{{ $persoon->Id }}">
                             {{ $persoon->VolledigeNaam }}
                         </option>
                     @endforeach
@@ -71,4 +71,3 @@
     </div>
 </body>
 </html>
-
