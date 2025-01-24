@@ -10,7 +10,7 @@ class Persoon extends Model
 
     protected $table = 'persoon';
 
-    protected $primaryKey = 'Id';
+    protected $primaryKey = 'Id'; // Ensure primary key is correctly defined
 
     protected $fillable = [
         'Voornaam',
@@ -31,16 +31,16 @@ class Persoon extends Model
 
     public function patient()
     {
-        return $this->hasOne(Patient::class, 'PersoonId','Id');
+        return $this->hasOne(Patient::class, 'PersoonId', 'Id');
     }
 
     public function gebruikers()
     {
-        return $this->hasMany(GebruikerModel::class, 'PersoonId','Id');
+        return $this->hasMany(GebruikerModel::class, 'PersoonId', 'Id');
     }
 
     public function facturen()
     {
-        return $this->hasMany(Factuur::class, 'persoonId', 'Id');
+        return $this->hasMany(Factuur::class, 'persoon_id', 'Id'); // Ensure correct foreign key reference
     }
 }

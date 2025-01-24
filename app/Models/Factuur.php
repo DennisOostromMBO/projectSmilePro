@@ -11,18 +11,18 @@ class Factuur extends Model
     protected $table = 'factuur';
 
     protected $fillable = [
-        'PersoonId',
+        'persoon_id',
         'beschrijving',
         'vervaldatum',
         'btw',
         'totaal_bedrag',
-        'betaald', 
+        'betaald',
         'created_at',
         'updated_at',
     ];
 
     public function persoon()
     {
-        return $this->belongsTo(Persoon::class, 'persoon_id', 'id');
+        return $this->belongsTo(Persoon::class, 'persoon_id', 'Id'); // Ensure correct foreign key reference
     }
 }

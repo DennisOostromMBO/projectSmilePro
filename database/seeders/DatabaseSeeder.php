@@ -11,6 +11,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use Database\Factories\UserFactory;
 use App\Models\Patient;
+use App\Models\Factuur;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +20,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create Persoon records first
+        Persoon::factory(30)->create();
+
         $this->call([
             persoonSeeder::class,
             RolSeeder::class, // Zorg ervoor dat de RolSeeder eerst wordt aangeroepen
@@ -28,8 +32,11 @@ class DatabaseSeeder extends Seeder
             EmailSeeder::class,
             FactuurSeeder::class,
             BeschikbaarheidSeeder::class,
-            
+
         ]);
+
+        // Create Factuur records
+        Factuur::factory(30)->create();
 
         // Maak een testgebruiker aan
         User::factory()->create([
