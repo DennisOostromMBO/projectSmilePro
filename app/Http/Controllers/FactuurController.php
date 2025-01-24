@@ -1,72 +1,103 @@
 <?php
-
+// app/Http/Controllers/FactuurController.php
 namespace App\Http\Controllers;
 
 use App\Models\Factuur;
+use App\Models\Persoon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FactuurController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $factuur = Factuur::all();
-        $message = $factuur->isEmpty() ? 'Momenteel geen factuur beschikbaar.' : null;
-        return view('factuur.index', compact('factuur'))->with('message', $message);
+        $search = $request->input('search');
+        $facturen = Factuur::with('persoon')
+            ->whereHas('persoon', function($query) use ($search) {
+                if ($search) {
+                    $query->where('VolledigeNaam', 'like', "%{$search}%");
+                }
+            })
+            ->paginate(5); // Change this line to paginate results
+
+        return view('factuur.index', compact('facturen'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $personen = Persoon::all();
+        return view('factuur.create', compact('personen'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'persoon_id' => 'required|exists:persoon,id',
+            'beschrijving' => 'required',
+            'vervaldatum' => 'required|date',
+            'totaal_bedrag' => 'required|numeric',
+            'betaald' => 'required|boolean',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
         try {
-            $factuur = Factuur::findOrFail($id);
-            return view('factuur.details', compact('factuur'));
+            $data = $request->all();
+            $data['btw'] = $data['totaal_bedrag'] * 0.21; // Bereken de BTW als 21% van het totaalbedrag
+
+            Log::info('Creating Factuur', $data);
+
+            Factuur::create($data);
+
+            return redirect()->route('factuur.index')->with('success', 'Factuur created successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('factuur.index')->with('error', 'Factuur not found.');
+            Log::error('Error creating Factuur', ['error' => $e->getMessage()]);
+
+            return redirect()->back()->with('error', 'There was an error creating the Factuur: ' . $e->getMessage());
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Factuur $factuur)
+    public function edit($id)
     {
-        //
+        $factuur = Factuur::findOrFail($id);
+        $personen = Persoon::all();
+
+        return view('factuur.edit', compact('factuur', 'personen'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Factuur $factuur)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'persoon_id' => 'required|exists:persoon,id',
+            'beschrijving' => 'required|string|max:255',
+            'vervaldatum' => 'required|date',
+            'totaal_bedrag' => 'required|numeric',
+            'betaald' => 'required|boolean',
+        ]);
+
+        try {
+            $data = $request->all();
+            $data['btw'] = $data['totaal_bedrag'] * 0.21; // Bereken de BTW als 21% van het totaalbedrag
+
+            Log::info('Updating Factuur', $data);
+
+            $factuur = Factuur::findOrFail($id);
+            $factuur->update($data);
+
+            return redirect()->route('factuur.index')->with('success', 'Factuur updated successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error updating Factuur', ['error' => $e->getMessage()]);
+
+            return redirect()->back()->with('error', 'There was an error updating the Factuur: ' . $e->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Factuur $factuur)
+    public function destroy($id)
     {
-        //
+        Log::info('Deleting Factuur', ['id' => $id]);
+
+        $factuur = Factuur::findOrFail($id);
+        $factuur->delete();
+
+        return redirect()->route('factuur.index')->with('success', 'Factuur deleted successfully.');
     }
 }

@@ -6,28 +6,23 @@ use App\Models\Contact;
 use App\Models\Medewerker;
 use App\Models\Persoon;
 use Illuminate\Http\Request;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PraktijkmanagerController extends Controller
 {
-    //
-
-    public function index()
-    {
-        return view("praktijkmanager.index");
-    }
-
     public function medewerkers()
     {
-        // Haal alle medewerkers op, inclusief gekoppelde persoon-data
-        $medewerkers = Medewerker::with('persoon')->get();
+        $medewerkers = Medewerker::with('persoon')->paginate(15);
 
-        return view(
-            "praktijkmanager.medewerkers",
-            [
-                "medewerkers" => $medewerkers
-            ]
-        );
+        if ($medewerkers->isEmpty()) {
+            return redirect()->route('praktijkmanager.medewerkers');
+        }
+
+        return view('praktijkmanager.medewerkers', [
+            'medewerkers' => $medewerkers
+        ]);
     }
 
     public function edit($id)
@@ -86,16 +81,18 @@ class PraktijkmanagerController extends Controller
             "beschikbaarheid.max" => "Beschikbaarheid mag maximaal 255 karakters bevatten",
         ]);
 
+        // dd($validated);
+
         try {
             $medewerker = Medewerker::findOrFail($id);
             $persoon = $medewerker->persoon;
 
             // Update de Persoon tabel
             $persoon->update([
-                'voornaam' => $validated['voornaam'],
-                'tussenvoegsel' => $validated['tussenvoegsel'],
-                'achternaam' => $validated['achternaam'],
-                'geboortedatum' => $validated['geboortedatum'],
+                'Voornaam' => $validated['voornaam'],
+                'Tussenvoegsel' => $validated['tussenvoegsel'],
+                'Achternaam' => $validated['achternaam'],
+                'Geboortedatum' => $validated['geboortedatum'],
             ]);
 
             // Update de Medewerker tabel
@@ -165,11 +162,11 @@ class PraktijkmanagerController extends Controller
 
         try {
             // Opslaan in de Persoon tabel
-            $medewerker = Persoon::create([
-                'voornaam' => $validated['voornaam'],
-                'tussenvoegsel' => $validated['tussenvoegsel'],
-                'achternaam' => $validated['achternaam'],
-                'geboortedatum' => $validated['geboortedatum'],
+            $persoon = Persoon::create([
+                'Voornaam' => $validated['voornaam'],
+                'Tussenvoegsel' => $validated['tussenvoegsel'],
+                'Achternaam' => $validated['achternaam'],
+                'Geboortedatum' => $validated['geboortedatum'],
             ]);
 
             // Haal het laatste patiëntnummer op en genereer het volgende nummer
@@ -179,7 +176,7 @@ class PraktijkmanagerController extends Controller
 
             // Opslaan in de Patient tabel
             $medewerker = Medewerker::create([
-                'PersoonId' => $medewerker->id,
+                'PersoonId' => $persoon->Id,
                 'Nummer' => $validated['nummer'],
                 'Medewerkertype' => $validated['medewerkertype'],
                 'Specialisatie' => $validated['specialisatie'],
@@ -189,6 +186,63 @@ class PraktijkmanagerController extends Controller
             return redirect()->route('praktijkmanager.medewerkers')->with('success', 'Medewerker succesvol aangemaakt.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Er is een fout opgetreden bij het aanmaken van de medewerker: ' . $e->getMessage());
+        }
+    }
+
+    //     public function destroy($id)
+    //     {
+    //         try {
+    //             $medewerker = Medewerker::findOrFail($id);
+
+    //             if (!$medewerker) {
+    //                 Log::warning('Medewerker niet gevonden.', ['id' => $id]);
+    //                 return redirect()->back()->with('error', 'Medewerker niet gevonden.');
+    //             }
+
+    //             DB::statement('CALL spDeleteMedewerker(?)', [$id]);
+    //             Log::info('Medewerker succesvol verwijderd.', ['id' => $id]);
+
+    //             return redirect()->route('praktijkmanager.medewerkers')->with('success', 'Medewerker succesvol verwijderd.');
+    //         } catch (\Exception $e) {
+    //             Log::error('Fout bij het verwijderen van medewerker:', [
+    //                 'id' => $id,
+    //                 'error' => $e->getMessage(),
+    //                 'trace' => $e->getTraceAsString()
+    //             ]);
+    //             return redirect()->back()->with('error', 'Er is een fout opgetreden bij het verwijderen van de medewerker.');
+    //         }
+    //     }
+
+    public function destroy($id)
+    {
+        try {
+            $medewerker = Medewerker::findOrFail($id);
+
+            if (!$medewerker) {
+                Log::warning('Medewerker niet gevonden.', ['id' => $id]);
+                return redirect()->back()->with('error', 'Medewerker niet gevonden.');
+            }
+
+            $persoonId = $medewerker->PersoonId;
+
+            $medewerker->delete();
+
+            if ($persoonId) {
+                $persoon = Persoon::findOrFail($persoonId);
+                if ($persoon)
+                    $persoon->delete();
+            }
+
+            Log::info('Medewerker succesvol verwijderd.', ['id' => $id]);
+
+            return redirect()->route('praktijkmanager.medewerkers')->with('success', 'Medewerker succesvol verwijderd.');
+        } catch (\Exception $e) {
+            Log::error('Fout bij het verwijderen van medewerker:', [
+                'id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->with('error', 'Er is een fout opgetreden bij het verwijderen van de medewerker.');
         }
     }
 }

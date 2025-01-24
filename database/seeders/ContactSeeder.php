@@ -25,16 +25,18 @@ class ContactSeeder extends Seeder
             'Email' => 'persoon1@example.com',
         ]);
 
-        Contact::create([
-            'PatientId' => 2,
-            'Straatnaam' => 'Kerkstraat',
-            'Huisnummer' => '456',
-            'Toevoeging' => null,
-            'Postcode' => '5678CD',
-            'Plaats' => 'Rotterdam',
-            'Mobiel' => '0687654321',
-            'Email' => 'persoon2@example.com',
-        ]);   
+       // Contact::create([
+           // 'PatientId' => 2,
+           // 'Straatnaam' => 'Kerkstraat',
+           // 'Huisnummer' => '456',
+           // 'Toevoeging' => null,
+           // 'Postcode' => '5678CD',
+          //  'Plaats' => 'Rotterdam',
+          //  'Mobiel' => '0687654321',
+          //  'Email' => 'persoon2@example.com',
+       // ]);  
+        
+        
     }
 }
 

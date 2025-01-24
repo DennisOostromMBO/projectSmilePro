@@ -12,19 +12,24 @@ class Medewerker extends Model
 
     protected $table = 'medewerkers';
 
+    protected $primaryKey = 'Id';
+
     protected $fillable = [
         "PersoonId",
-        "Nummer",
-        "Medewerkertype",
-        "Specialisatie",
-        "Beschikbaarheid",
+        'Nummer',
+        'Medewerkertype',
+        'Specialisatie',
+        'Beschikbaarheid',
     ];
 
     public $timestamps = false;
 
+    // const CREATED_AT = 'CreatedAt';
+    // const UPDATED_AT = 'UpdatedAt';
+
     public function persoon()
     {
-        return $this->belongsTo(Persoon::class, 'PersoonId', 'id');
+        return $this->belongsTo(Persoon::class, 'PersoonId', 'Id');
     }
 
     public function beschikbaarheden()

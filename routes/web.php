@@ -27,6 +27,9 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('register', [RegisteredUserController::class, 'store']);
 
+// Account Overzicht routes
+Route::get('accountoverzicht', [AccountOverzichtController::class, 'index'])->name('accountoverzicht.index');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -46,20 +49,20 @@ Route::post('/patient', [PatientController::class, 'store'])->name('patient.stor
 Route::delete('/patient/{id}', [PatientController::class, 'destroy'])->name('patient.destroy');
 
 
-Route::get('/accountoverzicht', [AccountOverzichtController::class, 'index'])->name('accountoverzicht.index');
-
-
-Route::resource('factuur', FactuurController::class);
 Route::get('/factuurs', [FactuurController::class, 'index'])->name('factuur.index');
-Route::get('/factuurs/{id}', [FactuurController::class, 'show'])->name('factuur.show');
+Route::get('/factuurs/create', [FactuurController::class, 'create'])->name('factuur.create');
+Route::post('/factuurs', [FactuurController::class, 'store'])->name('factuur.store');
+Route::get('/factuurs/{id}/edit', [FactuurController::class, 'edit'])->name('factuur.edit');
+Route::put('/factuurs/{id}', [FactuurController::class, 'update'])->name('factuur.update');
+Route::delete('/factuurs/{id}', [FactuurController::class, 'destroy'])->name('factuur.destroy');
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
-//  route('medewerkers.edit', $medewerker->Id)
 Route::get('/praktijkmanager/edit/{id}', [PraktijkmanagerController::class, 'edit'])->name('medewerkers.edit');
 Route::put('/praktijkmanager/update/{id}', [PraktijkmanagerController::class, 'update'])->name('medewerkers.update');
 Route::get('/praktijkmanager/create', [PraktijkmanagerController::class, 'create'])->name('medewerkers.create');
 Route::post('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'store'])->name('medewerkers.store');
+Route::delete('/praktijkmanager/medewerkers/{id}', [PraktijkmanagerController::class, 'destroy'])->name('medewerkers.destroy');
 
 Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Communicatie.index');
 

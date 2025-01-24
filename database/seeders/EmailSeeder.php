@@ -16,4 +16,4 @@ class EmailSeeder extends Seeder
         // Genereer 10 test-e-mails
         Email::factory()->count(10)->create();
     }
-}
+}    

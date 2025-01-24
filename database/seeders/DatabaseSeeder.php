@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             persoonSeeder::class,
             RolSeeder::class, // Zorg ervoor dat de RolSeeder eerst wordt aangeroepen
             MedewerkerSeeder::class,
-            PatientsSeeder::class,
+            PatientSeeder::class,
             ContactSeeder::class,
             EmailSeeder::class,
             FactuurSeeder::class,

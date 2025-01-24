@@ -12,34 +12,38 @@ class Persoon extends Model
 
     protected $table = 'persoon';
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'Id';
 
     protected $fillable = [
-        'voornaam',
-        'tussenvoegsel',
-        'achternaam',
-        'geboortedatum',
-        'is_active',
-        'comments',
+        'Voornaam',
+        'Tussenvoegsel',
+        'Achternaam',
+        'VolledigeNaam',
+        'Geboortedatum',
     ];
 
-    protected $appends = ['VolledigeNaam'];
+    //protected $appends = ['VolledigeNaam'];
 
     public $timestamps = false;
 
-    public function getVolledigeNaamAttribute()
+    public function getFnameAttribute()
     {
-        return trim("{$this->voornaam} {$this->tussenvoegsel} {$this->achternaam}");
+        return trim("{$this->Voornaam} {$this->Tussenvoegsel} {$this->Achternaam}");
     }
 
-    public function patients()
+    public function patient()
     {
-        return $this->hasMany(Patient::class, 'persoon_id', 'id');
+        return $this->hasOne(Patient::class, 'PersoonId', 'Id');
     }
 
-    public function medewerker()
+    public function gebruikers()
     {
-        return $this->belongsTo(Medewerker::class, 'PersoonId', 'Id');
+        return $this->hasMany(GebruikerModel::class, 'PersoonId', 'Id');
+    }
+
+    public function facturen()
+    {
+        return $this->hasMany(Factuur::class, 'persoonId', 'Id');
     }
 
     public function getAge()

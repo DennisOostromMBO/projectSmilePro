@@ -65,12 +65,24 @@
                             <td class="px-4 py-2 border-b">
                                 <a href="{{ route('medewerkers.edit', $medewerker->Id) }}"
                                     class="px-2 py-1 text-white bg-blue-500 rounded hover:bg-blue-600">Bewerken</a>
+
+                                <form action="{{ route('medewerkers.destroy', $medewerker->Id) }}" method="POST"
+                                    class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="px-2 py-1 text-white bg-red-500 rounded hover:bg-red-600">Verwijderen</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         @endif
+
+        <div class="mt-6">
+            {{ $medewerkers->links() }}
+        </div>
     </div>
 </body>
 
