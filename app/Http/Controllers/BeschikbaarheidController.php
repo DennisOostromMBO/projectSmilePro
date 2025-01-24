@@ -107,14 +107,6 @@ class BeschikbaarheidController extends Controller
             return response()->json([
                 'error' => 'Beschikbaarheid niet gevonden'
             ], 404);
-            } else {
-                Beschikbaarheid::destroy($beschikbaarheid->Id);
-                
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Beschikbaarheid succesvol verwijderd door medewerker'
-                ]);
-
             }
 
             if (strtotime($beschikbaarheid->DatumVanaf) < strtotime(date('Y-m-d'))) {
@@ -228,4 +220,28 @@ class BeschikbaarheidController extends Controller
     }
 
    
+    public function store(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'MedewerkerId' => 'required|integer',
+                'DatumVanaf' => 'required|date',
+                'DatumTotMet' => 'required|date',
+                'TijdVanaf' => 'required|date_format:H:i',
+                'TijdTotMet' => 'required|date_format:H:i',
+                'Status' => 'required|string',
+                'Opmerking' => 'nullable|string'
+            ]);
+
+            $beschikbaarheid = Beschikbaarheid::create($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Beschikbaarheid succesvol opgeslagen.',
+                'data' => $beschikbaarheid
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to store beschikbaarheid', 'message' => $e->getMessage()], 500);
+        }
+    }
 }
