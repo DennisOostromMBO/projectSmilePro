@@ -33,11 +33,10 @@ class FactuurController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'persoon_id' => 'required|exists:persoon,id',
+            'persoon_id' => 'required|exists:persoon,Id',
             'beschrijving' => 'required',
             'vervaldatum' => 'required|date',
             'totaal_bedrag' => 'required|numeric',
-            'betaald' => 'required|boolean',
         ]);
 
         try {
@@ -67,11 +66,10 @@ class FactuurController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'persoon_id' => 'required|exists:persoon,id',
+            'persoon_id' => 'required|exists:persoon,Id',
             'beschrijving' => 'required|string|max:255',
             'vervaldatum' => 'required|date',
             'totaal_bedrag' => 'required|numeric',
-            'betaald' => 'required|boolean',
         ]);
 
         try {

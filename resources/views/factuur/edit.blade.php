@@ -19,13 +19,8 @@
             @method('PUT')
             <div class="mb-4">
                 <label for="persoon_id" class="block text-gray-700">Persoon</label>
-                <select name="persoon_id" id="persoon_id" class="w-full border-gray-300 rounded mt-1" required>
-                    @foreach($personen as $persoon)
-                        <option value="{{ $persoon->id }}" {{ $factuur->persoon_id == $persoon->id ? 'selected' : '' }}>
-                            {{ $persoon->VolledigeNaam }}
-                        </option>
-                    @endforeach
-                </select>
+                <input type="text" id="persoon_id" class="w-full border-gray-300 rounded mt-1" value="{{ $factuur->persoon->VolledigeNaam }}" readonly>
+                <input type="hidden" name="persoon_id" value="{{ $factuur->persoon_id }}">
             </div>
             <div class="mb-4">
                 <label for="beschrijving" class="block text-gray-700">Beschrijving</label>
