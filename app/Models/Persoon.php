@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,5 +44,10 @@ class Persoon extends Model
     public function facturen()
     {
         return $this->hasMany(Factuur::class, 'persoon_id', 'Id'); // Ensure correct foreign key reference
+    }
+
+    public function getAge()
+    {
+        return Carbon::parse($this->Geboortedatum)->age;
     }
 }

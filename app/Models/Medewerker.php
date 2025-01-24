@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,15 +12,20 @@ class Medewerker extends Model
 
     protected $table = 'medewerkers';
 
+    protected $primaryKey = 'Id';
+
     protected $fillable = [
         "PersoonId",
-        "Nummer",
-        "Medewerkertype",
-        "Specialisatie",
-        "Beschikbaarheid",
+        'Nummer',
+        'Medewerkertype',
+        'Specialisatie',
+        'Beschikbaarheid',
     ];
 
     public $timestamps = false;
+
+    // const CREATED_AT = 'CreatedAt';
+    // const UPDATED_AT = 'UpdatedAt';
 
     public function persoon()
     {

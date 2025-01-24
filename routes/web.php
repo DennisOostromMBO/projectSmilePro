@@ -62,6 +62,11 @@ Route::delete('/factuurs/{id}', [FactuurController::class, 'destroy'])->name('fa
 
 // Middleware Praktijkmanager
 Route::get('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'medewerkers'])->name('praktijkmanager.medewerkers');
+Route::get('/praktijkmanager/edit/{id}', [PraktijkmanagerController::class, 'edit'])->name('medewerkers.edit');
+Route::put('/praktijkmanager/update/{id}', [PraktijkmanagerController::class, 'update'])->name('medewerkers.update');
+Route::get('/praktijkmanager/create', [PraktijkmanagerController::class, 'create'])->name('medewerkers.create');
+Route::post('/praktijkmanager/medewerkers', [PraktijkmanagerController::class, 'store'])->name('medewerkers.store');
+Route::delete('/praktijkmanager/medewerkers/{id}', [PraktijkmanagerController::class, 'destroy'])->name('medewerkers.destroy');
 
 Route::get('/Communicatie', [CommunicatieController::class, 'index'])->name('Communicatie.index');
 
@@ -85,7 +90,3 @@ Route::delete('/afspraken/{id}/annuleren', [AfsprakenController::class, 'annuler
 Route::get('/aboutus', [AboutUsController::class, 'index'])->name('aboutus.index');
 
 require __DIR__ . '/auth.php';
-
-
-
-

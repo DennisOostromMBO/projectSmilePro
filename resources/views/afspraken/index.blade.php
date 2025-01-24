@@ -15,7 +15,8 @@
 
         <!-- Navigatie links naar andere pagina's -->
         <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
-        <a href="{{ route('afspraken.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
+        <a href="{{ route('afspraken.create') }}"
+            class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
             Nieuwe Afspraak Aanmaken
         </a>
 
@@ -44,7 +45,8 @@
                 <select name="medewerker" id="medewerker" class="px-4 py-2 border rounded">
                     <option value="">Alle medewerkers</option>
                     @foreach ($medewerkers as $medewerker)
-                        <option value="{{ $medewerker }}" @if(request('medewerker') == $medewerker) selected @endif>{{ $medewerker }}</option>
+                        <option value="{{ $medewerker }}" @if (request('medewerker') == $medewerker) selected @endif>
+                            {{ $medewerker }}</option>
                     @endforeach
                 </select>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Filter</button>
@@ -54,7 +56,8 @@
         <!-- Bericht wanneer er geen afspraken zijn -->
         @if ($toekomstigeAfspraken->isEmpty() && $afgelopenAfspraken->isEmpty())
             <div class="bg-yellow-100 text-yellow-800 p-4 rounded mb-4">
-                Er zijn geen afspraken beschikbaar. <a href="{{ route('afspraken.create') }}" class="text-blue-500 underline">Maak een nieuwe afspraak</a>.
+                Er zijn geen afspraken beschikbaar. <a href="{{ route('afspraken.create') }}"
+                    class="text-blue-500 underline">Maak een nieuwe afspraak</a>.
             </div>
         @endif
 
@@ -73,35 +76,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                   <!-- Afspraken tabel -->
-                @foreach ($toekomstigeAfspraken as $afspraak)
-                <tr class="border-b">
-                    <td class="px-4 py-2">{{ $afspraak->patient_naam }}</td>
-                    <td class="px-4 py-2">{{ $afspraak->medewerker_naam }}</td>
-                    <td class="px-4 py-2">{{ $afspraak->datum }}</td>
-                    <td class="px-4 py-2">{{ \Carbon\Carbon::parse($afspraak->tijd)->format('H:i') }}</td>
-                    <td class="px-4 py-2">{{ $afspraak->type_afspraak ?? '-' }}</td>
-                    <td class="px-4 py-2">
-                        <!-- Acties -->
-                        @if (\Carbon\Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd)->addMinutes(30)->isBefore(now()))
-                            <!-- Als de afspraak afgelopen is, toon 'Afgelopen' -->
-                            <span class="text-gray-500">Afgelopen</span>
-                        @else
-                            <!-- Anders toon bewerken en annuleren -->
-                            <a href="{{ route('afspraken.edit', $afspraak->id) }}" class="text-blue-500 underline">Wijzigen</a>
-                            <form action="{{ route('afspraken.annuleren', $afspraak->id) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <input type="hidden" name="confirm_cancelation" id="confirm_cancelation_{{ $afspraak->id }}" value="no">
-                                <button type="submit" class="text-red-500 underline ml-2" 
-                                    onclick="return confirmCancellation('{{ \Carbon\Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd)->toIso8601String() }}', {{ $afspraak->id }})">
-                                    Annuleren
-                                </button>
-                            </form>
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
+                    <!-- Afspraken tabel -->
+                    @foreach ($toekomstigeAfspraken as $afspraak)
+                        <tr class="border-b">
+                            <td class="px-4 py-2">{{ $afspraak->patient_naam }}</td>
+                            <td class="px-4 py-2">{{ $afspraak->medewerker_naam }}</td>
+                            <td class="px-4 py-2">{{ $afspraak->datum }}</td>
+                            <td class="px-4 py-2">{{ \Carbon\Carbon::parse($afspraak->tijd)->format('H:i') }}</td>
+                            <td class="px-4 py-2">{{ $afspraak->type_afspraak ?? '-' }}</td>
+                            <td class="px-4 py-2">
+                                <!-- Acties -->
+                                @if (\Carbon\Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd)->addMinutes(30)->isBefore(now()))
+                                    <!-- Als de afspraak afgelopen is, toon 'Afgelopen' -->
+                                    <span class="text-gray-500">Afgelopen</span>
+                                @else
+                                    <!-- Anders toon bewerken en annuleren -->
+                                    <a href="{{ route('afspraken.edit', $afspraak->id) }}"
+                                        class="text-blue-500 underline">Wijzigen</a>
+                                    <form action="{{ route('afspraken.annuleren', $afspraak->id) }}" method="POST"
+                                        class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="confirm_cancelation"
+                                            id="confirm_cancelation_{{ $afspraak->id }}" value="no">
+                                        <button type="submit" class="text-red-500 underline ml-2"
+                                            onclick="return confirmCancellation('{{ \Carbon\Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd)->toIso8601String() }}', {{ $afspraak->id }})">
+                                            Annuleren
+                                        </button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         @endif
@@ -142,7 +148,9 @@
 
             if (timeDifference < 30) {
                 // Als de afspraak binnen 30 minuten is, vraag de gebruiker om de annulering te bevestigen met extra kosten
-                var result = confirm('Je probeert de afspraak te annuleren binnen 30 minuten van de geplande tijd. Dit zal €39,50 kosten. Weet je het zeker?');
+                var result = confirm(
+                    'Je probeert de afspraak te annuleren binnen 30 minuten van de geplande tijd. Dit zal €39,50 kosten. Weet je het zeker?'
+                    );
                 if (result) {
                     // Voeg een extra verborgen veld toe om aan te geven dat de gebruiker akkoord gaat
                     document.getElementById('confirm_cancelation_' + afspraakId).value = 'yes';

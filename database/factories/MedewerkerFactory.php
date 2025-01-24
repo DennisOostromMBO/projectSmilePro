@@ -18,12 +18,49 @@ class MedewerkerFactory extends Factory
      */
     public function definition(): array
     {
+        static $usedPersoonIds = [];
+
+        $persoonId = Persoon::query()
+            ->whereNotIn('id', $usedPersoonIds)
+            ->inRandomOrder()
+            ->value('id');
+
+        if ($persoonId !== null) {
+            $usedPersoonIds[] = $persoonId;
+        }
+
         return [
-            "PersoonId" => Persoon::query()->inRandomOrder()->value('id'),
-            "Nummer" => $this->faker->word(),
-            "Medewerkertype" => $this->faker->word(),
-            "Specialisatie" => $this->faker->word(),
-            "Beschikbaarheid" => $this->faker->word()
+            "PersoonId" => $persoonId,
+            "Nummer" => $this->faker->phoneNumber(),
+            "Medewerkertype" => $this->faker->randomElement([
+                'Assistent',
+                'Mondhygiënist',
+                'Tandarts',
+                'Praktijkmanagement',
+            ]),
+            // "Specialisatie" => $this->faker->word(),
+            "Specialisatie" => $this->faker->randomElement([
+                'Algemene Tandarts',
+                'Endodontist',
+                'Orthodontist',
+                'Paro Specialist',
+                'Tandarts-specialist in Kaakchirurgie',
+                'Implantoloog',
+                'Jeugd Tandarts',
+                'Tandarts anesthesioloog',
+                'Prothesist',
+                'Mondhygiënist',
+                'Tandartsassistent',
+                'Tandartspraktijkmanager',
+                'Preventie Specialist',
+            ]),
+
+            "Beschikbaarheid" => $this->faker->randomElement([
+                'Full-time',
+                'Part-time',
+                'Freelance',
+                'On-call',
+            ]),
         ];
     }
 }
