@@ -93,27 +93,83 @@ class BeschikbaarheidController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'Id' => 'required|integer',
+            'MedewerkerId' => 'required|integer',
+            'DatumVanaf' => 'required|date',
             ]);
 
-            if (Beschikbaarheid::destroy($validatedData['Id'])) {
-                \Log::info('Beschikbaarheid verwijderd', ['Id' => $validatedData['Id']]);
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Beschikbaarheid succesvol verwijderd'
-                ]);
+            $beschikbaarheid = Beschikbaarheid::where('MedewerkerId', $validatedData['MedewerkerId'])
+            ->where('DatumVanaf', $validatedData['DatumVanaf'])
+            ->first(); // Find the beschikbaarheid
+
+            if (!$beschikbaarheid) {
+            return response()->json([
+                'error' => 'Beschikbaarheid niet gevonden'
+            ], 404);
+            }
+
+            if (strtotime($beschikbaarheid->DatumVanaf) < strtotime(date('Y-m-d'))) {
+            return response()->json([
+                'error' => 'Beschikbaarheid in het verleden kan niet worden verwijderd'
+            ], 400);
+            } // Check if the beschikbaarheid is in the past
+
+            if ($beschikbaarheid->delete()) {
+            \Log::info('Beschikbaarheid verwijderd', ['MedewerkerId' => $validatedData['MedewerkerId'], 'DatumVanaf' => $validatedData['DatumVanaf']]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Beschikbaarheid succesvol verwijderd'
+            ]);
             } else {
-                return response()->json([
-                    'error' => 'Failed to delete beschikbaarheid'
-                ], 500);
+            return response()->json([
+                'error' => 'Failed to delete beschikbaarheid'
+            ], 500);
             }
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to delete beschikbaarheid',
-                'message' => $e->getMessage()
+            'error' => 'Failed to delete beschikbaarheid',
+            'message' => $e->getMessage()
             ], 500);
         }
     }
+
+    // public function deleteBeschikbaarheid(Request $request)
+    // {
+    //     try {
+    //         $validatedData = $request->validate([
+    //             'Id' => 'required|integer',
+    //         ]);
+
+    //         $beschikbaarheid = Beschikbaarheid::find($validatedData['Id']); // Find the beschikbaarheid by Id
+
+    //         if (!$beschikbaarheid) {
+    //             return response()->json([
+    //                 'error' => 'Beschikbaarheid niet gevonden'
+    //             ], 404);
+    //         }
+
+    //         if (strtotime($beschikbaarheid->DatumVanaf) < strtotime(date('Y-m-d'))) {
+    //             return response()->json([
+    //                 'error' => 'Beschikbaarheid in het verleden kan niet worden verwijderd'
+    //             ], 400);
+    //         } // Check if the beschikbaarheid is in the past
+
+    //         if ($beschikbaarheid->delete()) {
+    //             return response()->json([
+    //                 'success' => true,
+    //                 'message' => 'Beschikbaarheid succesvol verwijderd'
+    //             ]);
+    //         } else {
+    //             return response()->json([
+    //                 'error' => 'Failed to delete beschikbaarheid'
+    //             ], 500);
+    //         }
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'error' => 'Failed to delete beschikbaarheid',
+    //             'message' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
 
     public function makeBeschikbaarheid(Request $request)
     {

@@ -272,7 +272,7 @@
                 Opslaan
             </button>
             <button 
-                @click="deleteEvent(event.Id)" 
+                @click="deleteEvent()" 
                 class="text-white bg-red-500 px-2 py-1 rounded hover:bg-red-700 transition"
             >
                 Delete
@@ -353,7 +353,6 @@
             selectedEditDate: '',
             editMedewerkerId: '',
             openCreateModal: false,
-            nubberId: '',
 
             validateTimeFrom() {
                 const match = this.editTimeFrom.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
@@ -490,21 +489,40 @@
                  });
              },
 
-            deleteEvent(eventId) {
-                if (!confirm('Weet je zeker dat je deze beschikbaarheid wilt verwijderen?')) {
+            deleteEvent() {
+                if (!this.selectedEditDate) {
+                    alert('Please select a date to delete.');
                     return;
                 }
+
+                const eventIndex = this.events.findIndex(e => e.DatumVanaf === this.selectedEditDate);
+
+                if (eventIndex === -1) {
+                    alert('No event found for the selected date.');
+                    return;
+                }
+
+                if (!confirm('Are you sure you want to delete this event?')) {
+                    return;
+                }
+
+                const eventData = {
+                    MedewerkerId: this.editMedewerkerId, 
+                    DatumVanaf: this.selectedEditDate,   
+                };
 
                 axios.delete('/delete-beschikbaarheid', {
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
-                    data: { Id: eventId }
+                    data: eventData // Pass the data in the `data` field for DELETE requests
                 })
                 .then(response => {
                     if (response.data.success) {
-                        this.events = this.events.filter(event => event.Id !== eventId);
+                        // Remove the event from the local list
+                        this.events.splice(eventIndex, 1);
                         this.closeEditModal();
+
                         alert('Beschikbaarheid succesvol verwijderd.');
                     } else {
                         alert('Failed to delete event.');
