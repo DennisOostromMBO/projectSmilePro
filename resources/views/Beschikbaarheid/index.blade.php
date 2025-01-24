@@ -272,7 +272,7 @@
                 Opslaan
             </button>
             <button 
-                @click="deleteEvent()" 
+                @click="deleteEvent(event.Id)" 
                 class="text-white bg-red-500 px-2 py-1 rounded hover:bg-red-700 transition"
             >
                 Delete
@@ -301,40 +301,6 @@
                 TijdVanaf: '',
                 TijdTotMet: '',
                 Status: ''
-            },
-            createBeschikbaarheid() {
-                const datumVanaf = new Date(this.newBeschikbaarheid.DatumVanaf);
-                const datumTotMet = new Date(this.newBeschikbaarheid.DatumTotMet);
-                const dayOfWeekVanaf = datumVanaf.getUTCDay();
-                const dayOfWeekTotMet = datumTotMet.getUTCDay();
-
-                // Check if the selected date is a Saturday (6) or Sunday (0)
-                if (dayOfWeekVanaf === 6 || dayOfWeekVanaf === 0 || dayOfWeekTotMet === 6 || dayOfWeekTotMet === 0) {
-                    alert('Beschikbaarheid kan niet worden ingepland op een zaterdag of zondag.');
-                    return;
-                }
-
-                if (!this.newBeschikbaarheid.MedewerkerId || !this.newBeschikbaarheid.DatumVanaf || !this.newBeschikbaarheid.DatumTotMet || !this.newBeschikbaarheid.TijdVanaf || !this.newBeschikbaarheid.TijdTotMet || !this.newBeschikbaarheid.Status) {
-                    alert('Please fill in all required fields.');
-                    return;
-                }
-
-                axios.post('/create-beschikbaarheid', this.newBeschikbaarheid, {
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                })
-                .then(response => {
-                    if (response.data.success) {
-                        this.events.push(response.data.data);
-                        this.showPopup = false;
-                        alert('Beschikbaarheid succesvol aangemaakt.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error creating beschikbaarheid:', error);
-                    alert('Er is een fout opgetreden bij het aanmaken van de beschikbaarheid.');
-                });
             },
             month: 0,
             year: 0,
@@ -490,17 +456,8 @@
              },
 
             deleteEvent() {
-                if (!this.selectedEditDate) {
-                    alert('Please select a date to delete.');
-                    return;
-                }
 
                 const eventIndex = this.events.findIndex(e => e.DatumVanaf === this.selectedEditDate);
-
-                if (eventIndex === -1) {
-                    alert('No event found for the selected date.');
-                    return;
-                }
 
                 if (!confirm('Are you sure you want to delete this event?')) {
                     return;
@@ -510,14 +467,15 @@
                     MedewerkerId: this.editMedewerkerId, 
                     DatumVanaf: this.selectedEditDate,   
                 };
+                console.log('Deleting event:', eventData);
 
-                axios.delete('/delete-beschikbaarheid', {
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    data: eventData // Pass the data in the `data` field for DELETE requests
-                })
-                .then(response => {
+            axios.delete('/delete-beschikbaarheid', {
+                data: eventData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            }).then(response => {
+                console.log('Response:', response);
                     if (response.data.success) {
                         // Remove the event from the local list
                         this.events.splice(eventIndex, 1);
@@ -530,7 +488,7 @@
                 })
                 .catch(error => {
                     console.error('Error deleting event:', error);
-                    alert('Beschikbaarheid in het verleden kan niet worden verwijderd.');
+                    alert('Beschikbheid in het verleden kan niet worden verwijderd.');
                 });
             },
 
