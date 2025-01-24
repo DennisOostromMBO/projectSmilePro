@@ -42,9 +42,9 @@
                 <table class="min-w-full bg-white border border-gray-200 text-sm">
                     <thead>
                         <tr class="bg-gray-100">
-                            <th class="py-3 px-4 border-b text-left font-semibold">Volledige naam</th>
+                            <th class="py-3 px-4 border-b text-left font-semibold">Naam</th>
                             <th class="py-3 px-4 border-b text-left font-semibold">Leeftijdscategorie</th>
-                            <th class="py-3 px-4 border-b text-left font-semibold">Volledig adres</th>
+                            <th class="py-3 px-4 border-b text-left font-semibold">Adres</th>
                             <th class="py-3 px-4 border-b text-left font-semibold">Mobielnummer</th>
                             <th class="py-3 px-4 border-b text-left font-semibold">Email</th>
                             <th class="py-3 px-4 border-b text-left font-semibold">Nummer</th>
@@ -88,7 +88,7 @@
                 @foreach ($patients as $patient)
                     <div class="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200">
                         <div class="mb-2">
-                            <span class="font-semibold">Volledige naam:</span>
+                            <span class="font-semibold">Naam:</span>
                             <span>{{ $patient->VolledigeNaam }}</span>
                         </div>
                         <div class="mb-2">
@@ -96,7 +96,7 @@
                             <span>{{ $patient->LeeftijdCategorie }}</span>
                         </div>
                         <div class="mb-2">
-                            <span class="font-semibold">Volledig adres:</span>
+                            <span class="font-semibold">Adres:</span>
                             <span>{{ $patient->VolledigAdres }}</span>
                         </div>
                         <div class="mb-2">
