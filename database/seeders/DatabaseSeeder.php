@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             EmailSeeder::class,
             FactuurSeeder::class,
-            BeschikbaarheidSeeder::class,            
+            BeschikbaarheidSeeder::class,
+            
         ]);
 
         // Maak een testgebruiker aan
