@@ -1,191 +1,161 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afsprakenbeheer</title>
+    <title>Afsprakenoverzicht</title>
+    <!-- Link naar TailwindCSS voor styling -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.5/dist/cdn.min.js" defer></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
+
 <body class="bg-gray-100">
-    <nav class="bg-white shadow">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <a class="text-2xl font-bold text-gray-800" href="{{ url('/') }}">Laravel</a>
-                <div class="flex items-center space-x-4">
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ route('patient.index') }}">Patiënten</a>
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ route('AccountOverzicht.index') }}">Account Overzicht</a>
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ route('praktijkmanager.medewerkers') }}">Medewerkers</a>
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ route('Communicatie.index') }}">Communicatie</a>
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ route('factuur.index') }}">Factuur</a>
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ url('/beschikbaarheid') }}">Beschikbaarheid</a>
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ url('/afspraken') }}">Afspraken</a>
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ url('/dashboard') }}">Dashboard</a>
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ route('profile.edit') }}">Profile</a>
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ route('login') }}">Login</a>
-                    <a class="text-gray-600 hover:text-blue-600" href="{{ route('register') }}">Register</a>
-                </div>
+    <div class="container mx-auto mt-8">
+        <h1 class="text-2xl font-bold mb-4">Afsprakenoverzicht</h1>
+
+        <!-- Navigatie links naar andere pagina's -->
+        <a href="{{ url('/') }}" class="text-blue-500 hover:underline mb-4 inline-block">Terug naar Home</a>
+        <a href="{{ route('afspraken.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
+            Nieuwe Afspraak Aanmaken
+        </a>
+
+        <!-- Successbericht weergeven -->
+        @if (session('success'))
+            <div class="bg-green-500 text-white p-4 rounded mb-4">
+                {{ session('success') }}
             </div>
-        </div>
-    </nav>
+        @endif
 
-    <div class="container mx-auto mt-8" x-data="app()">
-        <h1 class="text-2xl font-bold mb-4">Afsprakenbeheer</h1>
-        <div x-init="initDate()" x-cloak>
-            <!-- Kalender -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <span x-text="MONTH_NAMES[month]" class="text-lg font-bold"></span>
-                        <span x-text="year" class="text-lg text-gray-600"></span>
-                    </div>
-                    <div>
-                        <button @click="prevMonth()" :disabled="month == 0" class="text-gray-500 hover:text-blue-600">Vorige</button>
-                        <button @click="nextMonth()" :disabled="month == 11" class="text-gray-500 hover:text-blue-600 ml-4">Volgende</button>
-                    </div>
-                </div>
-
-                <!-- Dagen en datums -->
-                <div class="grid grid-cols-7 gap-4">
-                    <template x-for="day in DAYS">
-                        <div class="text-center font-bold text-gray-600" x-text="day"></div>
-                    </template>
-                    <template x-for="blankday in blankdays">
-                        <div></div>
-                    </template>
-                    <template x-for="date in no_of_days">
-                        <div class="p-2 border rounded hover:bg-gray-100 cursor-pointer" @click="showEventModal(date)">
-                            <span x-text="date" class="block text-center"></span>
-                        </div>
-                    </template>
-                </div>
+        <!-- Foutmeldingen weergeven -->
+        @if ($errors->any())
+            <div class="bg-red-500 text-white p-4 mb-4 rounded">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
-        </div>
+        @endif
 
-        <!-- Modal aangepast om tijdslots te tonen -->
-        <div x-show="openEventModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full" @click.away="closeEventModal()">
-                <h2 class="text-xl font-bold mb-4">Afspraak maken</h2>
-                <p class="text-gray-600 mb-4" x-text="event_date"></p>
-
-                <!-- Dropdown voor tijdslots -->
-                <select class="w-full p-2 border rounded" x-model="selectedTime">
-                    <template x-if="timeSlots.length > 0">
-                        <template x-for="time in timeSlots">
-                            <option :value="time" x-text="time" :disabled="isTimeSlotBooked(time)"></option>
-                        </template>
-                    </template>
-                    <template x-if="timeSlots.length === 0">
-                        <option disabled>No available times</option>
-                    </template>
+        <!-- Filter voor Medewerker -->
+        <div class="mb-4">
+            <form method="GET" action="{{ route('afspraken.index') }}">
+                <label for="medewerker" class="mr-2">Filter op Medewerker:</label>
+                <select name="medewerker" id="medewerker" class="px-4 py-2 border rounded">
+                    <option value="">Alle medewerkers</option>
+                    @foreach ($medewerkers as $medewerker)
+                        <option value="{{ $medewerker }}" @if(request('medewerker') == $medewerker) selected @endif>{{ $medewerker }}</option>
+                    @endforeach
                 </select>
-
-                <div x-show="errorMessage" class="text-red-500 mt-4" x-text="errorMessage"></div>
-                <button @click="saveAppointment()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">Opslaan</button>
-                <button @click="closeEventModal()" class="mt-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 w-full">Sluiten</button>
-            </div>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Filter</button>
+            </form>
         </div>
 
-        <script>
-            const MONTH_NAMES = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
-            const DAYS = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
-        
-            function app() {
-                return {
-                    month: new Date().getMonth(),
-                    year: new Date().getFullYear(),
-                    no_of_days: [],
-                    blankdays: [],
-                    openEventModal: false,
-                    event_date: '',
-                    errorMessage: '',
-                    timeSlots: [],
-                    selectedTime: '',
-                    bookedSlots: [], // Array om de volgeboekte tijdsloten op te slaan
-        
-                    initDate() {
-                        this.getNoOfDays();
-                    },
-        
-                    prevMonth() {
-                        if (this.month > 0) {
-                            this.month--;
-                            this.getNoOfDays();
-                        }
-                    },
-        
-                    nextMonth() {
-                        if (this.month < 11) {
-                            this.month++;
-                            this.getNoOfDays();
-                        }
-                    },
-        
-                    getNoOfDays() {
-                        let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
-                        let dayOfWeek = new Date(this.year, this.month).getDay();
-                        this.blankdays = Array.from({ length: dayOfWeek }, (_, i) => i + 1);
-                        this.no_of_days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-                    },
-        
-                    generateTimeSlots() {
-                        this.timeSlots = [];
-                        let startHour = 8; // Starttijd (08:00)
-                        let endHour = 17; // Eindtijd (17:00)
-                        for (let hour = startHour; hour < endHour; hour++) {
-                            this.timeSlots.push(`${hour}:00`);
-                            this.timeSlots.push(`${hour}:30`);
-                        }
-                    },
-        
-                    isTimeSlotBooked(time) {
-                        return this.bookedSlots.includes(time);
-                    },
+        <!-- Bericht wanneer er geen afspraken zijn -->
+        @if ($toekomstigeAfspraken->isEmpty() && $afgelopenAfspraken->isEmpty())
+            <div class="bg-yellow-100 text-yellow-800 p-4 rounded mb-4">
+                Er zijn geen afspraken beschikbaar. <a href="{{ route('afspraken.create') }}" class="text-blue-500 underline">Maak een nieuwe afspraak</a>.
+            </div>
+        @endif
 
+        <!-- Toekomstige Afspraken -->
+        @if ($toekomstigeAfspraken->isNotEmpty())
+            <h2 class="text-xl font-semibold mb-4">Toekomstige Afspraken</h2>
+            <table class="table-auto w-full bg-white shadow-md rounded mb-6">
+                <thead>
+                    <tr class="bg-gray-200 text-left">
+                        <th class="px-4 py-2">Patiënt Naam</th>
+                        <th class="px-4 py-2">Medewerker Naam</th>
+                        <th class="px-4 py-2">Datum</th>
+                        <th class="px-4 py-2">Tijd</th>
+                        <th class="px-4 py-2">Type Afspraak</th>
+                        <th class="px-4 py-2">Acties</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   <!-- Afspraken tabel -->
+                @foreach ($toekomstigeAfspraken as $afspraak)
+                <tr class="border-b">
+                    <td class="px-4 py-2">{{ $afspraak->patient_naam }}</td>
+                    <td class="px-4 py-2">{{ $afspraak->medewerker_naam }}</td>
+                    <td class="px-4 py-2">{{ $afspraak->datum }}</td>
+                    <td class="px-4 py-2">{{ \Carbon\Carbon::parse($afspraak->tijd)->format('H:i') }}</td>
+                    <td class="px-4 py-2">{{ $afspraak->type_afspraak ?? '-' }}</td>
+                    <td class="px-4 py-2">
+                        <!-- Acties -->
+                        @if (\Carbon\Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd)->addMinutes(30)->isBefore(now()))
+                            <!-- Als de afspraak afgelopen is, toon 'Afgelopen' -->
+                            <span class="text-gray-500">Afgelopen</span>
+                        @else
+                            <!-- Anders toon bewerken en annuleren -->
+                            <a href="{{ route('afspraken.edit', $afspraak->id) }}" class="text-blue-500 underline">Wijzigen</a>
+                            <form action="{{ route('afspraken.annuleren', $afspraak->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="confirm_cancelation" id="confirm_cancelation_{{ $afspraak->id }}" value="no">
+                                <button type="submit" class="text-red-500 underline ml-2" 
+                                    onclick="return confirmCancellation('{{ \Carbon\Carbon::parse($afspraak->datum . ' ' . $afspraak->tijd)->toIso8601String() }}', {{ $afspraak->id }})">
+                                    Annuleren
+                                </button>
+                            </form>
+                        @endif
+                    </td>
+                </tr>
+                @endforeach
+                </tbody>
+            </table>
+        @endif
 
-                    
-        
-                    showEventModal(date) {
-                        this.event_date = `${this.year}-${this.month + 1}-${date}`;
-                        this.generateTimeSlots(); // Genereer tijdsloten voor de gekozen datum
-                        const dayOfWeek = new Date(this.year, this.month, date).getDay();
-                        if (dayOfWeek === 0 || dayOfWeek === 6) { // Weekend (Zondag = 0, Zaterdag = 6)
-                            this.timeSlots = []; // Geen tijdsloten beschikbaar
-                            this.errorMessage = 'Geen afspraken beschikbaar in het weekend.';
-                        } else {
-                            this.errorMessage = ''; // Reset de foutmelding als het geen weekend is
-                        }
-                        this.openEventModal = true;
-                    },
-        
-                    closeEventModal() {
-                        this.openEventModal = false;
-                        this.errorMessage = ''; // Reset de foutmelding bij sluiten van het modal
-                    },
-        
-                    saveAppointment() {
-                        const dayOfWeek = new Date(this.event_date).getDay();
-                        if (dayOfWeek === 0 || dayOfWeek === 6) { // Weekend (Zondag = 0, Zaterdag = 6)
-                            this.errorMessage = 'Geen afspraken beschikbaar in het weekend.'; // Toon specifieke weekendfout
-                            return;
-                        }
-        
-                        if (!this.selectedTime) {
-                            this.errorMessage = 'Selecteer een tijdstip.';
-                            return;
-                        }
-                        if (this.isTimeSlotBooked(this.selectedTime)) {
-                            this.errorMessage = 'Deze tijd is al volgeboekt, kies een ander tijdslot.';
-                            return;
-                        }
-                        this.bookedSlots.push(this.selectedTime); // Tijdslot markeren als volgeboekt
-                        alert(`Afspraak gepland op ${this.event_date} om ${this.selectedTime}`);
-                        this.closeEventModal();
-                    }
-                };
+        <!-- Afgelopen Afspraken -->
+        @if ($afgelopenAfspraken->isNotEmpty())
+            <h2 class="text-xl font-semibold mb-4">Afgelopen Afspraken</h2>
+            <table class="table-auto w-full bg-white shadow-md rounded">
+                <thead>
+                    <tr class="bg-gray-200 text-left">
+                        <th class="px-4 py-2">Patiënt Naam</th>
+                        <th class="px-4 py-2">Medewerker Naam</th>
+                        <th class="px-4 py-2">Datum</th>
+                        <th class="px-4 py-2">Tijd</th>
+                        <th class="px-4 py-2">Type Afspraak</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($afgelopenAfspraken as $afspraak)
+                        <tr class="border-b">
+                            <td class="px-4 py-2">{{ $afspraak->patient_naam }}</td>
+                            <td class="px-4 py-2">{{ $afspraak->medewerker_naam }}</td>
+                            <td class="px-4 py-2">{{ $afspraak->datum }}</td>
+                            <td class="px-4 py-2">{{ \Carbon\Carbon::parse($afspraak->tijd)->format('H:i') }}</td>
+                            <td class="px-4 py-2">{{ $afspraak->type_afspraak ?? '-' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+    </div>
+
+    <script>
+        function confirmCancellation(afspraakTijd, afspraakId) {
+            var currentTime = new Date();
+            var appointmentTime = new Date(afspraakTijd);
+            var timeDifference = (appointmentTime - currentTime) / (1000 * 60); // in minuten
+
+            if (timeDifference < 30) {
+                // Als de afspraak binnen 30 minuten is, vraag de gebruiker om de annulering te bevestigen met extra kosten
+                var result = confirm('Je probeert de afspraak te annuleren binnen 30 minuten van de geplande tijd. Dit zal €39,50 kosten. Weet je het zeker?');
+                if (result) {
+                    // Voeg een extra verborgen veld toe om aan te geven dat de gebruiker akkoord gaat
+                    document.getElementById('confirm_cancelation_' + afspraakId).value = 'yes';
+                    return true; // Formulier wordt ingediend
+                } else {
+                    return false; // Annuleer de actie
+                }
+            } else {
+                // Annuleer zonder kosten
+                return true;
             }
-        </script>
-        
+        }
+    </script>
 </body>
+
 </html>
