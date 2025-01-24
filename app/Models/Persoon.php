@@ -12,7 +12,7 @@ class Persoon extends Model
 
     protected $table = 'persoon';
 
-    protected $primaryKey = 'Id';
+    protected $primaryKey = 'Id'; // Ensure primary key is correctly defined
 
     protected $fillable = [
         'Voornaam',
@@ -43,7 +43,7 @@ class Persoon extends Model
 
     public function facturen()
     {
-        return $this->hasMany(Factuur::class, 'persoonId', 'Id');
+        return $this->hasMany(Factuur::class, 'persoon_id', 'Id'); // Ensure correct foreign key reference
     }
 
     public function getAge()

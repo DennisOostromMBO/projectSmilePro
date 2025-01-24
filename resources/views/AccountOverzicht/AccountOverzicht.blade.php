@@ -7,6 +7,13 @@
     <title>Account Overzicht</title>
     <!-- Voeg Tailwind CSS toe voor styling -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        function confirmDeletion(event) {
+            if (!confirm('Wilt u zeker dit account verwijderen?')) {
+                event.preventDefault();
+            }
+        }
+    </script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-12 rounded-lg shadow-lg w-full max-w-6xl">
@@ -27,47 +34,42 @@
         @if($gebruikers->isEmpty())
             <h3 class="text-red-500 text-lg">Er zijn geen accounts beschikbaar om weer te geven.</h3>
         @else
-            <!-- Tabel om de lijst van gebruikers weer te geven -->
             <div class="overflow-x-auto">
-                <table class="min-w-full bg-white border border-gray-200">
+                <table class="min-w-full bg-white">
                     <thead>
                         <tr>
-                            <th class="py-2 px-4 border-b text-center">Volledige Naam</th>
-                            <th class="py-2 px-4 border-b text-center">E-mail</th>
-                            <th class="py-2 px-4 border-b text-center">Rol</th>
-                            <th class="py-2 px-4 border-b text-center">Is Active</th>
-                            <th class="py-2 px-4 border-b text-center">Is Ingelogd</th>
-                            <th class="py-2 px-4 border-b text-center">Ingelogd</th>
-                            <th class="py-2 px-4 border-b text-center">Uitgelogd</th>
-                            <th class="py-2 px-4 border-b text-center">Comments</th>
+                            <th class="py-2 px-4 border-b text-left">Naam</th>
+                            <th class="py-2 px-4 border-b text-left">E-mail</th>
+                            <th class="py-2 px-4 border-b text-left">Rol</th>
+                            <th class="py-2 px-4 border-b text-left">Status</th>
+                            <th class="py-2 px-4 border-b text-left">Acties</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach($gebruikers as $gebruiker)
-                            <tr>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->VolledigeNaam }}</td>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->email }}</td>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->rol->Naam }}</td>
-                                <td class="py-2 px-4 border-b text-center align-middle"><span
-                                    class="px-2 py-1 rounded-full text-xs {{ $gebruiker->IsActive ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
-                                    {{ $gebruiker->IsActive ? 'Actief' : 'Inactief' }}
-                                </span></td>
-                                <td class="py-2 px-4 border-b text-center align-middle"><span
-                                    class="px-2 py-1 rounded-full text-xs {{ $gebruiker->Isingelogd ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
-                                    {{ $gebruiker->Isingelogd ? 'IsIngelogd' : 'NietIngelogd' }}
-                                </span></td>
-                                <td class="py-2 px-4 border-b text-center align-middle"><span
-                                    class="px-2 py-1 rounded-full text-xs {{ $gebruiker->Ingelogd ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
-                                    {{ $gebruiker->Ingelogd ? 'Ingelogd' : 'NietIngelogd' }}
-                                </span></td>
-                                <td class="py-2 px-4 border-b text-center align-middle"><span
-                                    class="px-2 py-1 rounded-full text-xs {{ $gebruiker->Uitgelogd ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
-                                    {{ $gebruiker->Uitgelogd ? 'Uitgelogd' : 'Ingelogd' }}
-                                </span></td>
-                                <td class="py-2 px-4 border-b text-center align-middle">{{ $gebruiker->comments }}</td>
-                            </tr>   
-                        @endforeach 
-                    </tbody>
+            
+<tbody>
+    @foreach ($gebruikers as $gebruiker)
+        <tr>
+            <td class="py-2 px-4 border-b">{{ $gebruiker->persoon ? $gebruiker->persoon->VolledigeNaam : 'N/A' }}</td>
+            <td class="py-2 px-4 border-b">{{ $gebruiker->email }}</td>
+            <td class="py-2 px-4 border-b">{{ $gebruiker->rol ? $gebruiker->rol->Naam : 'N/A' }}</td>
+            <td class="py-2 px-4 border-b">
+                @if($gebruiker->isOnline())
+                    <span class="text-green-500">Ingelogd</span>
+                @else
+                    <span class="text-red-500">Uitgelogd</span>
+                @endif
+            </td>
+            <td class="py-2 px-4 border-b">
+                <a href="{{ route('accountoverzicht.edit', $gebruiker->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Wijzigen</a>
+                <form action="{{ route('accountoverzicht.destroy', $gebruiker->id) }}" method="POST" style="display:inline;" onsubmit="confirmDeletion(event)">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Verwijderen</button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
                 </table>
             </div>
         @endif

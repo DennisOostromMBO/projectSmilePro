@@ -20,6 +20,7 @@ class Gebruiker extends Model
         'Gebruikersnaam',
         'Wachtwoord',
         'Isingelogd',
+        'rol_id',
         'Ingelogd',
         'Uitgelogd',
         'IsActive',

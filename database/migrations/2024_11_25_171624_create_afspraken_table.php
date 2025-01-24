@@ -4,25 +4,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateAfsprakenTable extends Migration
 {
     public function up()
     {
         Schema::create('afspraken', function (Blueprint $table) {
-            $table->id(); // Primaire sleutel
-            $table->unsignedBigInteger('gebruiker_id'); // Relatie met gebruiker
-            $table->date('datum'); // Datum van de afspraak
-            $table->time('tijd'); // Tijd van de afspraak
-            $table->text('notities')->nullable(); // Eventuele opmerkingen
-            $table->timestamps(); // Aanmaak- en wijzigingsdatum
+            $table->id();
+            $table->unsignedBigInteger('gebruiker_id')->default(0);
+            $table->string('patient_naam', 255);
+            $table->string('medewerker_naam', 250);
+            $table->date('datum');
+            $table->time('tijd');
+            $table->text('type_afspraak')->nullable();
+            $table->timestamps();
         });
     }
-    
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+
+    public function down()
     {
         Schema::dropIfExists('afspraken');
     }
-};
+}

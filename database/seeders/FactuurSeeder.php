@@ -12,6 +12,6 @@ class FactuurSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Factuur::factory()->count(20)->create();
+        \App\Models\Factuur::factory()->count(30)->create();
     }
 }

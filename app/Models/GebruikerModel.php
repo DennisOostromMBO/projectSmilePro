@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class GebruikerModel extends Model
 {
@@ -38,8 +39,8 @@ class GebruikerModel extends Model
         return $this->belongsTo(RolModel::class, 'rol_id', 'id');
     }
 
-    public function getVolledigeNaamAttribute()
+    public function isOnline()
     {
-        return "{$this->voornaam} {$this->tussenvoegsel} {$this->achternaam}";
+        return Cache::has('user-is-online-' . $this->id);
     }
 }

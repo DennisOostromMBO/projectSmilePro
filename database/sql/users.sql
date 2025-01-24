@@ -18,5 +18,5 @@ CREATE TABLE IF NOT EXISTS users (
     comments VARCHAR(255) NULL,
     VolledigeNaam VARCHAR(255) AS (CONCAT(voornaam, ' ', IFNULL(tussenvoegsel, ''), ' ', achternaam)) STORED,
     FOREIGN KEY (persoon_id) REFERENCES persoon(id) ON DELETE CASCADE,
-    FOREIGN KEY (rol_id) REFERENCES rol(id) ON DELETE CASCADE
+    FOREIGN KEY (rol_id) REFERENCES rol(Id) ON DELETE CASCADE
 ) ENGINE=InnoDB;

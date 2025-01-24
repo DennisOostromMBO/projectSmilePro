@@ -29,6 +29,10 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 
 // Account Overzicht routes
 Route::get('accountoverzicht', [AccountOverzichtController::class, 'index'])->name('accountoverzicht.index');
+Route::get('accountoverzicht', [AccountOverzichtController::class, 'index'])->name('accountoverzicht.index');
+Route::get('accountoverzicht/{id}/edit', [AccountOverzichtController::class, 'edit'])->name('accountoverzicht.edit');
+Route::put('accountoverzicht/{id}', [AccountOverzichtController::class, 'update'])->name('accountoverzicht.update');
+Route::delete('accountoverzicht/{id}', [AccountOverzichtController::class, 'destroy'])->name('accountoverzicht.destroy');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -76,8 +80,10 @@ Route::post('/get-beschikbaarheden-by-month', [BeschikbaarheidController::class,
 Route::post('/save-beschikbaarheid', [BeschikbaarheidController::class, 'saveBeschikbaarheid']);
 
 Route::resource('afspraken', AfsprakenController::class);
+// Route voor het aanmaken van een afspraak
 Route::post('/afspraken', [AfsprakenController::class, 'store'])->name('afspraken.store');
-Route::post('/save-afspraak', [AfsprakenController::class, 'store']);
+Route::post('/afspraken/check-availability', [AfsprakenController::class, 'checkAvailability'])->name('afspraken.checkAvailability');
+Route::delete('/afspraken/{id}/annuleren', [AfsprakenController::class, 'annuleren'])->name('afspraken.annuleren');
 
 Route::get('/aboutus', [AboutUsController::class, 'index'])->name('aboutus.index');
 
