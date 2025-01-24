@@ -39,7 +39,6 @@
             <table class="min-w-full bg-white border border-gray-200">
                 <thead>
                     <tr class="text-left">
-                        <th class="px-2 py-2 border-b">Id</th>
                         <th class="px-2 py-2 border-b">Volledige Naam</th>
                         <th class="px-2 py-2 border-b">Leeftijd</th>
                         <th class="px-2 py-2 border-b">Nummer</th>
@@ -52,7 +51,6 @@
                 <tbody>
                     @foreach ($medewerkers as $medewerker)
                         <tr class=" hover:bg-gray-100">
-                            <td class="px-4 py-2 border-b">{{ $medewerker->Id }}</td>
                             <td class="px-4 py-2 border-b">{{ $medewerker->persoon->Voornaam }}
                                 {{ $medewerker->persoon->Tussenvoegsel ?? '' }}
                                 {{ $medewerker->persoon->Achternaam }}</td>
