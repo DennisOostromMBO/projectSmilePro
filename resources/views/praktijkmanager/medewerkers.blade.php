@@ -45,6 +45,7 @@
                         <th class="px-2 py-2 border-b">Medewerkertype</th>
                         <th class="px-2 py-2 border-b">Specialisatie</th>
                         <th class="px-2 py-2 border-b">Beschikbaarheid</th>
+                        <th class="px-2 py-2 border-b">Contract Verloopdatum</th>
                         <th class="px-2 py-2 border-b">Acties</th>
                     </tr>
                 </thead>
@@ -60,6 +61,9 @@
                             <td class="px-4 py-2 border-b">{{ $medewerker->Medewerkertype }}</td>
                             <td class="px-4 py-2 border-b">{{ $medewerker->Specialisatie }}</td>
                             <td class="px-4 py-2 border-b">{{ $medewerker->Beschikbaarheid }}</td>
+                            <td class="px-4 py-2 border-b">
+                                {{ \Carbon\Carbon::parse($medewerker->ContractVerloopdatum)->format('d-m-Y') }}
+                            </td>
                             <td class="px-4 py-2 border-b">
                                 <a href="{{ route('medewerkers.edit', $medewerker->Id) }}"
                                     class="px-2 py-1 text-white bg-blue-500 rounded hover:bg-blue-600">Bewerken</a>

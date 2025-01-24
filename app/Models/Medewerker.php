@@ -20,6 +20,7 @@ class Medewerker extends Model
         'Medewerkertype',
         'Specialisatie',
         'Beschikbaarheid',
+        'ContractVerloopdatum'
     ];
 
     public $timestamps = false;

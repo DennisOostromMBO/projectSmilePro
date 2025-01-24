@@ -148,8 +148,21 @@
                             {{ $errors->first('beschikbaarheid') }}
                         </div>
                     @endif
-
                 </div>
+
+                {{-- ContractVerloopdatum --}}
+                <div class="mb-4">
+                    <label for="contractverloopdatum" class="block mb-2">Contract Verloopdatum</label>
+                    <input type="date" class="w-full p-2 border border-gray-300 rounded-lg"
+                        id="contractverloopdatum" name="contractverloopdatum"
+                        value="{{ old('contractverloopdatum', $medewerker->ContractVerloopdatum) }}" required>
+                    @if ($errors->has('contractverloopdatum'))
+                        <div class="p-2 mb-2 text-red-700 bg-red-100 rounded alert alert-danger">
+                            {{ $errors->first('contractverloopdatum') }}
+                        </div>
+                    @endif
+                </div>
+
                 <button type="submit"
                     class="w-full p-3 text-white bg-blue-500 rounded-lg hover:bg-blue-600">Opslaan</button>
             </form>
