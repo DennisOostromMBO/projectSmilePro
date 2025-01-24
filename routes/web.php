@@ -73,6 +73,8 @@ Route::put('/emails/{id}', [EmailController::class, 'update'])->name('emails.upd
 Route::get('/beschikbaarheid', [BeschikbaarheidController::class, 'index']);
 Route::post('/get-beschikbaarheden-by-month', [BeschikbaarheidController::class, 'getBeschikbaarhedenByMonth']);
 Route::post('/save-beschikbaarheid', [BeschikbaarheidController::class, 'saveBeschikbaarheid']);
+Route::delete('/delete-beschikbaarheid', [BeschikbaarheidController::class, 'deleteBeschikbaarheid']);
+Route::post('/create-beschikbaarheid', [BeschikbaarheidController::class, 'makeBeschikbaarheid']);
 
 Route::resource('afspraken', AfsprakenController::class);
 // Route voor het aanmaken van een afspraak

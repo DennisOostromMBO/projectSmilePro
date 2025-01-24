@@ -12,22 +12,32 @@ class Beschikbaarheid extends Model
     protected $table = 'beschikbaarheid';
 
     protected $fillable = [
-        'medewerkerId', // Zorg dat deze naam overeenkomt met de databasekolom
-        'datumVanaf',
-        'datumTotMet',
-        'tijdVanaf',
-        'tijdTotMet',
-        'status',
-        'isActief',
-        'opmerking',
+        'MedewerkerId', // Ensure this matches the database column name
+        'DatumVanaf',
+        'DatumTotMet',
+        'TijdVanaf',
+        'TijdTotMet',
+        'Status',
+        'IsActief',
+        'Opmerking',
     ];
 
     public $timestamps = false;
 
-    // Relatie naar Medewerker
+    // Relationship to Medewerker
     public function medewerker()
     {
-        return $this->belongsTo(Medewerker::class, 'medewerkerId', 'Id'); // Consistente foreign key naam
+        return $this->belongsTo(Medewerker::class, 'MedewerkerId', 'Id'); 
+    }
+
+    // Destroy function to delete a record
+    public static function destroy($Id)
+    {
+        $beschikbaarheid = self::find($Id);
+        if ($beschikbaarheid) {
+            $beschikbaarheid->forceDelete();
+            return true;
+        }
+        return false;
     }
 }
-

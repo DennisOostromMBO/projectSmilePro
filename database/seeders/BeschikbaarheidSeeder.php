@@ -18,8 +18,8 @@ class BeschikbaarheidSeeder extends Seeder
         // Voeg de beschikbaarheden voor een medewerker toe
         Beschikbaarheid::create([
             'medewerkerId' => 1, // Medewerker ID (pas aan op basis van jouw gegevens)
-            'datumVanaf' => '2024-12-01', // Startdatum van de beschikbaarheid
-            'DatumTotMet' => '2024-12-01', // Einddatum van de beschikbaarheid
+            'datumVanaf' => '2025-01-01', // Startdatum van de beschikbaarheid
+            'DatumTotMet' => '2025-01-01', // Einddatum van de beschikbaarheid
             'tijdVanaf' => '09:00:00', // Starttijd van de beschikbaarheid
             'TijdTotMet' => '17:00:00', // Eindtijd van de beschikbaarheid
             'status' => 'Aanwezig', // De status van de medewerker
@@ -29,8 +29,8 @@ class BeschikbaarheidSeeder extends Seeder
 
         Beschikbaarheid::create([
             'medewerkerId' => 2,
-            'datumVanaf' => '2024-12-02',
-            'DatumTotMet' => '2024-12-02',
+            'datumVanaf' => '2025-01-02',
+            'DatumTotMet' => '2025-01-02',
             'tijdVanaf' => '10:00:00',
             'TijdTotMet' => '16:00:00',
             'status' => 'Afwezig',
@@ -39,8 +39,8 @@ class BeschikbaarheidSeeder extends Seeder
         ]);
         Beschikbaarheid::create([
             'medewerkerId' => 3,
-            'datumVanaf' => '2024-12-03',
-            'DatumTotMet' => '2024-12-03',
+            'datumVanaf' => '2025-01-03',
+            'DatumTotMet' => '2025-01-03',
             'tijdVanaf' => '08:00:00',
             'TijdTotMet' => '12:00:00',
             'status' => 'Verlof',
@@ -50,8 +50,8 @@ class BeschikbaarheidSeeder extends Seeder
            // Voeg de beschikbaarheden voor een medewerker toe
            Beschikbaarheid::create([
             'medewerkerId' => 11, // Medewerker ID (pas aan op basis van jouw gegevens)
-            'datumVanaf' => '2024-12-19', // Startdatum van de beschikbaarheid
-            'DatumTotMet' => '2024-12-19', // Einddatum van de beschikbaarheid
+            'datumVanaf' => '2025-01-19', // Startdatum van de beschikbaarheid
+            'DatumTotMet' => '2025-01-19', // Einddatum van de beschikbaarheid
             'tijdVanaf' => '09:00:00', // Starttijd van de beschikbaarheid
             'TijdTotMet' => '17:00:00', // Eindtijd van de beschikbaarheid
             'status' => 'Aanwezig', // De status van de medewerker
@@ -60,8 +60,8 @@ class BeschikbaarheidSeeder extends Seeder
         ]);
         Beschikbaarheid::create([
             'medewerkerId' => 10, // Medewerker ID (pas aan op basis van jouw gegevens)
-            'datumVanaf' => '2024-12-18', // Startdatum van de beschikbaarheid
-            'DatumTotMet' => '2024-12-18', // Einddatum van de beschikbaarheid
+            'datumVanaf' => '2025-01-31', // Startdatum van de beschikbaarheid
+            'DatumTotMet' => '2025-01-31', // Einddatum van de beschikbaarheid
             'tijdVanaf' => '09:00:00', // Starttijd van de beschikbaarheid
             'TijdTotMet' => '17:00:00', // Eindtijd van de beschikbaarheid
             'status' => 'Aanwezig', // De status van de medewerker

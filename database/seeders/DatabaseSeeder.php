@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Afspraak;
 use App\Models\Contact;
 use App\Models\Medewerker;
 use App\Models\Persoon;
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
             EmailSeeder::class,
             FactuurSeeder::class,
             BeschikbaarheidSeeder::class,
+            AfspraakSeeder::class,
 
         ]);
 
