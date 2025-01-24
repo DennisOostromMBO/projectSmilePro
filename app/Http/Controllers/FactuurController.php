@@ -37,7 +37,6 @@ class FactuurController extends Controller
             'beschrijving' => 'required',
             'vervaldatum' => 'required|date',
             'totaal_bedrag' => 'required|numeric',
-            'betaald' => 'required|boolean',
         ]);
 
         try {
@@ -71,7 +70,6 @@ class FactuurController extends Controller
             'beschrijving' => 'required|string|max:255',
             'vervaldatum' => 'required|date',
             'totaal_bedrag' => 'required|numeric',
-            'betaald' => 'required|boolean',
         ]);
 
         try {
