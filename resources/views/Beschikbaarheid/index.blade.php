@@ -17,11 +17,11 @@
     <div class="container mx-auto mt-8 p-4" x-data="calendarApp()">
       <h1 class="text-2xl font-bold mb-4 text-center md:text-left">Beschikbaarheid</h1>
   
-      <button @click="showPopup = true" class="bg-blue-500 text-white px-4 py-2 rounded w-full md:w-auto">Set Beschikbaarheid</button>
+      <button @click="showPopup = true" class="bg-blue-500 text-white px-4 py-2 rounded w-full md:w-auto">Beschikbaarheid aanmaken</button>
   
       <div x-show="showPopup" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded shadow-lg w-11/12 md:w-1/2">
-          <h2 class="text-xl font-bold mb-4">Set Your Beschikbaarheid</h2>
+          <h2 class="text-xl font-bold mb-4">Stel uw Beschikbaarheid in</h2>
           <form @submit.prevent="createBeschikbaarheid">
             <div class="mb-4">
               <label class="block text-gray-700">Medewerker nummer:</label>
@@ -232,7 +232,7 @@
         class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
         min="09:00"  
         max="17:00"   
-        step="1800"   
+        step="1800"  
         aria-describedby="timeToError"
     >
     <p id="timeToError" class="text-red-500 text-sm mt-1" x-show="!validateTimeTo()">vul de tijd in tussen 9:00 en 17:00 uur</p>
@@ -275,7 +275,7 @@
                 @click="deleteEvent(event.Id)" 
                 class="text-white bg-red-500 px-2 py-1 rounded hover:bg-red-700 transition"
             >
-                Delete
+                verwijderen
             </button>
             
         </div>
@@ -319,6 +319,8 @@
             selectedEditDate: '',
             editMedewerkerId: '',
             openCreateModal: false,
+            timeFromError: '',
+            timeToError: '',
 
             validateTimeFrom() {
                 const match = this.editTimeFrom.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
@@ -328,6 +330,8 @@
                 const timeInMinutes = hours * 60 + minutes;
                 const minTime = 9 * 60; // 09:00 in minutes
                 const maxTime = 17 * 60; // 19:00 in minutes
+                
+                if (timeInMinutes % 30 !== 0) return false;
 
                 return timeInMinutes >= minTime && timeInMinutes <= maxTime;
             },
@@ -335,11 +339,13 @@
             validateTimeTo() {
                 const match = this.editTimeTo.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
                 if (!match) return false;
+                
             
                 const [hours, minutes] = this.editTimeTo.split(":").map(Number);
                 const timeInMinutes = hours * 60 + minutes;
                 const minTime = 9 * 60; 
                 const maxTime = 17 * 60;
+                if (timeInMinutes % 30 !== 0) return false
             
                 return timeInMinutes >= minTime && timeInMinutes <= maxTime;
             },
